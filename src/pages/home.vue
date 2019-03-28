@@ -39,6 +39,10 @@ export default {
   }
   .el-main {
     padding: 0;
+    position: fixed;
+    left: 200px;
+    right: 0;
+    z-index: 1;
   }
 }
 </style>

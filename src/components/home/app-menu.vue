@@ -32,10 +32,29 @@ export default {
     }
   },
   methods: {
-    // 选择不同的模块
+    // 选择不同的模块 跳转至不同界面
     handleMenu (index) {
+      // 获取模块名字
+      const title = menus[index].title
+      // 设置模块子项
       this.currentMenuGroup = menus[index].group
       this.menuActive = index
+      switch (title) {
+        case '系统管理':
+          this.$router.push({ path: '/systemsetup' })
+          break
+        case '产品入库':
+          this.$router.push({ path: '/productstorage' })
+          break
+        case '产品出库':
+          this.$router.push({ path: '/productexit' })
+          break
+        case '产品盘点':
+          this.$router.push({ path: '/productcheck' })
+          break
+        default:
+          this.$router.push({ path: '/systemquery' })
+      }
     }
   },
   created () {
