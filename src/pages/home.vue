@@ -30,7 +30,7 @@ export default {
 
 <style lang="scss" scoped>
 .el-container {
-  bacground: rgb(242,242,242);
+  background: rgb(242,242,242);
   position: fixed;
   top: 60px;
   bottom: 0;
@@ -40,7 +40,7 @@ export default {
   .el-main {
     padding: 0;
     position: fixed;
-    left: 200px;
+    left: 150px;
     right: 0;
     z-index: 1;
   }

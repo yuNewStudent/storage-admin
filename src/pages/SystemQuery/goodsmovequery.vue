@@ -1,17 +1,15 @@
 <template>
-  <div class="SystemSetup">
-    <router-view></router-view>
+  <div class="goodsmovequery">
+  	goodsmovequery
   </div>
 </template>
 
 <script>
 export default {
   data () {
-    return {
-    }
+  	return {}
   },
   components: {
   }
 }
 </script>
-
