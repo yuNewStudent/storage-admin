@@ -14,6 +14,7 @@ const ProductStorage = name => () => import('@/pages/ProductStorage/' + name)
 Vue.use(Router)
 
 export default new Router({
+  mode:'history',
   routes: [
     {
       path: '/',
@@ -23,6 +24,7 @@ export default new Router({
         {
           path: '/systemsetup',
           component: SystemSetup('index'),
+          name: 'systemsetup',
           redirect: '/systemsetup/personmanage',
           children: [
             {
@@ -49,12 +51,18 @@ export default new Router({
               path: '/systemsetup/customermanage',
               name: 'customermanage',
               component: SystemSetup('customermanage')
+            },
+            {
+              path: '/systemsetup/repositorymap',
+              name: 'repositorymap',
+              component: SystemSetup('repositorymap')
             }
           ]
         },
         {
           path: '/productstorage',
           component: ProductStorage('index'),
+          name: 'productstorage',
           redirect: '/productstorage/writeorder',
           children: [
             {
@@ -96,20 +104,20 @@ export default new Router({
           path: '/productcheck',
           name: 'productcheck',
           component: ProductCheck('index'),
-          redirect: '/ProductCheck/goodscounting',
+          redirect: '/productcheck/goodscounting',
           children: [
             {
-              path: '/ProductCheck/goodscounting',
+              path: '/productcheck/goodscounting',
               name: 'goodscounting',
               component: ProductCheck('goodscounting')
             },
             {
-              path: '/ProductCheck/goodsmove',
+              path: '/productcheck/goodsmove',
               name: 'goodsmove',
               component: ProductCheck('goodsmove')
             },
             {
-              path: '/ProductCheck/repertoryenvironment',
+              path: '/productcheck/repertoryenvironment',
               name: 'repertoryenvironment',
               component: ProductCheck('repertoryenvironment')
             }
@@ -122,27 +130,27 @@ export default new Router({
           redirect: '/SystemQuery/purchaseordersquery',
           children: [
             {
-              path: '/SystemQuery/purchaseordersquery',
+              path: '/systemquery/purchaseordersquery',
               name: 'purchaseordersquery',
               component: SystemQuery('purchaseordersquery')
             },
             {
-              path: '/SystemQuery/returnquery',
+              path: '/systemquery/returnquery',
               name: 'returnquery',
               component: SystemQuery('returnquery')
             },
             {
-              path: '/SystemQuery/outorderquery',
+              path: '/systemquery/outorderquery',
               name: 'outorderquery',
               component: SystemQuery('outorderquery')
             },
             {
-              path: '/SystemQuery/stockquery',
+              path: '/systemquery/stockquery',
               name: 'stockquery',
               component: SystemQuery('stockquery')
             },
             {
-              path: '/SystemQuery/goodsmovequery',
+              path: '/systemquery/goodsmovequery',
               name: 'goodsmovequery',
               component: SystemQuery('goodsmovequery')
             }

@@ -2,19 +2,20 @@ const menus = [
   {
     title: '系统管理',
     name: 'systemsetup',
-    icon: '',
+    icon: '@/assets/icon/系统管理ic.png',
     group: [
       { label: '人员管理', name: 'personmanage'},
       { label: '商品管理', name: 'goodsmanage'},
       { label: '仓库管理', name: 'storemanage'},
       { label: '供应商管理', name: 'suppliermanagement'},
-      { label: '客户管理', name: 'customermanage'}
+      { label: '客户管理', name: 'customermanage'},
+      { label: '仓库地图', name: 'repositorymap'}
     ]
   },
   {
     title: '产品入库',
     name: 'productstorage',
-    icon: '',
+    icon: '@/assets/icon/产品入库ic.png',
     group: [
       { label: '填写订货单', name: 'writeorder'},
       { label: '采购入库', name: 'purchase'},
@@ -24,16 +25,16 @@ const menus = [
   {
     title: '产品出库',
     name: 'productexit',
-    icon: '',
+    icon: '@/assets/icon/产品出库ic.png',
     group: [
       { label: '填写出库单', name: 'writewarehousereceipt'},
       { label: '商品出库', name: 'goodsout'}
     ]
   },
   {
-    title: '产品盘点',
+    title: '商品盘存',
     name: 'productcheck',
-    icon: '',
+    icon: '@/assets/icon/商品盘存ic.png',
     group: [
       { label: '货物移库', name: 'goodsmove'},
       { label: '货物盘点', name: 'goodscounting'},
@@ -43,7 +44,7 @@ const menus = [
   {
     title: '系统查询',
     name: 'systemquery',
-    icon: '',
+    icon: '@/assets/icon/系统查询ic.png',
     group: [
       { label: '采购单查询', name: 'purchaseordersquery'},
       { label: '归还入库查询', name: 'returnquery'},
