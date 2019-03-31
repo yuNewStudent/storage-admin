@@ -77,7 +77,6 @@ export default {
     handleMenGroup (index, name) {
       this.currentMenuGroupActive = index
       const title = menus[this.menuActive].name
-      console.log(`/${title}/${name}`, 'sss')
       this.$router.push({ path: `/${title}/${name}` })
     }
   },
