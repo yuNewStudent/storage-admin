@@ -24,9 +24,10 @@ export default {
   },
   methods: {
     handleSetting () {
-      console.log(1)
       this.$emit("closeMessageBox")
     }
+  },
+  created () {
   },
   components: {
   }

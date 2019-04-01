@@ -72,6 +72,11 @@
       v-if='isShowDelUser'
       @hideDelPerson='isShowDelUser=!isShowDelUser'>
     </del-user>
+    <setting-permission
+      :type='messageBoxType.setAuthority'
+      v-if='isShowSettingPermission'
+      @hidesetPermission='isShowSettingPermission=!isShowSettingPermission'
+    ></setting-permission>
   </div>
 </template>
 
@@ -80,6 +85,7 @@ import MessageBox from '@/components/MessageBox'
 import SetDepartment from '@/components/SystemSetup/personmanage/setdepartment.vue'
 import ChangePerson from '@/components/SystemSetup/personmanage/change-person.vue'
 import DelUser from '@/components/SystemSetup/personmanage/del-user.vue'
+import SettingPermission from '@/components/SystemSetup/personmanage/setting-permission.vue'
 
 export default {
   data () {
@@ -107,6 +113,7 @@ export default {
       isShowEditor: false,
       isShowSetDepartment: false,
       isShowDelUser: false,
+      isShowSettingPermission: false,
       messageBoxType: {
         add: '新增',
         editor: '修改',
@@ -120,7 +127,8 @@ export default {
     MessageBox,
     SetDepartment,
     ChangePerson,
-    DelUser
+    DelUser,
+    SettingPermission
   },
   methods: {
     handleAdd () {
@@ -128,14 +136,16 @@ export default {
     },
     handleEdit (index, row) {
       this.isShowEditor = true
-      console.log(index, row)
     },
     handleSetDepartment () {
       this.isShowSetDepartment = true
     },
     handleDelete () {
-      console.log(1)
       this.isShowDelUser = true
+    },
+    handlePermission () {
+      console.log(1)
+      this.isShowSettingPermission = true
     }
   }
 }

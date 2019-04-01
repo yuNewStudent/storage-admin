@@ -53,7 +53,7 @@ export default {
       ],
       radio: '',
       btns: {
-        cancel: '重置', 
+        reset: '重置', 
         comfirm: '确定'
       }
     }
