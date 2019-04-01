@@ -11,8 +11,8 @@
         @mouseleave="hideMenuGroup">
         <img :src="images[index].src" alt="">
         <span>{{item.title}}</span>
-        <ul
-          v-if='menuActive === index'
+        <!-- <ul
+          v-show='menuActive === index'
           class="menu_group"
           ref='menuGroup'
           >
@@ -23,7 +23,7 @@
             :class="{active: currentMenuGroupActive === i}"
             @click='handleMenGroup(i, item.name)'
             >{{item.label}}</li>
-        </ul>
+        </ul> -->
       </li>
     </ul>
     
@@ -31,17 +31,15 @@
 </template>
 
 <script>
-import menus from '@/assets/js/menus'
 export default {
+  props: ['menus'],
   data () {
     return {
-      menus: [],
       // 当前的选中的一级菜单，默认为0
       menuActive: 0,
       // 当前的二级菜单
       currentMenuGroup: [],
       // 当前的选中的二级菜单，默认为0
-      currentMenuGroupActive: 0,
       images: [
         { src: require('@/assets/icon/系统管理ic.png') },
         { src: require('@/assets/icon/产品入库ic.png') },
@@ -59,7 +57,7 @@ export default {
     // 选择不同的模块 跳转至不同界面
     handleGroup (index, name) {
       // 获取模块名字
-      const title = menus[index].title
+      const title = this.menus[index].title
       this.$router.push({ path: `/${name}` })
     },
     
@@ -67,22 +65,24 @@ export default {
     showMenuGroup (index) {
       this.menuActive = index
       // 设置模块子项
-      this.currentMenuGroup = menus[index].group
+      this.currentMenuGroup = this.menus[index].group
+      // 
+      this.$emit('setMenuGroup', index)
     },
     hideMenuGroup () {
       this.currentMenuGroupActive = 0
       this.currentMenuGroup = []
     },
     // 选择不同的二级模块 跳转至不同界面
-    handleMenGroup (index, name) {
-      this.currentMenuGroupActive = index
-      const title = menus[this.menuActive].name
-      console.log(`/${title}/${name}`, 'sss')
-      this.$router.push({ path: `/${title}/${name}` })
-    }
+    // handleMenGroup (index, name) {
+    //   this.currentMenuGroupActive = index
+    //   const title = this.menus[this.menuActive].name
+    //   // this.$router.push({ path: `/${title}/${name}` })
+    //   this.$emit('goRoute', title, name)
+    // }
   },
   created () {
-    this.menus = menus
+    console.log(this.menus)
   }
 }
 </script>
@@ -91,7 +91,6 @@ export default {
 .menus_wrapper {
   position: relative;
   width: 160px;
-  z-index: 2;
   .menus {
     cursor: pointer;
     .menus_item {
@@ -103,6 +102,7 @@ export default {
       font-size: 14px;
       background: #0b223a;
       color: white;
+      z-index: 1;
       img {
         width: 14px;
         vertical-align: top;

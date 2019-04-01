@@ -1,9 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+Vue.use(Router)
+
 const Home = () => import('@/pages/home')
 const Login = () => import('@/pages/login')
 const Register = () => import('@/pages/register')
 
+
+// const suppliermanagement =() => import('@/pages/SystemSetup/suppliermanagement')
 const SystemSetup = name => () => import('@/pages/SystemSetup/' + name)
 const SystemQuery = name => () => import('@/pages/SystemQuery/' + name)
 const ProductCheck = name => () => import('@/pages/ProductCheck/' + name)
@@ -11,7 +15,6 @@ const ProductExit = name => () => import('@/pages/ProductExit/' + name)
 const ProductStorage = name => () => import('@/pages/ProductStorage/' + name)
 
 
-Vue.use(Router)
 
 export default new Router({
   mode:'history',
@@ -23,9 +26,9 @@ export default new Router({
       children: [
         {
           path: '/systemsetup',
-          component: SystemSetup('index'),
           name: 'systemsetup',
           redirect: '/systemsetup/personmanage',
+          component: SystemSetup('index'),
           children: [
             {
               path: '/systemsetup/personmanage',
@@ -61,9 +64,9 @@ export default new Router({
         },
         {
           path: '/productstorage',
-          component: ProductStorage('index'),
           name: 'productstorage',
           redirect: '/productstorage/writeorder',
+          component: ProductStorage('index'),
           children: [
             {
               path: '/productstorage/writeorder',

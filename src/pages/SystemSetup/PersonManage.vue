@@ -8,8 +8,9 @@
         </span>
       </div>
       <div class="operate_wrapper">
-        <button class="set_department">部门设置</button>
-        <button class="add_person"><img src="@/assets/icon/新增IC.png" alt="">新增</button>
+        <button class="set_department" @click='handleSetDepartment'>部门设置</button>
+        <button class="add_person" @click='handleAdd'>
+          <img src="@/assets/icon/新增IC.png" alt="">新增</button>
       </div>
     </div>
     <div class="content">
@@ -42,40 +43,44 @@
             <el-button
               size="small"
               type="primary"
-              @click="handleEdit(scope.$index, scope.row)">权限设置</el-button>
+              @click="handlePermission(scope.$index, scope.row)">权限设置</el-button>
             <el-button
               size="small"
               type="primary"
-              disabled
               @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <div class="add_user_wrapper">
-      <p class="header">系统管理/人员设置/新增</p>  
-      <div class="user_name">
-        <label for="">姓名</label>
-        <el-input></el-input>
-        <label for="">部门</label>
-        <el-select v-model="value" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <label for="">登录账户</label>
-        <el-input></el-input>
-        <label for="">电话</label>
-        <el-input></el-input>
-      </div>
-    </div>
+    <change-person
+      :type='messageBoxType.add'
+      v-if='isShowAdd'
+      @hideChangePerson='isShowAdd=!isShowAdd'>
+    </change-person>
+    <change-person
+      :type='messageBoxType.editor'
+      v-if='isShowEditor'
+      @hideChangePerson='isShowEditor=!isShowEditor'>
+    </change-person>
+    <set-department
+      :type='messageBoxType.setDepartment'
+      v-if='isShowSetDepartment'
+      @hideSetDepartment='isShowSetDepartment=!isShowSetDepartment'>
+    </set-department>
+    <del-user
+      :type='messageBoxType.del'
+      v-if='isShowDelUser'
+      @hideDelPerson='isShowDelUser=!isShowDelUser'>
+    </del-user>
   </div>
 </template>
 
 <script>
+import MessageBox from '@/components/MessageBox'
+import SetDepartment from '@/components/SystemSetup/personmanage/setdepartment.vue'
+import ChangePerson from '@/components/SystemSetup/personmanage/change-person.vue'
+import DelUser from '@/components/SystemSetup/personmanage/del-user.vue'
+
 export default {
   data () {
   	return {
@@ -97,10 +102,41 @@ export default {
           name: '王小虎',
           address: '上海市普陀区金沙江路 1516 弄'
         }
-      ]
+      ],
+      isShowAdd: false,
+      isShowEditor: false,
+      isShowSetDepartment: false,
+      isShowDelUser: false,
+      messageBoxType: {
+        add: '新增',
+        editor: '修改',
+        del: '删除',
+        setDepartment: '部门设置',
+        setAuthority: '权限设置'
+      }
     }
   },
   components: {
+    MessageBox,
+    SetDepartment,
+    ChangePerson,
+    DelUser
+  },
+  methods: {
+    handleAdd () {
+      this.isShowAdd = true
+    },
+    handleEdit (index, row) {
+      this.isShowEditor = true
+      console.log(index, row)
+    },
+    handleSetDepartment () {
+      this.isShowSetDepartment = true
+    },
+    handleDelete () {
+      console.log(1)
+      this.isShowDelUser = true
+    }
   }
 }
 </script>
@@ -167,7 +203,4 @@ export default {
     margin-top: 30px;
   }
 }
-</style>
-'>
-
 </style>
