@@ -53,7 +53,7 @@
       </el-table>
     </div>
     <div class="add_user_wrapper">
-      <p class="header">系统管理/人员设置/新增</p>
+      <p class="header">系统管理/人员设置/新增</p>  
       <div class="user_name">
         <label for="">姓名</label>
         <el-input></el-input>
