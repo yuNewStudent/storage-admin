@@ -1,6 +1,6 @@
 <template>
   <div class="goodsout">
-       <div class="goodsout_unit">
+    <div class="goodsout_unit">
       <div class="goodsout_unitl">
         <span class="demonstration">供应单位:</span>
         <el-select v-model="value" placeholder="请选择">
