@@ -29,14 +29,14 @@
       </div>
       <div class="writeorder_operationr">
         <el-row>
-          <el-button type="primary" size="medium" @click="buttonModifythe()">保存并修改</el-button>
-          <el-button type="primary" size="medium" @click="buttonsave()">保存</el-button>
-          <el-button type="primary" size="medium" @click="buttonaudit()">审核</el-button>
+          <el-button type="primary" size="medium" @click="buttonModifythe">保存并修改</el-button>
+          <el-button type="primary" size="medium" @click="buttonsave">保存</el-button>
+          <el-button type="primary" size="medium" @click="buttonaudit">审核</el-button>
         </el-row>
       </div>
     </div>
     <div style="clear: both;"></div>
-    <div class="writeorder_list" v-if="show==true">
+    <div class="writeorder_list" v-if="show===false">
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="date" label="商品类别"></el-table-column>
@@ -155,7 +155,23 @@ export default {
       value1: ""
     };
   },
-  components: {}
+  components: {},
+  methods:{
+    buttonModifythe:function(){
+      if(this.show==false){
+        this.show=true;
+      }else{
+        this.show=false;
+      }
+      console.log(this.show)
+    },
+    buttonsave:function(){
+
+    },
+    buttonaudit:function(){
+
+    }
+  }
 };
 </script>
 <style>
