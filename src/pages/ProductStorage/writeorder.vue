@@ -1,6 +1,8 @@
 <template>
   <div class="writeorder">
-  	writeorder
+    <div c>
+
+    </div>
   </div>
 </template>
 
