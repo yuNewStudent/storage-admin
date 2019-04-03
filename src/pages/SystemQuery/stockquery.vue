@@ -1,24 +1,24 @@
 <template>
   <div class="stockquery">
-  <div class="returnquery_operation">
-      <div class="returnquery_operationl">
-        <div class="returnquery_query">
+    <div class="stockquery_operation">
+      <div class="stockquery_operationl">
+        <div class="stockquery_query">
           <el-input placeholder="请输入内容" v-model="input10" clearable></el-input>
-          <el-button type="primary">搜索</el-button>
+          <el-button type="primary">查询</el-button>
         </div>
-        <div class="returnquery_thedate">
+        <div class="stockquery_thedate">
           <span class="demonstration">日期选择:</span>
           <el-date-picker v-model="value1" type="date" placeholder></el-date-picker>
         </div>
       </div>
-      <div class="returnquery_operationr">
+      <div class="stockquery_operationr">
         <el-row>
           <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
         </el-row>
       </div>
     </div>
     <div style="clear: both;"></div>
-    <div class="returnquery_list" v-if="show===false">
+    <div class="stockquery_list" v-if="show===false">
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="category" label="商品类别"></el-table-column>
@@ -36,7 +36,7 @@
         <el-table-column prop="note" label="备注"></el-table-column>
       </el-table>
     </div>
-    <div class="returnquery_list" v-else>
+    <div class="stockquery_list" v-else>
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="date" label="商品类别">
@@ -196,49 +196,46 @@ export default {
 };
 </script>
 <style>
-.returnquery {
+.stockquery {
   padding: 20px 20px;
 }
-.returnquery_unit {
+.stockquery_unit {
 }
-.returnquery_unitl {
+.stockquery_unitl {
   float: left;
 }
-.returnquery_unitr {
+.stockquery_unitr {
   line-height: 30px;
   float: right;
   text-align: center;
 }
-.returnquery_unitr p {
+.stockquery_unitr p {
   color: #777777;
 }
-.returnquery_unitr span {
+.stockquery_unitr span {
   border-bottom: 1px solid #777777;
   color: #000;
 }
-.returnquery_operation {
+.stockquery_operation {
   margin-top: 20px;
 }
-.returnquery_operationl {
+.stockquery_operationl {
   float: left;
   display: flex;
 }
-.returnquery_operationr {
+.stockquery_operationr {
   float: right;
 }
-.returnquery_list {
+.stockquery_list {
   margin-top: 20px;
 }
-.returnquery_query {
+.stockquery_query {
   display: flex;
 }
-.returnquery_query input {
+.stockquery_query input {
   width: 150px;
 }
-.returnquery_query button {
-  margin-left: 10px;
-}
-.returnquery_thedate {
+.stockquery_thedate {
   margin-left: 20px;
 }
 </style>
