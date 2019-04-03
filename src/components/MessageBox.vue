@@ -1,15 +1,15 @@
 <template>
 	<div class="MessageBox">
 		<div class="add_user_wrapper">
-      <el-row class="header">系统管理>人员设置>{{type}}</el-row>
+      <el-row class="header">系统管理>{{type}}</el-row>
       <slot></slot>
       <el-row class='footer'>
         <el-button size='medium ' type='primary' v-if='btns.reset'>重置</el-button>
-        <el-button size='medium ' type='primary' v-if='btns.cancel' @click='$emit("closeMessageBox")'>取消</el-button>
-        <el-button size='medium ' type='primary' @click='handleSetting'>确定</el-button>
+        <el-button size='medium ' type='primary' v-if='!btns.reset' @click='handleCancel'>取消</el-button>
+        <el-button size='medium ' type='primary' @click='handleSetting' ref='close'>确定</el-button>
       </el-row>
     </div>
-    <div class="close" @click='$emit("closeMessageBox")'>
+    <div class="close" @click='handleCancel' v-if='btns.reset'>
     	<img src="@/assets/icon/系统管理-人员管理/取消圆弧.png" alt="">
       <span>X</span>
     </div>
@@ -18,16 +18,28 @@
 
 <script>
 export default {
-  props: ['type', 'btns'],
+  props: ['type', 'btns', 'right'],
 	data () {
 		return {}
   },
   methods: {
+    //取消
+    handleCancel () {
+      this.$emit("closeMessageBox", false)
+    },
+    
+    //确定
     handleSetting () {
-      this.$emit("closeMessageBox")
+      this.$emit("closeMessageBox", true)
     }
   },
-  created () {
+  mounted () {
+    this.$nextTick(() => {
+      console.log( this.$refs.close)
+      if (this.right) {
+        this.$refs.close.$el.style['margin-right'] = this.right - 20 + 'px'
+      } 
+    })
   },
   components: {
   }
@@ -43,8 +55,9 @@ export default {
 	bottom: 0;
 	background: rgba(0,0,0,.5);
   z-index: 3;
+  border-radius: 10px;
 	.add_user_wrapper {
-    width: 500px;
+    width: 550px;
     margin: 70px auto 0;
     background: white;
     .header {
@@ -81,14 +94,14 @@ export default {
     }
     .footer {
       text-align: right;
-      padding: 20px 20px;
+      padding: 0px 30px 20px;
     }
   }
   .close {
     text-align: center;
     position: relative;
     img {
-      width: 500px;
+      width: 550px;
     }
     span {
       cursor: pointer;

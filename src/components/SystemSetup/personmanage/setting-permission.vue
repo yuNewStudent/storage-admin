@@ -4,7 +4,7 @@
     :type='type'
     :btns='btns'>
 		<div class="setDepartment_wrapper">
-      <el-table :data="permissionData">
+      <!-- <el-table :data="permissionData">
         <el-table-column
           align='center' 
           prop="功能"
@@ -26,7 +26,7 @@
             </span>
           </template>
         </el-table-column>
-      </el-table>
+      </el-table> -->
     </div>
 	</message-box>
 </template>

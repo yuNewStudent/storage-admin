@@ -1,27 +1,29 @@
 <template>
   <message-box
-    @closeMessageBox='$emit("hideSetDepartment")'
+    @closeMessageBox='$emit("hideSetmeasurement")'
     :type='type'
-    :btns='btns'>
-    <div
-      class="setDepartment_wrapper">
+    :btns='btns'
+    :right='60'>
+    <div class="content">
       <el-table
-        size='mini'
-        :data="departmentData"
-        border>
+        :data="tableData"
+        border
+        style="width: 100%"
+        size='mini'>
         <el-table-column
-          align='center' 
-          prop="部门编号"
-          label="部门编号">
+          prop="单位编号"
+          label="单位编号"
+          align='center'>
         </el-table-column>
         <el-table-column
-          align='center' 
-          prop="部门名称"
-          label="部门名称">
+          prop="单位"
+          label="单位"
+          align='center'>
         </el-table-column>
         <el-table-column
+          label="操作"
           align='center'
-          label='操作'>
+          width="150">
           <template slot-scope="scope">
             <span>
               <img src="@/assets/icon/系统管理-人员管理/插入行.png">
@@ -42,22 +44,23 @@ export default {
   props: ['type'],
   data () {
     return {
-      departmentData: [
+      tableData: [
         {
-          部门编号: 1,
-          部门名称: '行政部'
-        },{
-          部门编号: 2,
-          部门名称: '财务部'
-        },{
-          部门编号: 3,
-          部门名称: '设计部'
+          单位编号: '001',
+          单位: '箱'
+        },
+        {
+          单位编号: '002',
+          单位: '盒'
+        },
+        {
+          单位编号: '003',
+          单位: '件'
         }
       ],
       btns: {
-        cancel: '取消', 
         comfirm: '确定'
-      },
+      }
     }
   },
   components: {
@@ -67,8 +70,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.setDepartment_wrapper {
-  margin: 30px;
+.content {
+  margin: 40px 60px 20px;
   img {
     vertical-align: middle;
     width: 13px;
@@ -77,4 +80,5 @@ export default {
   }
 }
 </style>
+
 

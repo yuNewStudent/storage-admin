@@ -2,7 +2,7 @@
   <div class="PersonManage">
   	<div class="header">
       <div class="search">
-        <input type="text" placeholder="请输入姓名">
+        <input type="text" placeholder="请输入姓名" v-model='userQuery'>
         <span class="serch_btn">
           <img src="@/assets/icon/搜索ic.png" alt="">
         </span>
@@ -15,37 +15,31 @@
     </div>
     <div class="content">
       <el-table
-        :data="tableData"
-        style="width: 100%">
+        :data="usersFilter"
+        size='small'
+        width='100%'
+        border>
         <el-table-column
+          v-for='(value, key) in usersFilter[0]'
+          :key='key'
           align='center' 
-          prop="date"
-          label="日期"
-          width="180">
+          :prop="key"
+          :label="key"
+          width="150">
         </el-table-column>
-        <el-table-column
-          align='center' 
-          prop="name"
-          label="姓名"
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          align='center' 
-          label="地址">
-        </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作"
+          align='center'>
           <template slot-scope="scope">
             <el-button
-              size="small"
+              size="mini"
               type="primary"
               @click="handleEdit(scope.$index, scope.row)">修改</el-button>
             <el-button
-              size="small"
+              size="mini"
               type="primary"
               @click="handlePermission(scope.$index, scope.row)">权限设置</el-button>
             <el-button
-              size="small"
+              size="mini"
               type="primary"
               @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
@@ -55,12 +49,13 @@
     <change-person
       :type='messageBoxType.add'
       v-if='isShowAdd'
-      @hideChangePerson='isShowAdd=!isShowAdd'>
+      @hideChangePerson='addPerson'>
     </change-person>
     <change-person
       :type='messageBoxType.editor'
       v-if='isShowEditor'
-      @hideChangePerson='isShowEditor=!isShowEditor'>
+      @hideChangePerson='editorPerson'
+      :selectUser='selectUser'>
     </change-person>
     <set-department
       :type='messageBoxType.setDepartment'
@@ -70,7 +65,8 @@
     <del-user
       :type='messageBoxType.del'
       v-if='isShowDelUser'
-      @hideDelPerson='isShowDelUser=!isShowDelUser'>
+      @hideDelPerson='delUser'
+      :selectUser='selectUser'>
     </del-user>
     <setting-permission
       :type='messageBoxType.setAuthority'
@@ -90,36 +86,50 @@ import SettingPermission from '@/components/SystemSetup/personmanage/setting-per
 export default {
   data () {
   	return {
-      tableData: [
+      users: [
         {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          序号: '1',
+          姓名: '苏轼',
+          所属部门: '设计部',
+          登陆账号: '012223',
+          联系电话: '188882999'
         }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
+          序号: '1',
+          姓名: '李贺',
+          所属部门: '设计部',
+          登陆账号: '012223',
+          联系电话: '188882999'
         }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
+          序号: '1',
+          姓名: '李白',
+          所属部门: '设计部',
+          登陆账号: '012223',
+          联系电话: '188882999'
         }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }
+          序号: '1',
+          姓名: '杜甫',
+          所属部门: '设计部',
+          登陆账号: '012223',
+          联系电话: '188882999'
+        },
       ],
+      userQuery: '',
+      selectUser: {
+        index: '',
+        userInfo: []
+      },
       isShowAdd: false,
       isShowEditor: false,
       isShowSetDepartment: false,
       isShowDelUser: false,
       isShowSettingPermission: false,
+      
       messageBoxType: {
-        add: '新增',
-        editor: '修改',
-        del: '删除',
-        setDepartment: '部门设置',
-        setAuthority: '权限设置'
+        add: '人员管理>新增',
+        editor: '人员管理>修改',
+        del: '人员管理>删除',
+        setDepartment: '人员管理>部门设置',
+        setAuthority: '人员管理>权限设置'
       }
     }
   },
@@ -130,23 +140,53 @@ export default {
     DelUser,
     SettingPermission
   },
+  computed: {
+    // 按照搜索框内容进行筛选
+    usersFilter () {
+      return this.users.filter(item => {
+        return item['姓名'].indexOf(this.userQuery) > -1
+      })
+    }
+  },
   methods: {
     handleAdd () {
       this.isShowAdd = true
     },
+    addPerson (userInfo) {
+      this.isShowAdd = false
+      // 确定添加
+      if (userInfo) {
+      }
+    },
     handleEdit (index, row) {
+      console.log(index, row)
+      this.selectUser.index = index
+      this.selectUser.userInfo = row
       this.isShowEditor = true
+    },
+    editorPerson (userInfo) {
+      this.isShowEditor = false
+      // 确定修改
+      if (userInfo) {
+      }
     },
     handleSetDepartment () {
       this.isShowSetDepartment = true
     },
-    handleDelete () {
+    handleDelete (index, row) {
+      this.selectUser.index = index
+      this.selectUser.userInfo = row
       this.isShowDelUser = true
+    },
+    delUser (bol) {
+      this.isShowDelUser= false
+      // 确定删除
+      if (bol) {}
     },
     handlePermission () {
       console.log(1)
       this.isShowSettingPermission = true
-    }
+    },
   }
 }
 </script>
