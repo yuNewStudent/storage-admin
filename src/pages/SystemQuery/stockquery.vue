@@ -2,7 +2,19 @@
   <div class="stockquery">
     <div class="stockquery_operation">
       <div class="stockquery_operationl">
+        <div class="block">
+          <span class="demonstration">仓库选择:</span>
+          <el-select v-model="value" placeholder="请输入货物名称">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </div>
         <div class="stockquery_query">
+          <span class="demonstration">商品名称:</span>
           <el-input placeholder="请输入内容" v-model="input10" clearable></el-input>
           <el-button type="primary">查询</el-button>
         </div>
@@ -230,6 +242,7 @@ export default {
   margin-top: 20px;
 }
 .stockquery_query {
+  margin-left: 20px;
   display: flex;
 }
 .stockquery_query input {

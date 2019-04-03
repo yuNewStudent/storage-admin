@@ -1,17 +1,29 @@
 <template>
   <div class="goodsmovequery">
     <div class="goodsmovequery_operation">
-      <div class="goodsmovequery_operationl">
-        <div class="goodsmovequery_query">
+      <div class="stockquery_operationl">
+        <div class="block">
+          <span class="demonstration">仓库选择:</span>
+          <el-select v-model="value" placeholder="请输入货物名称">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </div>
+        <div class="stockquery_query">
+          <span class="demonstration">商品名称:</span>
           <el-input placeholder="请输入内容" v-model="input10" clearable></el-input>
           <el-button type="primary">查询</el-button>
         </div>
-        <div class="goodsmovequery_thedate">
+        <div class="stockquery_thedate">
           <span class="demonstration">日期选择:</span>
           <el-date-picker v-model="value1" type="date" placeholder></el-date-picker>
         </div>
       </div>
-      <div class="goodsmovequery_operationr">
+      <div class="outorderquery_operationr">
         <el-row>
           <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
         </el-row>
@@ -21,19 +33,61 @@
     <div class="goodsmovequery_list" v-if="show===false">
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="category" label="商品类别"></el-table-column>
-        <el-table-column prop="commodity" label="商品名称"></el-table-column>
-        <el-table-column prop="specifications" label="商品规格"></el-table-column>
-        <el-table-column prop="number" label="出库数量"></el-table-column>
-        <el-table-column prop="number1" label="入库数量"></el-table-column>
-        <el-table-column prop="unit" label="单位"></el-table-column>
-        <el-table-column prop="warehouse" label="所在仓库"></el-table-column>
-        <el-table-column prop="Barcode" label="条形码"></el-table-column>
-        <el-table-column prop="agent" label="经办人"></el-table-column>
-        <el-table-column prop="procurement" label="采购用途"></el-table-column>
-        <el-table-column prop="outboundthedata" label="出库日期"></el-table-column>
-        <el-table-column prop="putthedata" label="再次入库日期"></el-table-column>
-        <el-table-column prop="note" label="备注"></el-table-column>
+        <el-table-column label="产品名称">
+          <el-select v-model="value" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-table-column>
+        <el-table-column label="产品类型">
+          <el-select v-model="value" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-table-column>
+        <el-table-column prop="thedata" label="上次移库时间"></el-table-column>
+        <el-table-column prop="number1" label="移裤数量"></el-table-column>
+        <el-table-column prop="unit" label="单位">
+          <el-select v-model="value" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-table-column>
+        <el-table-column prop="warehouse" label="移出仓库">
+          <el-select v-model="value" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-table-column>
+        <el-table-column prop="Barcode" label="移入仓库">
+          <el-select v-model="value" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-table-column>
+        <el-table-column prop="agent" label="操作人">
+        </el-table-column>
+        <el-table-column prop="procurement" label="备注"></el-table-column>
       </el-table>
     </div>
     <div class="goodsmovequery_list" v-else>
