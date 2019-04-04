@@ -26,8 +26,8 @@
       </div>
     </div>
     <div style="clear: both;"></div>
-    <div class="goodscounting_list" v-if="show===false">
-      <el-table :data="tableData" border style="width: 100%">
+    <div class="goodscounting_list">
+      <el-table size='mini' :data="tableData" border style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="date" label="商品类别"></el-table-column>
@@ -46,7 +46,7 @@
         <el-table-column prop="address" label="备注"></el-table-column>
       </el-table>
     </div>
-    <div class="goodscounting_list" v-else>
+    <!-- <div class="goodscounting_list" v-else>
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="date" label="商品类别">
@@ -95,7 +95,7 @@
           <el-input></el-input>
         </el-table-column>
       </el-table>
-    </div>
+    </div> -->
     <div class="goodscounting_operation">
       <p>
         操作人:
@@ -112,24 +112,24 @@ export default {
       input10: "",
       tableData: [
         {
-          date: "2016-05-02",
+          date: "哈哈哈",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          address: "1518 弄"
         },
         {
-          date: "2016-05-04",
+          date: "话啊哈哈哈",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
+          address: "1517 弄"
         },
         {
-          date: "2016-05-01",
+          date: "话啊哈哈哈",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
+          address: "1519 弄"
         },
         {
-          date: "2016-05-03",
+          date: "话啊哈哈哈",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
+          address: "1516 弄"
         }
       ],
       formInline: {
@@ -184,8 +184,6 @@ export default {
 .goodscounting {
   padding: 20px 20px;
 }
-.goodscounting_unit {
-}
 .goodscounting_unitl {
   float: left;
 }
@@ -200,9 +198,6 @@ export default {
 .goodscounting_unitr span {
   border-bottom: 1px solid #777777;
   color: #000;
-}
-.goodscounting_operation {
-  margin-top: 20px;
 }
 .goodscounting_operationl {
   float: left;

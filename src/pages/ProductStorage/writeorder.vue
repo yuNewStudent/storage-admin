@@ -36,6 +36,7 @@
       </div>
     </div>
     <div style="clear: both;"></div>
+    <div class="show_write_list"></div>
     <div class="writeorder_list">
       <el-table
         :data="tableData"
@@ -70,7 +71,7 @@
         </el-table-column>
         <el-table-column label="单位">
           <template slot-scope="scope">
-            <el-select v-model="orders[scope.$index].goodsPart" placeholder="请选择">
+            <el-select v-model="orders[scope.$index].goodsUnit" placeholder="请选择">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -119,7 +120,6 @@
 export default {
   data() {
     return {
-      show: false,
       tableData: [{}],
       options: [
         {
@@ -150,7 +150,7 @@ export default {
           goodsCategory: '',
           goodsName: '',
           goodsNum: '',
-          goodsPart: '',
+          goodsUnit: '',
           goodsStorage: '',
           operatorUser: '',
           purpose: '',

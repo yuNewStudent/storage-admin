@@ -205,9 +205,7 @@ export default {
 </script>
 <style>
 .outorderquery {
-  padding: 20px 20px;
-}
-.outorderquery_unit {
+  padding: 0 20px;
 }
 .outorderquery_unitl {
   float: left;

@@ -1,25 +1,40 @@
 <template>
   <div class="returnquery">
-    <div class="returnquery_operation">
-      <div class="returnquery_operationl">
-        <div class="returnquery_query">
-          <el-input placeholder="请输入内容" v-model="input10" clearable></el-input>
-          <el-button type="primary">搜索</el-button>
-        </div>
-        <div class="returnquery_thedate">
-          <span class="demonstration">日期选择:</span>
-          <el-date-picker v-model="value1" type="date" placeholder></el-date-picker>
-        </div>
+    <el-header>
+      <div class="selectStore">
+        仓库选择:
+        <el-select v-model="value" placeholder="请输入仓库名称">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
       </div>
-      <div class="returnquery_operationr">
-        <el-row>
-          <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
-        </el-row>
+      <div class="search">
+        商品名称:
+        <el-input placeholder="请输入商品名称"></el-input>
+        <el-button type="primary">搜索</el-button>
       </div>
-    </div>
-    <div style="clear: both;"></div>
-    <div class="returnquery_list" v-if="show===false">
+      <div class="select_date">
+        日期选择:
+        <el-date-picker
+          v-model="value1"
+          type="date">
+        </el-date-picker>
+      </div>
+      <div class="out_put">
+        <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
+      </div>
+    </el-header>
+    <el-main>
       <el-table :data="tableData" border style="width: 100%">
+        <el-table-column
+          type="selection"
+          width="45">
+        </el-table-column>
+        <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="category" label="商品类别"></el-table-column>
         <el-table-column prop="commodity" label="商品名称"></el-table-column>
@@ -35,64 +50,13 @@
         <el-table-column prop="putthedata" label="再次入库日期"></el-table-column>
         <el-table-column prop="note" label="备注"></el-table-column>
       </el-table>
-    </div>
-    <div class="returnquery_list" v-else>
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="date" label="商品类别">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="name" label="商品名称">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="申请采购数量">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="单位">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="所在仓库">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="经办人">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="用途">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="备注">
-          <el-input></el-input>
-        </el-table-column>
-      </el-table>
-    </div>
+    </el-main>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      show: false,
       input10: "",
       tableData: [
         {
@@ -195,50 +159,34 @@ export default {
   }
 };
 </script>
-<style>
+<style lang='scss' scoped>
 .returnquery {
-  padding: 20px 20px;
-}
-.returnquery_unit {
-}
-.returnquery_unitl {
-  float: left;
-}
-.returnquery_unitr {
-  line-height: 30px;
-  float: right;
-  text-align: center;
-}
-.returnquery_unitr p {
-  color: #777777;
-}
-.returnquery_unitr span {
-  border-bottom: 1px solid #777777;
-  color: #000;
-}
-.returnquery_operation {
-  margin-top: 20px;
-}
-.returnquery_operationl {
-  float: left;
-  display: flex;
-}
-.returnquery_operationr {
-  float: right;
-}
-.returnquery_list {
-  margin-top: 20px;
-}
-.returnquery_query {
-  display: flex;
-}
-.returnquery_query input {
-  width: 150px;
-}
-.returnquery_query button {
-  margin-left: 10px;
-}
-.returnquery_thedate {
-  margin-left: 20px;
+  margin: 20px 0 0;
+  .el-header {
+    >div {
+      display: inline-block;
+    }
+    .selectStore {
+      width: 250px;
+      .el-select {
+        width: 150px;
+      }
+    }
+    .select_date {
+      margin-left: 100px;
+    }
+    .search {
+      width: 380px;
+      .el-input {
+        width: 200px;
+      }
+    }
+    .out_put {
+      margin-left: 30px;
+    }
+  }
+  .el-main {
+    padding: 0 20px;
+  }
 }
 </style>

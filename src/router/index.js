@@ -79,6 +79,11 @@ export default new Router({
               component: ProductStorage('purchase')
             },
             {
+              path: '/productstorage/historyorder',
+              name: 'historyorder',
+              component: ProductStorage('historyorder')
+            },
+            {
               path: '/productstorage/reverseretirement',
               name: 'reverseretirement',
               component: ProductStorage('reverseretirement')

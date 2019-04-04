@@ -18,6 +18,7 @@ const menus = [
     icon: '@/assets/icon/产品入库ic.png',
     group: [
       { label: '填写订货单', name: 'writeorder'},
+      { label: '历史订单', name: 'historyorder'},
       { label: '采购入库', name: 'purchase'},
       { label: '反退入库', name: 'reverseretirement'}
     ]

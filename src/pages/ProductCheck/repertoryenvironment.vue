@@ -1,20 +1,10 @@
 <template>
   <div class="repertoryenvironment">
-    <div style="clear: both;"></div>
-    <div class="repertoryenvironment_operation">
-      <div class="repertoryenvironment_operationl">
-        <div class="block">
-          <span class="demonstration">仓库管理环境:</span>
-        </div>
-      </div>
-      <div class="repertoryenvironment_operationr">
-        <el-row>
-          <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
-        </el-row>
-      </div>
-    </div>
-    <div style="clear: both;"></div>
-    <div class="repertoryenvironment_list" v-if="show===false">
+    <el-header>
+      <span class="demonstration">仓库管理环境:</span>
+      <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
+    </el-header>
+    <div class="repertoryenvironment_list">
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="date" label="仓库名称"></el-table-column>
         <el-table-column prop="name" label="仓库面积"></el-table-column>
@@ -31,7 +21,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="repertoryenvironment_list" v-else>
+    <!-- <div class="repertoryenvironment_list" v-else>
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="date" label="商品类别">
@@ -80,7 +70,7 @@
           <el-input></el-input>
         </el-table-column>
       </el-table>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -92,22 +82,22 @@ export default {
         {
           date: "2016-05-02",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          address: " 1518 弄"
         },
         {
           date: "2016-05-04",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
+          address: " 1517 弄"
         },
         {
           date: "2016-05-01",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
+          address: " 1519 弄"
         },
         {
           date: "2016-05-03",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
+          address: " 1516 弄"
         }
       ],
       options: [
@@ -157,35 +147,16 @@ export default {
   }
 };
 </script>
-<style>
+<style lang='scss' scped>
 .repertoryenvironment {
-  padding: 20px 20px;
-}
-.repertoryenvironment_unit {
-}
-.repertoryenvironment_unitl {
-  float: left;
-}
-.repertoryenvironment_unitr {
-  line-height: 30px;
-  float: right;
-  text-align: center;
-}
-.repertoryenvironment_unitr p {
-  color: #777777;
-}
-.repertoryenvironment_unitr span {
-  border-bottom: 1px solid #777777;
-  color: #000;
-}
-.repertoryenvironment_operation {
-  margin-top: 20px;
-}
-.repertoryenvironment_operationl {
-  float: left;
-}
-.repertoryenvironment_operationr {
-  float: right;
+  margin: 10px 30px;
+  .el-header {
+    line-height: 60px;
+    .el-button {
+      float: right;
+      margin-top: 13px;
+    }
+  }
 }
 .repertoryenvironment_list {
   margin-top: 20px;
