@@ -89,6 +89,7 @@ export default {
       width: 150px;
       top: 0;
       background: rgb(135,186,239);
+       cursor: pointer;
       z-index: 2;
       .menu_group_item {
         padding: 0 10px;
