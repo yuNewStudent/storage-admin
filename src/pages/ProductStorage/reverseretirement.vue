@@ -29,13 +29,13 @@
       </div>
       <div class="reverseretirement_operationr">
         <el-row>
-          <el-button type="primary" size="medium" @click="buttonaudit">审核</el-button>
-          <el-button type="info" size="medium" @click="buttonaudit">导出</el-button>
+          <el-button type="primary" size="medium" @click="handleAudit">审核</el-button>
+          <el-button type="info" size="medium" @click="handleOutput">导出</el-button>
         </el-row>
       </div>
     </div>
     <div style="clear: both;"></div>
-    <div class="reverseretirement_list" v-if="show===false">
+    <div class="reverseretirement_list">
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
@@ -49,7 +49,7 @@
         <el-table-column prop="address" label="备注"></el-table-column>
       </el-table>
     </div>
-    <div class="reverseretirement_list" v-else>
+    <!-- <div class="reverseretirement_list" v-else>
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="date" label="商品类别">
@@ -98,15 +98,15 @@
           <el-input></el-input>
         </el-table-column>
       </el-table>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
+import outputTable from '@/assets/js/outputTable'
 export default {
   data() {
     return {
-      show: false,
       tableData: [
         {
           date: "2016-05-02",
@@ -165,8 +165,11 @@ export default {
       }
       console.log(this.show);
     },
-    buttonsave: function() {},
-    buttonaudit: function() {}
+    handleSave () {},
+    handleAudit () {},
+    handleOutput () {
+      outputTable(this.tableData)
+    }
   }
 };
 </script>

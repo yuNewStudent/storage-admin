@@ -117,6 +117,7 @@
 </template>
 
 <script>
+import outputTable from '@/assets/js/outputTable'
 export default {
   data() {
     return {
@@ -162,10 +163,10 @@ export default {
   components: {},
   methods:{
     handleSave () {
-      console.log(this.orders)
+      this.comfirm()
     },
     handleOut () {
-
+      outputTable(tableData)
     },
     handleCheck () {
 
@@ -184,6 +185,23 @@ export default {
           remark: ''
         }
       )
+    },
+    comfirm () {
+      this.$confirm('请确认你填入的信息是否正确后, 再进行提交?', '提示', {
+        confirmButtonText: '提交',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '提交成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消提交'
+        })         
+      })
     }
   }
 };

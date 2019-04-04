@@ -22,7 +22,7 @@
         <el-button type="primary" @click='isShowSetMeasurement=true'>计量单位</el-button>
         <el-button type="primary" @click='handleGoodsCategory'>商品类别</el-button>
         <el-button class="del" @click='handleDelGoods'>删除</el-button>
-        <el-button class="output">导出</el-button>
+        <el-button class="output" @click='handleOutput'>导出</el-button>
       </div>
     </el-header>
     <el-main>
@@ -81,6 +81,7 @@ import SetMeasurement from '@/components/SystemSetup/goodsmanage/setmeasurement.
 import DelGoods from '@/components/SystemSetup/goodsmanage/delgoods.vue'
 import GoodsCategory from '@/components/SystemSetup/goodsmanage/goodscategory.vue'
 import AddGoods from '@/components/SystemSetup/goodsmanage/addgoods.vue'
+import outputTable from '@/assets/js/outputTable'
 export default {
   data () {
   	return {
@@ -162,6 +163,10 @@ export default {
     },
     handleGoodsCategory () {
       this.isShowGoodsCategory = true
+    },
+    //导出表格
+    handleOutput () {
+      outputTable(this.tableData3)
     }
   }
 }

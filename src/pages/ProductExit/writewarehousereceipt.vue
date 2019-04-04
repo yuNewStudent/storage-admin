@@ -176,6 +176,7 @@ export default {
   methods: {
     handleSave () {
       console.log(this.orders)
+      this.comfirm()
     },
     handleOut () {
 
@@ -197,6 +198,24 @@ export default {
           remark: ''
         }
       )
+    },
+    // 弹出确认框
+    comfirm () {
+      this.$confirm('请确认你填入的信息是否正确后, 再进行提交?', '提示', {
+        confirmButtonText: '提交',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '提交成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消提交'
+        })         
+      })
     }
   }
 };

@@ -30,7 +30,7 @@
             </el-option>
           </el-select>
         </div>
-        <el-button type='primary' size='small'>导出</el-button>
+        <el-button type='primary' size='small' @click='handleOutput'>导出</el-button>
       </el-header>
       <el-table
         :data="ordersTables"
@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import outputTable from '@/assets/js/outputTable'
 export default {
   data () {
     return {
@@ -113,6 +114,11 @@ export default {
           status: ''
         }
       ]
+    }
+  },
+  methods: {
+    handleOutput () {
+      outputTable (this.ordersTables)
     }
   }
 }

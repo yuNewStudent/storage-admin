@@ -29,8 +29,8 @@
       </div>
       <div class="purchase_operationr">
         <el-row>
-          <el-button type="primary" size="medium" @click="buttonaudit">审核</el-button>
-          <el-button type="info" size="medium" @click="buttonaudit">导出</el-button>
+          <el-button type="primary" size="medium" @click="handleAudit">审核</el-button>
+          <el-button type="info" size="medium" @click="handleOutput">导出</el-button>
         </el-row>
       </div>
     </div>
@@ -103,6 +103,7 @@
 </template>
 
 <script>
+import outputTable from '@/assets/js/outputTable'
 export default {
   data() {
     return {
@@ -166,7 +167,10 @@ export default {
       console.log(this.show);
     },
     buttonsave: function() {},
-    buttonaudit: function() {}
+    handleAudit: function() {},
+    handleOutput () {
+      outputTable(this.tableData)
+    }
   }
 };
 </script>

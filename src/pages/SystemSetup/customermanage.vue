@@ -20,7 +20,7 @@
       <div class="buttons">
         <el-button type="primary" @click='isShowAddCustom=!isShowAddCustom'>新增</el-button>
         <el-button class="del" @click='handleDelCustom'>删除</el-button>
-        <el-button class="output">导出</el-button>
+        <el-button class="output" @click='handleOutput'>导出</el-button>
       </div>
     </el-header>
     <el-main>
@@ -84,6 +84,7 @@
 <script>
 import ChangeCustom from '@/components/SystemSetup/customermanage/changecustom'
 import DelCustom from '@/components/SystemSetup/customermanage/delcustom'
+import outputTable from '@/assets/js/outputTable'
 export default {
   data () {
   	return {
@@ -147,6 +148,10 @@ export default {
     },
     editorCustom () {
       this.isShowEditorCustom = false
+    },
+    // 导出表格
+    handleOutput () {
+      outputTable(this.tableData3)
     }
   }
 }

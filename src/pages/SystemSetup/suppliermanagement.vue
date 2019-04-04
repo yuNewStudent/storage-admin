@@ -20,7 +20,7 @@
       <div class="buttons">
         <el-button type="primary" @click='isShowAddSupplier=!isShowAddSupplier'>新增</el-button>
         <el-button class="del" @click='handleDelSupplier'>删除</el-button>
-        <el-button class="output">导出</el-button>
+        <el-button class="output" @click='handleOutput'>导出</el-button>
       </div>
     </el-header>
     <el-main>
@@ -84,6 +84,7 @@
 <script>
 import ChangeSupplier from '@/components/SystemSetup/suppliermanagement/changesupplier'
 import DelSupplier from '@/components/SystemSetup/suppliermanagement/delsupplier'
+import outputTable from '@/assets/js/outputTable'
 export default {
   data () {
   	return {
@@ -147,6 +148,10 @@ export default {
     },
     editorSupplier () {
       this.isShowEditorSupplier = false
+    },
+    // 导出表格
+    handleOutput () {
+      outputTable(tableData3)
     }
   }
 }
