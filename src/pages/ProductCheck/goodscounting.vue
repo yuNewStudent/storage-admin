@@ -43,6 +43,8 @@
         <el-table-column prop="address" label="所在仓库"></el-table-column>
         <el-table-column prop="address" label="保管人"></el-table-column>
         <el-table-column prop="address" label="联系电话"></el-table-column>
+        <el-table-column prop="address" label="状态" filters="[{text:'已处理',value: 'aa'},{text: '未处理', value: 'j'}]">
+        </el-table-column>
         <el-table-column prop="address" label="备注"></el-table-column>
       </el-table>
     </div>

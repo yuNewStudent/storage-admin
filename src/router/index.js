@@ -75,6 +75,11 @@ export default new Router({
               component: ProductStorage('writeorder')
             },
             {
+              path: '/productstorage/outorderaudit',
+              name: 'outorderaudit',
+              component: ProductStorage('outorderaudit')
+            },
+            {
               path: '/productstorage/purchase',
               name: 'purchase',
               component: ProductStorage('purchase')
@@ -101,6 +106,16 @@ export default new Router({
               path: '/productexit/writewarehousereceipt',
               name: 'writewarehousereceipt',
               component: ProductExit('writewarehousereceipt')
+            },
+            {
+              path: '/productexit/exithistory',
+              name: 'exithistory',
+              component: ProductExit('exithistory')
+            },
+            {
+              path: '/productexit/exitorderaudit',
+              name: 'exitorderaudit',
+              component: ProductExit('exitorderaudit')
             },
             {
               path: '/productexit/goodsout',

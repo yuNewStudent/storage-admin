@@ -11,19 +11,6 @@
         @mouseleave="hideMenuGroup">
         <img :src="images[index].src" alt="">
         <span>{{item.title}}</span>
-        <!-- <ul
-          v-show='menuActive === index'
-          class="menu_group"
-          ref='menuGroup'
-          >
-          <li
-            class="menu_group_item"
-            v-for='(item, i) in currentMenuGroup'
-            :key='i'
-            :class="{active: currentMenuGroupActive === i}"
-            @click='handleMenGroup(i, item.name)'
-            >{{item.label}}</li>
-        </ul> -->
       </li>
     </ul>
     
@@ -32,11 +19,11 @@
 
 <script>
 export default {
-  props: ['menus'],
+  props: ['menus', 'menuActive'],
   data () {
     return {
       // 当前的选中的一级菜单，默认为0
-      menuActive: 0,
+      // menuActive: 0,
       // 当前的二级菜单
       currentMenuGroup: [],
       // 当前的选中的二级菜单，默认为0
@@ -57,13 +44,14 @@ export default {
     // 选择不同的模块 跳转至不同界面
     handleGroup (index, name) {
       // 获取模块名字
+      
+      this.menuActive = index
       const title = this.menus[index].title
       this.$router.push({ path: `/${name}` })
     },
     
     // 鼠标放置一级模块上，显示子项
     showMenuGroup (index) {
-      this.menuActive = index
       // 设置模块子项
       this.currentMenuGroup = this.menus[index].group
       // 
@@ -72,14 +60,7 @@ export default {
     hideMenuGroup () {
       this.currentMenuGroupActive = 0
       this.currentMenuGroup = []
-    },
-    // 选择不同的二级模块 跳转至不同界面
-    // handleMenGroup (index, name) {
-    //   this.currentMenuGroupActive = index
-    //   const title = this.menus[this.menuActive].name
-    //   // this.$router.push({ path: `/${title}/${name}` })
-    //   this.$emit('goRoute', title, name)
-    // }
+    }
   },
   created () {
     console.log(this.menus)
