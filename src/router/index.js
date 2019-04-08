@@ -5,6 +5,7 @@ Vue.use(Router)
 const Home = () => import('@/pages/home')
 const Login = () => import('@/pages/login')
 const Register = () => import('@/pages/register')
+const Forget = () => import('@/pages/Forget')
 
 
 // const suppliermanagement =() => import('@/pages/SystemSetup/suppliermanagement')
@@ -175,6 +176,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: Register
-    }
+    },
+    {
+      path: '/forget',
+      name: 'forget',
+      component: Forget
+    },
   ]
 })

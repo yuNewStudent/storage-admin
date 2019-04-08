@@ -8,15 +8,30 @@
       <span class="user_name">hahah</span>
       <span class="dividing_line"></span>
       <span class="user_role">系统管理员</span>
+      <span class="exit" @click="buttonexit">退出</span>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   data () {
-    return {}
-  }
+    return {
+      show:false
+    }
+  },
+  methods: {
+    buttonexit(){
+      	var _this = this;
+				this.$confirm('确认退出吗?', '提示', {
+					//type: 'warning'
+				}).then(() => {
+					sessionStorage.removeItem('user');
+					_this.$router.push('/login');
+				}).catch(() => {
+
+				});
+    }
+  },
 }
 </script>
 
@@ -41,10 +56,18 @@ export default {
       height: 60px;
       border-radius: 50%;
       vertical-align: top;
+      cursor:pointer
     }
     .user_role {
       color: rgb(181,181,181);
       font-size: 13px;
+      cursor:pointer
+    }
+    .user_name{
+     cursor:pointer
+    }
+    .exit{
+      cursor:pointer
     }
   }
 }
