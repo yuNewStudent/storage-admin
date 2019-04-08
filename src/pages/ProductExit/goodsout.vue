@@ -35,7 +35,7 @@
       </div>
     </div>
     <div style="clear: both;"></div>
-    <div class="goodsout_list" v-if="show===false">
+    <div class="goodsout_list">
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
@@ -47,9 +47,10 @@
         <el-table-column prop="address" label="经办人"></el-table-column>
         <el-table-column prop="address" label="用途"></el-table-column>
         <el-table-column prop="address" label="备注"></el-table-column>
+        <el-table-column label="物流信息"></el-table-column>
       </el-table>
     </div>
-    <div class="goodsout_list" v-else>
+    <!-- <div class="goodsout_list" v-else>
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="date" label="商品类别">
@@ -98,7 +99,7 @@
           <el-input></el-input>
         </el-table-column>
       </el-table>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -106,7 +107,6 @@
 export default {
   data() {
     return {
-      show: false,
       tableData: [
         {
           date: "2016-05-02",

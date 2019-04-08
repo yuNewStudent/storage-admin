@@ -1,43 +1,35 @@
 <template>
   <div class="writeorder">
-    <div class="writeorder_unit">
-      <div class="writeorder_unitl">
-        <span class="demonstration">供应单位:</span>
-        <el-select v-model="SupplyCompany" size='medium' placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-      </div>
-      <div class="writeorder_unitr">
-        <p>
+    <el-header>
+      <el-row>
+        <el-col :span="18">
+          供应单位:
+          <el-select v-model="SupplyCompany" size='medium' placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="6" class="order_num">
           订单编号:
           <span>166767767777</span>
-        </p>
-      </div>
-    </div>
-    <div style="clear: both;"></div>
-    <div class="writeorder_operation">
-      <div class="writeorder_operationl">
-        <div class="block">
-          <span class="demonstration">填写日期:</span>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="18">
+          填写日期:
           <el-date-picker size='medium' v-model="writeDate" type="date" placeholder="选择日期"></el-date-picker>
-        </div>
-      </div>
-      <div class="writeorder_operationr">
-        <el-row>
+        </el-col>
+        <el-col :span="6">
           <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
-          <el-button type="primary" size="medium" @click="handleCheck">审核</el-button>
           <el-button type="primary" size="medium" @click="handleOut">导出</el-button>
-        </el-row>
-      </div>
-    </div>
-    <div style="clear: both;"></div>
-    <div class="show_write_list"></div>
-    <div class="writeorder_list">
+        </el-col>
+      </el-row>
+    </el-header>
+    <el-main class="writeorder_list">
       <el-table
         :data="tableData"
         border
@@ -112,7 +104,7 @@
       <el-row class='add_row'>
         <el-button type='primary' @click='addRow'>新增行</el-button>
       </el-row>
-    </div>
+    </el-main>
   </div>
 </template>
 
@@ -209,33 +201,25 @@ export default {
 <style lang="scss" scoped>
 .writeorder {
   margin: 20px 30px;
-}
-.writeorder_unitl {
-  float: left;
-}
-.writeorder_unitr {
-  line-height: 30px;
-  float: right;
-  text-align: center;
-}
-.writeorder_unitr p {
-  color: #777777;
-}
-.writeorder_unitr span {
-  border-bottom: 1px solid #777777;
-  color: #000;
-}
-.writeorder_operation {
-  margin-top: 20px;
-}
-.writeorder_operationl {
-  float: left;
-}
-.writeorder_operationr {
-  float: right;
+  .el-header {
+    padding: 0;
+    .el-row {
+      margin: 10px 0;
+      line-height: 36px;
+      .order_num {
+        color: #777777;
+        span {
+          border-bottom: 1px solid #777777;
+        }
+      }
+    }
+  }
+  .el-main {
+    padding: 0;
+  }
 }
 .writeorder_list {
-  margin-top: 20px;
+  margin-top: 40px;
   .add_row {
     text-align: right;
     margin-top: 20px;

@@ -2,7 +2,7 @@
   <div class="home">
     <app-header></app-header>
     <div class="el-container">
-      <app-menu :menus='menus' @setMenuGroup='setMenuGroup'></app-menu>
+      <app-menu :menus='menus' :menuActive='menuIndex' @setMenuGroup='setMenuGroup'></app-menu>
       <div class="el-main">
         <ul
           v-show='isShowMenuGroup'
@@ -35,7 +35,8 @@ export default {
     return {
       isShowMenuGroup: false,
       currentMenuGroupActive: 0,
-      currentMenuGroup: []
+      currentMenuGroup: [],
+      menuIndex: 0
     }
   },
   created () {
@@ -43,22 +44,20 @@ export default {
   },
   components: {
     AppHeader,
-    AppMenu,
-    menuIndex: 0
+    AppMenu
   },
   methods: {
     setMenuGroup (index) {
       this.menuIndex = index
       this.isShowMenuGroup = true
       this.currentMenuGroup = menus[index].group
-      console.log((60 + 41*index) + 'px')
       this.$refs.menu_group.style.top = 41*index + 'px'
     },
     handleMenGroup(i, name) {
+      this.currentMenuGroupActive = i
       this.$router.push({ path: `/${menus[this.menuIndex].name}/${name}` })
     },
     changeMenuGroupActive (index) {
-      this.currentMenuGroupActive = index
     },
     hide () {
       this.isShowMenuGroup = false

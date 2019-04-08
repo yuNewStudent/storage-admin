@@ -2,7 +2,7 @@
   <div class="writewarehousereceipt">
    <div class="writewarehousereceipt_unit">
       <div class="writewarehousereceipt_unitl">
-        <span class="demonstration">供应单位:</span>
+        <span class="demonstration">发货单位:</span>
         <el-select v-model="SupplyCompany" placeholder="请选择">
           <el-option
             v-for="item in options"
@@ -30,26 +30,11 @@
       <div class="writewarehousereceipt_operationr">
         <el-row>
           <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
-          <el-button type="primary" size="medium" @click="handleCheck">审核</el-button>
           <el-button type="primary" size="medium" @click="handleOut">导出</el-button>
         </el-row>
       </div>
     </div>
     <div style="clear: both;"></div>
-    <!-- <div class="writewarehousereceipt_list" v-if="show===false">
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="date" label="商品类别"></el-table-column>
-        <el-table-column prop="name" label="商品名称"></el-table-column>
-        <el-table-column prop="address" label="申请采购数量"></el-table-column>
-        <el-table-column prop="address" label="单位"></el-table-column>
-        <el-table-column prop="address" label="所在仓库"></el-table-column>
-        <el-table-column prop="address" label="经办人"></el-table-column>
-        <el-table-column prop="address" label="用途"></el-table-column>
-        <el-table-column prop="address" label="备注"></el-table-column>
-      </el-table>
-    </div> -->
     <div class="writewarehousereceipt_list">
       <el-table
         :data="tableData"
@@ -77,7 +62,7 @@
             <el-input v-model="orders[scope.$index].goodsName"></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="申请采购数量">
+        <el-table-column label="出库数量">
           <template slot-scope="scope">
             <el-input v-model="orders[scope.$index].goodsNum"></el-input>
           </template>
@@ -123,8 +108,22 @@
         </el-table-column>
       </el-table>
       <el-row class='add_row'>
-        <el-button type='primary' @click='addRow'>新增行</el-button>
+        <el-button size='medium' type='primary' @click='addRow'>新增行</el-button>
       </el-row>
+    </div>
+
+    <div
+      class="allGoods">
+      <el-table
+        :data='allgoods'
+        border>
+        <el-table-column
+          label="姓名"></el-table-column>
+        <el-table-column
+          label="xingb"></el-table-column>
+        <el-table-column
+          label="xingb"></el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
@@ -169,7 +168,8 @@ export default {
           value: "选项5",
           label: "北京经贸技校公司"
         }
-      ]
+      ],
+      allGoods: [{}]
     };
   },
   components: {},
@@ -254,5 +254,8 @@ export default {
     text-align: right;
     margin-top: 20px;
   }
+}
+.allGoods {
+  margin-top: 20px;
 }
 </style>

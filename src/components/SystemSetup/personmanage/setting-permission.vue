@@ -27,12 +27,18 @@
           </template>
         </el-table-column>
       </el-table> -->
+      <el-tree
+        :data="permissionData"
+        show-checkbox
+        ref='tree'>
+      </el-tree>
     </div>
 	</message-box>
 </template>
 
 <script>
 import MessageBox from '@/components/MessageBox'
+import getPermissions from '@/assets/js/permission'
 export default {
 	props: ['type'],
 	components: {
@@ -41,56 +47,58 @@ export default {
 	data () {
 		return {
 			permissionData: [
-        {
-          功能: '入库单',
-          操作: ['新增','修改','删除','导出','审核','反审核','合同删除','合同上传']
-        },
-        {
-          功能: '采购单',
-          部门名称: ['查询','新增','修改','删除','审核','反审核','采购明细表']
-        },
-        {
-          功能:'商品管理',
-          部门名称: ['库存预警','库存商品明细表','商品收发明细表','采购汇总表','商品收发汇总表']
-        },
-        {
-          功能:'调拨单',
-          部门名称: ['查询','新增','修改','删除','审核','反审核','导出']
-        },
-        {
-          功能:'出库单',
-          部门名称: ['新增','查询','修改','删除','审核','反审核','导出','出库明细表','出库汇总表']
-        },
-        {
-          功能:'仓库管理',
-          部门名称: ['查看','修改','删除','新增']
-        },
-        {
-          功能:'供应商管理',
-          部门名称: ['新增','查询','修改','删除','禁用','启用']
-        },
-        {
-          功能:'客户管理',
-          部门名称: ['查询','修改','新增','删除','启用','禁用']
-        },
-        {
-          功能:'单位',
-          部门名称: ['删除','修改','新增']
-        },
-        {
-          功能:'操作日志',
-          部门名称: ['查看']
-        },
-        {
-          功能:'人员管理',
-          部门名称: ['新增','修改','查看','权限设置','删除']
-        }
+        // {
+        //   id: 1,
+        //   label: '入库单',
+        //   children: [
+        //     { id: 33, label: '新增' },
+        //     {id: 44, label: '修改'}
+        //   ]
+        // },
+        // {
+        //   id: 2,
+        //   label: '入库单',
+        //   children: [
+        //     { id: 36, label: 'kankan' },
+        //     {id: 17, label: 'quni'}
+        //   ]
+        // },
+        // {
+        //   id: 3,
+        //   label: '入库单',
+        //   children: [
+        //     { id: 8, label: 'shezhi' },
+        //     {id: 9, label: 'haah'}
+        //   ]
+        // }
       ],
       btns: {
         cancel: '取消', 
         comfirm: '确定'
       }
-		}
-	}
+    }
+	},
+  methods: {
+    hidesetPermission () {
+      const checkedNodes = this.$refs.tree.getCheckedNodes(true)
+      console.log(checkedNodes)
+      this.$emit("hidesetPermission", checkedNodes)
+    }
+  },
+  created () {
+    this.permissionData = getPermissions()
+    console.log(this.permissionData)
+  }
 }
 </script>
+
+<style lang="scss" scoped>
+.setDepartment_wrapper {
+  height: 310px;
+  overflow-y: auto;
+  .el-tree {
+    width: 30%;
+    margin: 10px auto;
+  }
+}
+</style>

@@ -18,7 +18,8 @@ const menus = [
     icon: '@/assets/icon/产品入库ic.png',
     group: [
       { label: '填写订货单', name: 'writeorder'},
-      { label: '历史订单', name: 'historyorder'},
+      { label: '订货单审核', name: 'outorderaudit'},
+      { label: '历史订货单', name: 'historyorder'},
       { label: '采购入库', name: 'purchase'},
       { label: '反退入库', name: 'reverseretirement'}
     ]
@@ -29,6 +30,8 @@ const menus = [
     icon: '@/assets/icon/产品出库ic.png',
     group: [
       { label: '填写出库单', name: 'writewarehousereceipt'},
+      { label: '出库单审核', name: 'exitorderaudit'},
+      { label: '出库历史订单', name: 'exithistory'},
       { label: '商品出库', name: 'goodsout'}
     ]
   },

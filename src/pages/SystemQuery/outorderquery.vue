@@ -1,23 +1,33 @@
 <template>
   <div class="outorderquery">
-    <div class="outorderquery_operation">
-      <div class="outorderquery_operationl">
-        <div class="outorderquery_query">
-          <el-input placeholder="请输入内容" v-model="input10" clearable></el-input>
-          <el-button type="primary">搜索</el-button>
-        </div>
-        <div class="outorderquery_thedate">
-          <span class="demonstration">日期选择:</span>
-          <el-date-picker v-model="value1" type="date" placeholder></el-date-picker>
-        </div>
+    <el-header>
+      <div class="selectStore">
+        仓库选择:
+        <el-select v-model="value" placeholder="请输入仓库名称">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
       </div>
-      <div class="outorderquery_operationr">
-        <el-row>
-          <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
-        </el-row>
+      <div class="search">
+        商品名称:
+        <el-input placeholder="请输入商品名称"></el-input>
+        <el-button type="primary">搜索</el-button>
       </div>
-    </div>
-    <div style="clear: both;"></div>
+      <div class="select_date">
+        日期选择:
+        <el-date-picker
+          v-model="value1"
+          type="date">
+        </el-date-picker>
+      </div>
+      <div class="out_put">
+        <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
+      </div>
+    </el-header>
     <div class="outorderquery_list" v-if="show===false">
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
@@ -203,48 +213,36 @@ export default {
   }
 };
 </script>
-<style>
+<style lang='scss' scoped>
 .outorderquery {
   padding: 0 20px;
-}
-.outorderquery_unitl {
-  float: left;
-}
-.outorderquery_unitr {
-  line-height: 30px;
-  float: right;
-  text-align: center;
-}
-.outorderquery_unitr p {
-  color: #777777;
-}
-.outorderquery_unitr span {
-  border-bottom: 1px solid #777777;
-  color: #000;
-}
-.outorderquery_operation {
-  margin-top: 20px;
-}
-.outorderquery_operationl {
-  float: left;
-  display: flex;
-}
-.outorderquery_operationr {
-  float: right;
+  .el-header {
+    margin: 20px 0 0;
+    padding: 0;
+    >div {
+      display: inline-block;
+    }
+    .selectStore {
+      width: 250px;
+      .el-select {
+        width: 150px;
+      }
+    }
+    .select_date {
+      margin-left: 100px;
+    }
+    .search {
+      width: 380px;
+      .el-input {
+        width: 200px;
+      }
+    }
+    .out_put {
+      margin-left: 30px;
+    }
+  }
 }
 .outorderquery_list {
   margin-top: 20px;
-}
-.outorderquery_query {
-  display: flex;
-}
-.outorderquery_query input {
-  width: 150px;
-}
-.outorderquery_query button {
-  margin-left: 10px;
-}
-.outorderquery_thedate {
-  margin-left: 20px;
 }
 </style>
