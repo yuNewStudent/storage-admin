@@ -11,6 +11,14 @@ import App from './App'
 Vue.config.productionTip = false
 Vue.prototype.$http = Axios
 
+// 路由拦截
+const routers = ['login', 'register']
+router.beforeEach((to, from, next) => {
+  // 如果未登录， 只能跳转至登录页面或者注册页面
+  console.log(to.name)
+  // if(routers.indexOf(to.name) === -1){}
+  next()
+})
 // 添加请求头
 Axios.interceptors.request.use(config => {
   // var token = sessionStorage.getItem('token')
