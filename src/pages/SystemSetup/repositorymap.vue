@@ -402,14 +402,14 @@ export default {
 </script>
 <style>
 .repositorymap {
-  padding: 20px 20px;
+  padding: 40px 40px;
 }
 .repositorymap_h {
   width: 1000px;
   margin: 0 auto;
 }
-.el-tabs__nav-scroll {
-    /* overflow: hidden; */
+.repositorymap_h .el-tabs__nav-scroll {
+    overflow: hidden;
     margin: 0 auto;
     width: 250px;
 }

@@ -140,7 +140,7 @@ export default {
 </script>
 <style>
 .information {
-  padding: 20px 20px;
+  padding: 40px 40px;
 }
 .information_user {
   width: 100%;
