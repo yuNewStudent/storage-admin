@@ -32,11 +32,22 @@
         tooltip-effect="dark"
         style="width: 100%"
         border
-        size='mini'
+        size='small'
         @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55">
         </el-table-column>
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
+        <el-table-column label="操作"
+          align='center'
+          width="100">
+          <template slot-scope="scope">
+            <span @click="handleEditorGoods(scope.row)">
+              <img src="@/assets/icon/系统管理-商品管理/修改IC.png">
+            </span>
+            <span @click='handleDelGoods'>
+              <img src="@/assets/icon/系统管理-人员管理/删除IC.png">
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column prop='goodsCategory' label="商品类别">
         </el-table-column>
         <el-table-column prop='goodsName' label="商品名称">
@@ -60,18 +71,6 @@
         <el-table-column prop='price' label="采购单价">
         </el-table-column>
         <el-table-column prop='remark' label="备注">
-        </el-table-column>
-        <el-table-column label="操作"
-          align='center'
-          width="150">
-          <template slot-scope="scope">
-            <span @click="handleEditorGoods(scope.row)">
-              <img src="@/assets/icon/系统管理-商品管理/修改IC.png">
-            </span>
-            <span @click='handleDelGoods'>
-              <img src="@/assets/icon/系统管理-人员管理/删除IC.png">
-            </span>
-          </template>
         </el-table-column>
       </el-table>
     </el-main>

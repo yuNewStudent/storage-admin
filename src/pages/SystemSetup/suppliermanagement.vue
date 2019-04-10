@@ -3,7 +3,7 @@
   	<el-header>
       <div class="selectAddress">
         供货地:
-        <el-select v-model="value" placeholder="请选择">
+        <el-select size='medium' v-model="value" placeholder="请选择">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -14,13 +14,13 @@
       </div>
       <div class="search">
         供货单位:
-        <el-input placeholder="请输入供货单位"></el-input>
-        <el-button type="primary">搜索</el-button>
+        <el-input size='medium' placeholder="请输入供货单位"></el-input>
+        <el-button size='medium' type="primary">搜索</el-button>
       </div>
       <div class="buttons">
-        <el-button type="primary" @click='isShowAddSupplier=!isShowAddSupplier'>新增</el-button>
-        <el-button class="del" @click='handleDelSupplier'>删除</el-button>
-        <el-button class="output" @click='handleOutput'>导出</el-button>
+        <el-button size='medium' type="primary" @click='isShowAddSupplier=!isShowAddSupplier'>新增</el-button>
+        <el-button size='medium' class="del" @click='handleDelSupplier'>删除</el-button>
+        <el-button size='medium' class="output" @click='handleOutput'>导出</el-button>
       </div>
     </el-header>
     <el-main>
@@ -37,24 +37,32 @@
           width="55">
         </el-table-column>
         <el-table-column
-          label="日期"
-          width="120">
-          <template slot-scope="scope">{{ scope.row.date }}</template>
+          label="供货单位"
+          prop='suplierPar'>
         </el-table-column>
         <el-table-column
-          prop="name"
-          label="姓名"
-          width="120">
+          prop="suplierAddress"
+          label="供货位置">
         </el-table-column>
         <el-table-column
-          prop="address"
-          label="地址"
+          prop="userName"
+          label="联系人"
+          show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+          prop="fox"
+          label="传真"
+          show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+          prop="remarks"
+          label="备注"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           label="操作"
           align='center'
-          width="150">
+          width="120">
           <template slot-scope="scope">
             <span @click="handleEditorSupplier">
               <img src="@/assets/icon/系统管理-商品管理/修改IC.png">
@@ -98,33 +106,20 @@ export default {
       isShowEditorSupplier: false,
       tableData3: [
         {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-08',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-06',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-07',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          suplierPar: '四川某某有限公司',
+          suplierAddress: '四川省成都市锦江区XXX',
+          userName: '方先生',
+          phone: '1820801777',
+          fox: '010-223-3-33',
+          remarks: ''
+        },
+        {
+          suplierPar: '四川某某有限公司',
+          suplierAddress: '四川省成都市锦江区XXX',
+          userName: '方先生',
+          phone: '1820801777',
+          fox: '010-223-3-33',
+          remarks: ''
         }
       ],
     }
@@ -159,7 +154,7 @@ export default {
 
 <style lang="scss" scoped>
 .el-header {
-  margin: 30px 0 0;
+  margin: 20px 0 0;
   > div {
     display: inline-block;
   }
@@ -178,6 +173,7 @@ export default {
   }
   .buttons {
     font-size: 14px;
+    float: right;
     .del,.output {
       background: transparent;
       color: #87baef;
@@ -186,6 +182,7 @@ export default {
   }
 }
 .el-main {
+  padding: 0 20px;
   img {
     vertical-align: middle;
     width: 13px;

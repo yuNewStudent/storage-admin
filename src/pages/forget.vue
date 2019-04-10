@@ -1,15 +1,15 @@
 <template>
-  <div class="register">
-    <div class="registerl">
-      <div class="register_w">
+  <div class="forget">
+    <div class="forgetl">
+      <div class="forget_w">
         <p>Wellcome</p>
       </div>
       <!-- <img src="@/assets/img/logot.png" alt=""> -->
-      <div class="register_h">
-        <div class="register_hl">
-          <h1>注册</h1>
+      <div class="forget_h">
+        <div class="forget_hl">
+          <h1>忘记密码</h1>
         </div>
-        <div class="register_hd">
+        <div class="forget_hd">
           <el-form
             :model="ruleForm2"
             status-icon
@@ -18,26 +18,33 @@
             label-width="100px"
             class="demo-ruleForm"
           >
-            <!-- <el-form-item prop="pass">
-              <el-input class="userName" type="password" v-model="ruleForm2.pass" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item  prop="checkPass">
-              <el-input class="password" type="password" v-model="ruleForm2.checkPass" autocomplete="off"></el-input>
-            </el-form-item>-->
-            <el-form-item>
+            <el-form-item prop="account">
               <el-input
                 class="userName"
+                :maxlength="11"
                 v-model="ruleForm2.account"
                 type="text"
                 size="middle"
-                placeholder="请输入手机号码"
-              >
-                <template slot="prepend">
+                auto-complete="off"
+                placeholder="输入手机号码"
+              ><template slot="prepend">
                   <img src="@/assets/img/icon_user.png" alt>
                 </template>
-              </el-input>
+                <template slot="append">
+                     <el-button type="primary">验证码</el-button>
+                </template>
+                </el-input>
             </el-form-item>
-            <el-form-item>
+             <el-form-item prop="password">
+              <el-input
+                class="password"
+                :maxlength="20"
+                v-model="ruleForm2.password"
+                type="password"
+                placeholder="输入密码"
+              ></el-input>
+            </el-form-item>
+              <el-form-item>
               <el-input 
                 type="password" v-model="ruleForm2.pass" auto-complete="off"
                  placeholder="请输入密码"
@@ -56,10 +63,6 @@
             </el-form-item>
           </el-form>
         </div>
-        <div class="next">
-          <el-radio v-model="radio" label="1">管理员</el-radio>
-          <el-radio v-model="radio" label="2">非管理员</el-radio>
-        </div>
         <div>
           <el-form>
             <el-form-item style="width:80%;">
@@ -68,12 +71,9 @@
                 style="width:100%;"
                 @click="submitForm('form')"
                 :loading="logining"
-              >注册</el-button>
+              > 确认</el-button>
             </el-form-item>
           </el-form>
-        </div>
-        <div class="reg" @click="login">
-          <span>直接登陆</span>
         </div>
       </div>
     </div>
@@ -127,7 +127,6 @@ export default {
         checkPass: "",
         age: ""
       },
-      radio:1,
       logining: false,
       rules2: {
         pass: [{ validator: validatePass, trigger: "blur" }],
@@ -138,27 +137,29 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+    var _this=this;
+     _this.$router.push('/systemsetup/personmanage');
+      // this.$refs[formName].validate(valid => {
+      //   if (valid) {
+      //     	_this.$router.push('/register');
+      //   } else {
+      //     console.log("error submit!!");
+      //     return false;
+      //   }
+      // });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    login() {
-      var _this = this;
-      _this.$router.push("/login");
+    reg(){
+      	var _this = this;
+					_this.$router.push('/register');
     }
   }
 };
 </script>
 <style>
-.register {
+.forget {
   width: 100%;
   height: 100%;
   background: url("../assets/img/bg.png") no-repeat;
@@ -172,34 +173,34 @@ export default {
   /* 让背景图基于容器大小伸缩 */
   background-size: cover;
 }
-.registerl {
+.forgetl {
   width: 400px;
   /* background-color: #FFFFFF; */
   float: right;
   margin-right: 113px;
   margin-top: 150px;
 }
-.register_w {
+.forget_w {
   width: 400px;
   height: 30px;
   background: url("../assets/img/logot.png") no-repeat;
   background-size: 100% 100%;
   position: absolute;
 }
-.register_h {
+.forget_h {
   width: 100%;
   height: 450px;
   margin-top: 30px;
   background-color: #ffffff;
   border-radius: 0px 0px 4px 4px;
 }
-.register_w p {
+.forget_w p {
   font-size: 20px;
   color: #4499f2;
   margin-top: 15px;
   margin-left: 40px;
 }
-.register_hl {
+.forget_hl {
   padding-top: 50px;
   text-align: center;
   font-size: 22px;
@@ -211,7 +212,7 @@ export default {
 .el-button {
   margin-left: 40px;
 }
-.register_hd {
+.forget_hd {
   width: 400px;
   margin: 0 auto;
   margin-top: 10px;
@@ -219,77 +220,36 @@ export default {
 .el-input__inner {
   width: 100%;
 }
-.register_hd .demo-ruleForm {
+.forget_hd .demo-ruleForm {
   width: 100%;
   margin: 0 auto;
 }
-/* .userName .el-input__inner template {
-  background: url(../assets/img/icon_user.png) no-repeat 3% 10%;
-} */
-/* .password .el-input__inner template {
-  background: url(../assets/img/icon_password.png) no-repeat 3% 10%;
-} */
 .next {
-  width: 70%;
+  width: 75%;
   height: 50px;
   margin: 0 auto;
+  font-size: 12px;
 }
-.reg {
+.reg{
   width: 100%;
   text-align: center;
-  cursor: pointer;
+   cursor:pointer;
 }
 /* .system{
  width: 100%;
  text-align: center;
 } */
-.system {
-  width: 500px;
-  height: 500px;
-  float: left;
-  margin-left: 265px;
-  margin-top: 160px;
-}
-.system_t {
-  text-align: center;
-  margin-left: 20px;
-}
-.system_x {
+.footer{
   width: 100%;
-  height: 20px;
-  margin-top: 150px;
-}
-.system_xl {
-  float: left;
-}
-.system_xr {
-  float: right;
-}
-.system_n {
-  text-align: center;
-  font-size: 30px;
-  color: #ffffff;
-  margin-top: 30px;
-}
-.system_l {
-  width: 75%;
-  background-color: #4499f2;
-  margin: 0 auto;
-  margin-top: 130px;
-}
-.system_ll {
-  float: left;
-}
-.system_lr {
-  float: right;
-}
-.footer {
-  width: 100%;
-  position: fixed;
+  position: fixed;  
   bottom: 30px;
   font-size: 16px;
-  color: #ffffff;
+  color: #FFFFFF;
   text-align: center;
+}
+.el-input-group__append{
+    background: #4499f2;
+    color: #FFFFFF;
 }
 .el-input-group__prepend img {
   width: 20px;

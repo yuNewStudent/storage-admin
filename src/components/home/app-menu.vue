@@ -7,13 +7,11 @@
         class="menus_item"
         :class="{active: menuActive === index}"
         @mouseenter='showMenuGroup(index)'
-        @click='handleGroup(index, item.name)'
-        @mouseleave="hideMenuGroup">
+        @click='handleGroup(index, item.name)'>
         <img :src="images[index].src" alt="">
         <span>{{item.title}}</span>
       </li>
     </ul>
-    
   </div>
 </template>
 
@@ -22,11 +20,6 @@ export default {
   props: ['menus', 'menuActive'],
   data () {
     return {
-      // 当前的选中的一级菜单，默认为0
-      // menuActive: 0,
-      // 当前的二级菜单
-      currentMenuGroup: [],
-      // 当前的选中的二级菜单，默认为0
       images: [
         { src: require('@/assets/icon/系统管理ic.png') },
         { src: require('@/assets/icon/产品入库ic.png') },
@@ -44,8 +37,7 @@ export default {
     // 选择不同的模块 跳转至不同界面
     handleGroup (index, name) {
       // 获取模块名字
-      
-      this.menuActive = index
+      this.$emit('setMenuGroup', index)
       const title = this.menus[index].title
       this.$router.push({ path: `/${name}` })
     },
@@ -53,13 +45,7 @@ export default {
     // 鼠标放置一级模块上，显示子项
     showMenuGroup (index) {
       // 设置模块子项
-      this.currentMenuGroup = this.menus[index].group
-      // 
-      this.$emit('setMenuGroup', index)
-    },
-    hideMenuGroup () {
-      this.currentMenuGroupActive = 0
-      this.currentMenuGroup = []
+      this.$emit('showMenuGroup', index)
     }
   },
   created () {
