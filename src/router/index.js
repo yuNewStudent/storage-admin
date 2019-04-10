@@ -13,7 +13,9 @@ const SystemSetup = name => () => import('@/pages/SystemSetup/' + name)
 const SystemQuery = name => () => import('@/pages/SystemQuery/' + name)
 const ProductCheck = name => () => import('@/pages/ProductCheck/' + name)
 const ProductExit = name => () => import('@/pages/ProductExit/' + name)
+
 const ProductStorage = name => () => import('@/pages/ProductStorage/' + name)
+const information = name => () => import('@/pages/information/' + name)
 
 
 
@@ -178,6 +180,19 @@ export default new Router({
               name: 'goodsmovequery',
               component: SystemQuery('goodsmovequery')
             }
+          ]
+        },
+        {
+          path: '/information/information',
+          name: 'information',
+          component: information('information'),
+          redirect: '/information/information',
+          children: [
+            {
+              path: '/information/information',
+              name: 'information',
+              component: information('information')
+            },
           ]
         }
       ]

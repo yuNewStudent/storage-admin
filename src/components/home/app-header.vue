@@ -4,7 +4,7 @@
       <span class="project_name">仓库管理系统</span>
     </div>
     <div class="header_right">
-      <img src="@/assets/img/userImg.png" alt="">
+      <img @click="information" src="@/assets/img/userImg.png" alt="">
       <span class="user_name">hahah</span>
       <span class="dividing_line"></span>
       <span class="user_role">系统管理员</span>
@@ -30,7 +30,11 @@ export default {
 				}).catch(() => {
 
 				});
-    }
+    },
+    information(){
+      var _this = this;
+      _this.$router.push('/information/information');
+    },
   },
 }
 </script>
