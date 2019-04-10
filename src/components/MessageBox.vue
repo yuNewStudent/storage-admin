@@ -57,8 +57,12 @@ export default {
   z-index: 3;
   border-radius: 10px;
 	.add_user_wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     width: 550px;
-    margin: 70px auto 0;
+    margin:0 auto 0;
+    transform: translate(-50%, -50%);
     background: white;
     .header {
       background: #4499f2;

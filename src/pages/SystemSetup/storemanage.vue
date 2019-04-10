@@ -1,7 +1,7 @@
 <template>
   <div class="storemanage">
   	<p>
-      <el-button type="primary" @click="isShowAddStorage=!isShowAddStorage">新增</el-button>
+      <el-button type="primary" size='medium' @click="isShowAddStorage=!isShowAddStorage">新增</el-button>
     </p>
     <el-table
       :data="tableData3"
@@ -103,7 +103,7 @@ export default {
 
 <style lang="scss" scoped>
 .storemanage {
-  margin: 30px;
+  margin: 20px 30px;
   width: 400px;
   > p {
     margin-bottom: 20px;

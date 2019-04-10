@@ -14,13 +14,13 @@
       </div>
       <div class="search">
         供货单位:
-        <el-input placeholder="请输入供货单位"></el-input>
-        <el-button type="primary">搜索</el-button>
+        <el-input size='medium' placeholder="请输入供货单位"></el-input>
+        <el-button size='medium' type="primary">搜索</el-button>
       </div>
       <div class="buttons">
-        <el-button type="primary" @click='isShowAddCustom=!isShowAddCustom'>新增</el-button>
-        <el-button class="del" @click='handleDelCustom'>删除</el-button>
-        <el-button class="output" @click='handleOutput'>导出</el-button>
+        <el-button size='medium' type="primary" @click='isShowAddCustom=!isShowAddCustom'>新增</el-button>
+        <el-button size='medium' class="del" @click='handleDelCustom'>删除</el-button>
+        <el-button size='medium' class="output" @click='handleOutput'>导出</el-button>
       </div>
     </el-header>
     <el-main>
@@ -34,27 +34,33 @@
         @selection-change="handleSelectionChange">
         <el-table-column
           type="selection"
-          width="55">
+          width="50">
         </el-table-column>
         <el-table-column
-          label="日期"
-          width="120">
-          <template slot-scope="scope">{{ scope.row.date }}</template>
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="姓名"
-          width="120">
+          label="收货单位"
+          prop="company">
         </el-table-column>
         <el-table-column
           prop="address"
-          label="地址"
+          label="收货地址"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
+          prop="userName"
+          label="姓名">
+        </el-table-column>
+        <el-table-column
+          prop="fox"
+          label="传真"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="email"
+          label="邮箱">
+        </el-table-column>
+        <el-table-column
           label="操作"
-          align='center'
-          width="150">
+          align='center'>
           <template slot-scope="scope">
             <span @click="handleEditorCustom">
               <img src="@/assets/icon/系统管理-商品管理/修改IC.png">
@@ -95,33 +101,20 @@ export default {
       },
       tableData3: [
         {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-08',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-06',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-07',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          address: '四川',
+          company: '有限公司',
+          fox: '099-223-2',
+          userName: '于先生',
+          phone: '1229383744',
+          email: '7899@hh.com'
+        },
+        {
+          address: '四川',
+          company: '有限公司',
+          fox: '099-223-2',
+          userName: '于先生',
+          phone: '1229383744',
+          email: '7899@hh.com'
         }
       ],
       isShowDelCustom: false,
@@ -159,7 +152,7 @@ export default {
 
 <style lang="scss" scoped>
 .el-header {
-  margin: 30px 0 0;
+  margin: 20px 0 0;
   > div {
     display: inline-block;
   }
@@ -177,6 +170,7 @@ export default {
     }
   }
   .buttons {
+    float: right;
     font-size: 14px;
     .del,.output {
       background: transparent;
@@ -186,6 +180,8 @@ export default {
   }
 }
 .el-main {
+  padding: 0 20px;
+  margin: 0;
   img {
     vertical-align: middle;
     width: 13px;

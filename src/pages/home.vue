@@ -2,8 +2,10 @@
   <div class="home">
     <app-header></app-header>
     <div class="el-container">
-      <app-menu :menus='menus' :menuActive='menuIndex' @setMenuGroup='setMenuGroup'></app-menu>
+      <!-- 一级菜单 -->
+      <app-menu :menus='menus' :menuActive='menuIndex' @setMenuGroup='setMenuGroup' @showMenuGroup='showMenuGroup'></app-menu>
       <div class="el-main">
+        <!-- 二级菜单 -->
         <ul
           v-show='isShowMenuGroup'
           class="menu_group"
@@ -29,6 +31,7 @@
 import menus from '@/assets/js/menus'
 import AppHeader from '@/components/home/app-header'
 import AppMenu from '@/components/home/app-menu'
+import { constants } from 'fs';
 export default {
   data () {
     name: 'home'
@@ -36,7 +39,10 @@ export default {
       isShowMenuGroup: false,
       currentMenuGroupActive: 0,
       currentMenuGroup: [],
-      menuIndex: 0
+      // 当前展示的一级模块
+      menuIndex: 0,
+      // 鼠标当前所在的一级模块
+      showMenuIndex: 0,
     }
   },
   created () {
@@ -47,20 +53,26 @@ export default {
     AppMenu
   },
   methods: {
+    // 一级菜单选中效果
     setMenuGroup (index) {
       this.menuIndex = index
+    },
+    // 点击二级菜单实现跳转至默认页面
+    handleMenGroup(i, name) {
+      this.currentMenuGroupActive = i
+      this.menuIndex = this.showMenuIndex
+      this.$router.push({ path: `/${menus[this.showMenuIndex].name}/${name}` })
+    },
+    // 鼠标移出，则二级菜单隐藏
+    hide () {
+      this.isShowMenuGroup = false
+    },
+    // 鼠标移入一级菜单，展示对应二级菜单
+    showMenuGroup (index) {
+      this.showMenuIndex = index
       this.isShowMenuGroup = true
       this.currentMenuGroup = menus[index].group
       this.$refs.menu_group.style.top = 41*index + 'px'
-    },
-    handleMenGroup(i, name) {
-      this.currentMenuGroupActive = i
-      this.$router.push({ path: `/${menus[this.menuIndex].name}/${name}` })
-    },
-    changeMenuGroupActive (index) {
-    },
-    hide () {
-      this.isShowMenuGroup = false
     }
   }
 }

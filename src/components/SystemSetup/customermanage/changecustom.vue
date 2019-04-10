@@ -30,6 +30,10 @@
       <el-input
         v-model="supplierInfo.fox"
         size='small'></el-input>
+      <label for="">邮箱:</label>
+      <el-input
+        v-model="supplierInfo.email"
+        size='small'></el-input>
     </div>
   </message-box>
 </template>
@@ -49,7 +53,8 @@ export default {
         company: '',
         fox: '',
         username: '',
-        phone: ''
+        phone: '',
+        email: ''
       }
     }
   },

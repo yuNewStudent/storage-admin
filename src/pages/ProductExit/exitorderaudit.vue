@@ -2,8 +2,8 @@
   <div class="exitorderaudit">
     <el-header>
       <div class="selectStore">
-        仓库选择:
-        <el-select v-model="value" placeholder="请输入仓库名称">
+        经办人:
+        <el-select size='medium' v-model="value" placeholder="请输入经办人">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -12,20 +12,28 @@
           ></el-option>
         </el-select>
       </div>
-      <div class="search">
-        商品名称:
-        <el-input placeholder="请输入商品名称"></el-input>
-        <el-button type="primary">搜索</el-button>
+      <div class="selectStore">
+        订单状态:
+        <el-select size='medium' v-model="value" placeholder="全部">
+          <el-option
+            v-for="item in ordersStatus"
+            :key="item.label"
+            :label="item.label"
+            :value="item.label"
+          ></el-option>
+        </el-select>
       </div>
       <div class="select_date">
         日期选择:
-        <el-date-picker
+        <el-date-picker size='medium'
           v-model="value1"
           type="date">
         </el-date-picker>
       </div>
-      <div class="out_put">
-        <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
+      <div class="buttons">
+        <el-button type='primary' size='medium'>回退</el-button>
+        <el-button type='primary' size='medium'>审核</el-button>
+        <el-button type='primary' size='medium' @click='handleOutput'>导出</el-button>
       </div>
     </el-header>
     <el-main>
@@ -52,13 +60,17 @@
         </el-table-column>
         <el-table-column label="所在仓库" prop='goodsCategory'>
         </el-table-column>
+        <el-table-column label="申请时间" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="订单号" prop='goodsCategory'>
+        </el-table-column>
         <el-table-column label="经办人" prop='goodsCategory'>
         </el-table-column>
         <el-table-column label="用途" prop='goodsCategory'>
         </el-table-column>
-        <el-table-column label="订单号" prop='goodsCategory'>
-        </el-table-column>
         <el-table-column label="备注" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="状态" prop='goodsCategory'>
         </el-table-column>
       </el-table>
     </el-main>
@@ -102,16 +114,10 @@ export default {
       }
     }
     .select_date {
-      margin-left: 100px;
+      margin-left: 20px;
     }
-    .search {
-      width: 380px;
-      .el-input {
-        width: 200px;
-      }
-    }
-    .out_put {
-      margin-left: 30px;
+    .buttons {
+      float: right;
     }
   }
   .el-main {

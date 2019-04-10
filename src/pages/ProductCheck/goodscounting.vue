@@ -1,109 +1,77 @@
 <template>
   <div class="goodscounting">
-    <div class="goodscounting_operation">
-      <div class="goodscounting_operationl">
-        <div class="block">
-          <span class="demonstration">仓库选择:</span>
-          <el-select v-model="value" placeholder="请输入货物名称">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </div>
-        <div style="clear: both;"></div>
-        <div class="goodscounting_query">
-          <el-input placeholder="请输入内容" v-model="input10" clearable></el-input>
-          <el-button type="primary">搜索</el-button>
-        </div>
+    <el-header>
+      <div class="selectStore">
+        仓库名称:
+        <el-select size='medium' v-model="value" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </div>
-      <div class="goodscounting_operationr">
-        <el-row>
-          <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
-        </el-row>
+      <div class="search">
+        商品名称:
+        <el-input placeholder="请输入商品名称"></el-input>
       </div>
-    </div>
-    <div style="clear: both;"></div>
-    <div class="goodscounting_list">
+      <div class="search">
+        商品状态:
+        <el-select v-model="value" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <el-button type="primary">搜索</el-button>
+      <el-button type="primary" size="medium" @click="buttonaudit" class="output">导出</el-button>
+    </el-header>
+    <el-main>
       <el-table size='mini' :data="tableData" border style="width: 100%">
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="date" label="商品类别"></el-table-column>
-        <el-table-column prop="name" label="物品名称"></el-table-column>
-        <el-table-column prop="address" label="物品名称"></el-table-column>
-        <el-table-column prop="address" label="库存数量"></el-table-column>
-        <el-table-column prop="address" label="库存预警"></el-table-column>
+        <el-table-column type='selection'>
+        </el-table-column>
+        <el-table-column prop='goodsCategory' label="商品类别">
+        </el-table-column>
+        <el-table-column prop='goodsName' label="商品名称">
+        </el-table-column>
+        <el-table-column prop='goodsCode' label="商品编码">
+        </el-table-column>
+        <el-table-column prop='goodsModel' label="规格型号">
+        </el-table-column>
+        <el-table-column prop='goodsUnit' label="单位">
+        </el-table-column>
+        <el-table-column prop='goodsStorage' label="所在仓库">
+        </el-table-column>
+        <el-table-column prop='currentNum' label="当前库存">
+        </el-table-column>
+        <el-table-column label="商品预警数">
+          <el-table-column prop='goodsMinNum' label="最小值">
+          </el-table-column>
+          <el-table-column prop='goodsMaxNum' label="最大值">
+          </el-table-column>
+        </el-table-column>
+        <el-table-column prop='price' label="采购单价">
+        </el-table-column>
+        <el-table-column prop='remark' label="备注">
+        </el-table-column>
         <el-table-column prop="address" label="购入时间"></el-table-column>
-        <el-table-column prop="address" label="有效保质期"></el-table-column>
+        <el-table-column prop="address" label="生产日期"></el-table-column>
+        <el-table-column prop="address" label="保质期"></el-table-column>
+        <el-table-column prop="address" label="到期时间"></el-table-column>
+        <el-table-column prop="address" label="预警时间"></el-table-column>
         <el-table-column prop="address" label="上次入库时间"></el-table-column>
-        <el-table-column prop="address" label="规格型号"></el-table-column>
-        <el-table-column prop="address" label="单位"></el-table-column>
-        <el-table-column prop="address" label="所在仓库"></el-table-column>
+        <el-table-column prop="address" label="存放货位"></el-table-column>
         <el-table-column prop="address" label="保管人"></el-table-column>
         <el-table-column prop="address" label="联系电话"></el-table-column>
         <el-table-column prop="address" label="状态" filters="[{text:'已处理',value: 'aa'},{text: '未处理', value: 'j'}]">
         </el-table-column>
         <el-table-column prop="address" label="备注"></el-table-column>
       </el-table>
-    </div>
-    <!-- <div class="goodscounting_list" v-else>
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="date" label="商品类别">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="name" label="商品名称">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="申请采购数量">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="单位">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="所在仓库">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="经办人">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="用途">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="备注">
-          <el-input></el-input>
-        </el-table-column>
-      </el-table>
-    </div> -->
-    <div class="goodscounting_operation">
-      <p>
-        操作人:
-        <span>黎先生</span>
-      </p>
-    </div>
+    </el-main>
   </div>
 </template>
 <script>
@@ -113,6 +81,24 @@ export default {
       show: false,
       input10: "",
       tableData: [
+        // {
+        //   goodsCategory: '医用物资',
+        //   goodsName: '阿莫西林',
+        //   goodsCode: '123',
+        //   goodsModel: '1/23/4',
+        //   goodsUnit: '箱',
+        //   goodsStorage: 'a区101',
+        //   currentNum: 12,
+        //   goodsMinNum: 20,
+        //   goodsMaxNum: 100,
+        //   price: 23,
+        //   remark: '',
+        //   // status: '',
+        //   // orderCode: '',
+        //   // writeDate: '',
+        //   // operatorUser: '',
+        //   // purpose: '',
+        // }
         {
           date: "哈哈哈",
           name: "王小虎",
@@ -122,16 +108,6 @@ export default {
           date: "话啊哈哈哈",
           name: "王小虎",
           address: "1517 弄"
-        },
-        {
-          date: "话啊哈哈哈",
-          name: "王小虎",
-          address: "1519 弄"
-        },
-        {
-          date: "话啊哈哈哈",
-          name: "王小虎",
-          address: "1516 弄"
         }
       ],
       formInline: {
@@ -182,43 +158,30 @@ export default {
   }
 };
 </script>
-<style>
-.goodscounting {
-  padding: 20px 20px;
+<style lang='scss' scoped>
+.el-header {
+  margin: 20px 0 0;
+  > div {
+    display: inline-block;
+  }
+  .selectStore {
+    width: 250px;
+    .el-select {
+      width: 150px;
+    }
+  }
+  .search {
+    width: 300px;
+    .el-input {
+      width: 200px;
+    }
+  }
+  .output {
+    float: right;
+  }
 }
-.goodscounting_unitl {
-  float: left;
-}
-.goodscounting_unitr {
-  line-height: 30px;
-  float: right;
-  text-align: center;
-}
-.goodscounting_unitr p {
-  color: #777777;
-}
-.goodscounting_unitr span {
-  border-bottom: 1px solid #777777;
-  color: #000;
-}
-.goodscounting_operationl {
-  float: left;
-  display: flex;
-}
-.goodscounting_operationr {
-  float: right;
-}
-.goodscounting_list {
-  margin-top: 20px;
-}
-.goodscounting_query {
-  display: flex;
-  margin-left: 10px;
-}
-.goodscounting_query input {
-  width: 150px;
-}
-.goodscounting_query button {
-  margin-left: 10px;
+.el-main {
+  margin: 0 20px;
+  padding: 0;
 }
 </style>

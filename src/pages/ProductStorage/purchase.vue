@@ -42,6 +42,10 @@
         <el-table-column prop="date" label="商品类别"></el-table-column>
         <el-table-column prop="name" label="商品名称"></el-table-column>
         <el-table-column prop="address" label="申请采购数量"></el-table-column>
+        <el-table-column label="商品预估单价">
+        </el-table-column>
+        <el-table-column label="商品预估总价">
+        </el-table-column>
         <el-table-column prop="address" label="单位"></el-table-column>
         <el-table-column prop="address" label="所在仓库"></el-table-column>
         <el-table-column prop="address" label="经办人"></el-table-column>
