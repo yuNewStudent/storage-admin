@@ -12,6 +12,13 @@
           ></el-option>
         </el-select>
       </div>
+      
+      <div class="goodsout_operationl">
+        <div class="block">
+          <span class="demonstration">填写日期:</span>
+          <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
+        </div>
+      </div>
       <div class="goodsout_unitr">
         <p>
           订单编号:
@@ -21,12 +28,6 @@
     </div>
     <div style="clear: both;"></div>
     <div class="goodsout_operation">
-      <div class="goodsout_operationl">
-        <div class="block">
-          <span class="demonstration">填写日期:</span>
-          <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
-        </div>
-      </div>
       <div class="goodsout_operationr">
         <el-row>
           <el-button type="primary" size="medium" @click="buttonaudit">审核</el-button>
@@ -172,9 +173,7 @@ export default {
 </script>
 <style>
 .goodsout {
-  padding: 20px 20px;
-}
-.goodsout_unit {
+  padding: 20px 30px;
 }
 .goodsout_unitl {
   float: left;
@@ -192,10 +191,11 @@ export default {
   color: #000;
 }
 .goodsout_operation {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .goodsout_operationl {
   float: left;
+  margin-left: 60px;
 }
 .goodsout_operationr {
   float: right;

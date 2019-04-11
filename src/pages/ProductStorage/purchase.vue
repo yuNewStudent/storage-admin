@@ -12,6 +12,13 @@
           ></el-option>
         </el-select>
       </div>
+      
+      <div class="purchase_operationl">
+        <div class="block">
+          <span class="demonstration">填写日期:</span>
+          <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
+        </div>
+      </div>
       <div class="purchase_unitr">
         <p>
           订单编号:
@@ -21,12 +28,6 @@
     </div>
     <div style="clear: both;"></div>
     <div class="purchase_operation">
-      <div class="purchase_operationl">
-        <div class="block">
-          <span class="demonstration">填写日期:</span>
-          <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
-        </div>
-      </div>
       <div class="purchase_operationr">
         <el-row>
           <el-button type="primary" size="medium" @click="handleAudit">审核</el-button>
@@ -180,9 +181,7 @@ export default {
 </script>
 <style>
 .purchase {
-  padding: 20px 20px;
-}
-.purchase_unit {
+  padding: 20px 30px;
 }
 .purchase_unitl {
   float: left;
@@ -200,10 +199,11 @@ export default {
   color: #000;
 }
 .purchase_operation {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .purchase_operationl {
   float: left;
+  margin-left: 50px;
 }
 .purchase_operationr {
   float: right;

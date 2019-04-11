@@ -16,9 +16,7 @@
           填写日期:
           <el-date-picker size='medium' v-model="writeDate" type="date" placeholder="选择日期"></el-date-picker>
         </div>
-    </el-header>
-    <el-main>
-      <el-header>
+        
         <div class="select_goods_name">
           商品名称:
           <el-select size='medium' v-model="supplyCompany" placeholder="请选择">
@@ -30,6 +28,9 @@
             </el-option>
           </el-select>
         </div>
+    </el-header>
+    <el-main>
+      <el-header>
         <el-button type='primary' size='small' @click='handleOutput'>导出</el-button>
       </el-header>
       <el-table
@@ -133,6 +134,10 @@ export default {
       float: left;
     }
     .select_date {
+      float: left;
+      margin-left: 50px;
+    }
+    .select_goods_name {
       float: right;
     }
   }
@@ -141,9 +146,6 @@ export default {
     .el-header {
       padding: 0;
       text-align: right;
-      .select_goods_name {
-        float: left;
-      }
     }
   }
 }

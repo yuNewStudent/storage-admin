@@ -12,6 +12,13 @@
           ></el-option>
         </el-select>
       </div>
+      
+      <div class="reverseretirement_operationl">
+        <div class="block">
+          <span class="demonstration">填写日期:</span>
+          <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
+        </div>
+      </div>
       <div class="reverseretirement_unitr">
         <p>
           订单编号:
@@ -21,12 +28,6 @@
     </div>
     <div style="clear: both;"></div>
     <div class="reverseretirement_operation">
-      <div class="reverseretirement_operationl">
-        <div class="block">
-          <span class="demonstration">填写日期:</span>
-          <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
-        </div>
-      </div>
       <div class="reverseretirement_operationr">
         <el-row>
           <el-button type="primary" size="medium" @click="handleAudit">审核</el-button>
@@ -175,7 +176,7 @@ export default {
 </script>
 <style>
 .reverseretirement {
-  padding: 20px 20px;
+  padding: 20px 30px;
 }
 .reverseretirement_unit {
 }
@@ -195,10 +196,11 @@ export default {
   color: #000;
 }
 .reverseretirement_operation {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .reverseretirement_operationl {
   float: left;
+  margin-left: 60px;
 }
 .reverseretirement_operationr {
   float: right;

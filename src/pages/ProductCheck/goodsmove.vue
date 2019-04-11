@@ -4,6 +4,13 @@
       <div class="goodsmove_unitl">
         <span class="demonstration">仓库移除</span>
       </div>
+      
+      <div class="goodsmove_operationl">
+        <div class="block">
+          <span class="demonstration">填写日期:</span>
+          <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
+        </div>
+      </div>
       <div class="goodsmove_unitr">
         <p>
           订单编号:
@@ -13,12 +20,6 @@
     </div>
     <div style="clear: both;"></div>
     <div class="goodsmove_operation">
-      <div class="goodsmove_operationl">
-        <div class="block">
-          <span class="demonstration">填写日期:</span>
-          <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
-        </div>
-      </div>
       <div class="goodsmove_operationr">
         <el-row>
           <el-button type="primary" size="medium" @click="buttonaudit">保存</el-button>
@@ -171,6 +172,8 @@ export default {
   padding: 20px 20px;
 }
 .goodsmove_unit {
+  overflow: hidden;
+  line-height: 40px;
 }
 .goodsmove_unitl {
   float: left;
@@ -188,10 +191,11 @@ export default {
   color: #000;
 }
 .goodsmove_operation {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .goodsmove_operationl {
   float: left;
+  margin-left: 60px;
 }
 .goodsmove_operationr {
   float: right;

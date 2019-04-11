@@ -12,6 +12,13 @@
           ></el-option>
         </el-select>
       </div>
+      
+      <div class="writewarehousereceipt_operationl">
+        <div class="block">
+          <span class="demonstration">填写日期:</span>
+          <el-date-picker v-model="writeDate" type="date" placeholder="选择日期"></el-date-picker>
+        </div>
+      </div>
       <div class="writewarehousereceipt_unitr">
         <p>
           订单编号:
@@ -21,12 +28,6 @@
     </div>
     <div style="clear: both;"></div>
     <div class="writewarehousereceipt_operation">
-      <div class="writewarehousereceipt_operationl">
-        <div class="block">
-          <span class="demonstration">填写日期:</span>
-          <el-date-picker v-model="writeDate" type="date" placeholder="选择日期"></el-date-picker>
-        </div>
-      </div>
       <div class="writewarehousereceipt_operationr">
         <el-row>
           <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
@@ -239,11 +240,9 @@ export default {
   border-bottom: 1px solid #777777;
   color: #000;
 }
-.writewarehousereceipt_operation {
-  margin-top: 20px;
-}
 .writewarehousereceipt_operationl {
   float: left;
+  margin-left: 60px;
 }
 .writewarehousereceipt_operationr {
   float: right;
