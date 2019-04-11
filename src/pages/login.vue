@@ -66,9 +66,9 @@
             </el-form-item>
           </el-form>
         </div>
-        <div class="reg" @click="reg">
+        <!-- <div class="reg" @click="reg">
           <span>立即注册</span>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="footer">

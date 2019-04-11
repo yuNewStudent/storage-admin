@@ -19,10 +19,7 @@
       </div>
       <div class="select_date">
         日期选择:
-        <el-date-picker
-          v-model="value1"
-          type="date">
-        </el-date-picker>
+        <el-date-picker v-model="value1" type="date"></el-date-picker>
       </div>
       <div class="out_put">
         <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
@@ -41,15 +38,27 @@
         <el-table-column prop="outboundthedata" label="出库日期"></el-table-column>
 
         <!-- <el-table-column prop="Barcode" label="条形码"></el-table-column> -->
-         <el-table-column prop="address" label="发货地址"></el-table-column>
-         <el-table-column prop="contact" label="联系人"></el-table-column>
-         <el-table-column prop="phone" label="联系电话"></el-table-column>
+        <el-table-column prop="address" label="发货地址"></el-table-column>
+        <el-table-column prop="contact" label="联系人"></el-table-column>
+        <el-table-column prop="phone" label="联系电话"></el-table-column>
         <el-table-column prop="agent" label="申请人"></el-table-column>
         <el-table-column prop="procurement" label="采购用途"></el-table-column>
         <!-- <el-table-column prop="outboundthedata" label="出库日期"></el-table-column>
-        <el-table-column prop="putthedata" label="再次入库日期"></el-table-column> -->
+        <el-table-column prop="putthedata" label="再次入库日期"></el-table-column>-->
         <el-table-column prop="note" label="备注"></el-table-column>
       </el-table>
+      <div class="block">
+        <span class="demonstration"></span>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[100, 200, 300, 400]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400"
+        ></el-pagination>
+      </div>
     </div>
     <div class="outorderquery_list" v-else>
       <el-table :data="tableData" border style="width: 100%">
@@ -100,6 +109,18 @@
           <el-input></el-input>
         </el-table-column>
       </el-table>
+      <div class="block">
+        <span class="demonstration"></span>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[100, 200, 300, 400]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400"
+        ></el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -109,6 +130,7 @@ export default {
     return {
       show: false,
       input10: "",
+      currentPage: 4,
       tableData: [
         {
           category: "医药",
@@ -117,9 +139,9 @@ export default {
           number: "2",
           number1: "1",
           unit: "箱",
-          phone:"15828658729",
+          phone: "15828658729",
           warehouse: "A区",
-          contact:"李女士",
+          contact: "李女士",
           Barcode: "12123343344",
           agent: "李先生",
           outboundthedata: "2019/03/28",
@@ -144,7 +166,7 @@ export default {
           commodity: "阿莫西林",
           number: "2",
           unit: "箱",
-          address:"四川省成都是武侯区",
+          address: "四川省成都是武侯区",
           warehouse: "A区",
           Barcode: "12123343344",
           agent: "李先生",
@@ -208,6 +230,12 @@ export default {
     onSubmit() {
       console.log("submit!");
     },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
     buttonsave: function() {},
     buttonaudit: function() {}
   }
@@ -219,7 +247,7 @@ export default {
   .el-header {
     margin: 20px 0 0;
     padding: 0;
-    >div {
+    > div {
       display: inline-block;
     }
     .selectStore {
