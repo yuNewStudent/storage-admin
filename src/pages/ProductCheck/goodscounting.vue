@@ -72,6 +72,18 @@
         </el-table-column>
         <el-table-column prop="address" label="备注"></el-table-column>
       </el-table>
+      <div class="block">
+        <span class="demonstration"></span>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[100, 200, 300, 400]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400"
+        ></el-pagination>
+      </div>
     </el-main>
   </div>
 </template>
@@ -81,6 +93,7 @@ export default {
     return {
       show: false,
       input10: "",
+      currentPage:4,
       tableData: [
         // {
         //   goodsCategory: '医用物资',
@@ -154,6 +167,12 @@ export default {
     onSubmit() {
       console.log("submit!");
     },
+    handleCurrentChange(val) {
+    console.log(`当前页: ${val}`);
+  },
+    handleSizeChange(val) {
+    console.log(`每页 ${val} 条`);
+  },
     buttonsave: function() {},
     buttonaudit: function() {},
     warningStyle (row, column, rowIndex, columnIndex) {

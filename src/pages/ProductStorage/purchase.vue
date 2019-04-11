@@ -12,9 +12,8 @@
           ></el-option>
         </el-select>
       </div>
-      
       <div class="purchase_operationl">
-        <div class="block">
+        <div class="blockk">
           <span class="demonstration">填写日期:</span>
           <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
         </div>
@@ -53,6 +52,18 @@
         <el-table-column prop="address" label="用途"></el-table-column>
         <el-table-column prop="address" label="备注"></el-table-column>
       </el-table>
+       <div class="block">
+        <span class="demonstration"></span>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[100, 200, 300, 400]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400"
+        ></el-pagination>
+      </div>
     </div>
     <div class="purchase_list" v-else>
       <el-table :data="tableData" border style="width: 100%">
@@ -103,6 +114,18 @@
           <el-input></el-input>
         </el-table-column>
       </el-table>
+       <div class="block">
+        <span class="demonstration"></span>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[100, 200, 300, 400]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400"
+        ></el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -113,6 +136,7 @@ export default {
   data() {
     return {
       show: false,
+      currentPage:4,
       tableData: [
         {
           date: "2016-05-02",
@@ -171,6 +195,12 @@ export default {
       }
       console.log(this.show);
     },
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
     buttonsave: function() {},
     handleAudit: function() {},
     handleOutput () {

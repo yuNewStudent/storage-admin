@@ -73,6 +73,18 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="block">
+        <span class="demonstration"></span>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[100, 200, 300, 400]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400"
+        ></el-pagination>
+      </div>
     </el-main>
     <change-supplier
       :type='messageBoxType.add'
@@ -96,6 +108,7 @@ import outputTable from '@/assets/js/outputTable'
 export default {
   data () {
   	return {
+       currentPage:4,
       messageBoxType: {
         add: '供应商管理>新增',
         del: '供应商管理>删除',
@@ -144,6 +157,12 @@ export default {
     editorSupplier () {
       this.isShowEditorSupplier = false
     },
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
     // 导出表格
     handleOutput () {
       outputTable(tableData3)

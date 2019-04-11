@@ -19,10 +19,7 @@
       </div>
       <div class="select_date">
         日期选择:
-        <el-date-picker
-          v-model="value1"
-          type="date">
-        </el-date-picker>
+        <el-date-picker v-model="value1" type="date"></el-date-picker>
       </div>
       <div class="out_put">
         <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
@@ -45,6 +42,18 @@
         <el-table-column prop="putthedata" label="再次入库日期"></el-table-column>
         <el-table-column prop="note" label="备注"></el-table-column>
       </el-table>
+    </div>
+    <div class="block">
+      <span class="demonstration"></span>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400"
+      ></el-pagination>
     </div>
     <!-- <div class="stockquery_list" v-else>
       <el-table :data="tableData" border style="width: 100%">
@@ -95,7 +104,7 @@
           <el-input></el-input>
         </el-table-column>
       </el-table>
-    </div> -->
+    </div>-->
   </div>
 </template>
 <script>
@@ -103,6 +112,7 @@ export default {
   data() {
     return {
       input10: "",
+      currentPage: 4,
       tableData: [
         {
           category: "医药",
@@ -201,6 +211,12 @@ export default {
     },
     buttonsave: function() {},
     buttonaudit: function() {}
+  },
+  handleSizeChange(val) {
+    console.log(`每页 ${val} 条`);
+  },
+  handleCurrentChange(val) {
+    console.log(`当前页: ${val}`);
   }
 };
 </script>
@@ -211,7 +227,7 @@ export default {
 .el-header {
   margin: 20px 0 0;
   padding: 0;
-  >div {
+  > div {
     display: inline-block;
   }
   .selectStore {

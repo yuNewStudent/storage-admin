@@ -73,6 +73,18 @@
         <el-table-column label="状态" prop='goodsCategory'>
         </el-table-column>
       </el-table>
+       <div class="block">
+        <span class="demonstration"></span>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[100, 200, 300, 400]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400"
+        ></el-pagination>
+      </div>
     </el-main>
   </div>
 </template>
@@ -81,6 +93,30 @@
 export default {
   data () {
     return {
+      currentPage:4,
+      options: [
+        {
+          value: "选项1",
+          label: "四川省经济贸易公司"
+        },
+        {
+          value: "选项2",
+          label: "四川棋照科技有限公司"
+        },
+        {
+          value: "选项3",
+          label: "攀枝花攀钢公司"
+        },
+        {
+          value: "选项4",
+          label: "阿里巴巴有限公司"
+        },
+        {
+          value: "选项5",
+          label: "北京经贸技校公司"
+        }
+      ],
+      value1:"",
       orders: [
         {
           goodsCategory: '哈德',
@@ -105,6 +141,14 @@ export default {
         }
       ]
     }
+  },
+  methods:{
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
   }
 }
 </script>

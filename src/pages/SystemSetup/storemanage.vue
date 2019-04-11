@@ -36,6 +36,18 @@
         </template>
       </el-table-column>
     </el-table>
+     <div class="block">
+        <span class="demonstration"></span>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="200"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="20"
+        ></el-pagination>
+      </div>
     <del-storage
       :type='messageBoxType.del'
       v-if='isShowDelStorage'
@@ -57,6 +69,7 @@ import ChangeStorage from '@/components/SystemSetup/storemanage/changestorage.vu
 export default {
   data () {
   	return {
+      currentPage:4,
       tableData3: [
         {
           仓库编号: '001',
@@ -144,7 +157,13 @@ export default {
     //       }
     //     }
     //   } 
-    // }
+    // },
+     handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
   }
 }
 </script>

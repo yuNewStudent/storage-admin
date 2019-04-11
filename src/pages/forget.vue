@@ -26,7 +26,7 @@
                 type="text"
                 size="middle"
                 auto-complete="off"
-                placeholder="输入手机号码"
+                placeholder="请输入邮箱"
               ><template slot="prepend">
                   <img src="@/assets/img/icon_user.png" alt>
                 </template>

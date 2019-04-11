@@ -14,7 +14,7 @@
       </div>
       
       <div class="writewarehousereceipt_operationl">
-        <div class="block">
+        <div class="blockk">
           <span class="demonstration">填写日期:</span>
           <el-date-picker v-model="writeDate" type="date" placeholder="选择日期"></el-date-picker>
         </div>
