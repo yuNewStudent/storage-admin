@@ -31,7 +31,7 @@
       <el-button type="primary" size="medium" @click="buttonaudit" class="output">导出</el-button>
     </el-header>
     <el-main>
-      <el-table size='mini' :data="tableData" border style="width: 100%">
+      <el-table size='mini' :data="tableData" border style="width: 100%" :cell-style='warningStyle'>
         <el-table-column type='selection'>
         </el-table-column>
         <el-table-column prop='goodsCategory' label="商品类别">
@@ -48,7 +48,8 @@
         </el-table-column>
         <el-table-column prop='currentNum' label="当前库存">
         </el-table-column>
-        <el-table-column label="商品预警数">
+        <el-table-column label="商品预警数"
+          class-name='warning'>
           <el-table-column prop='goodsMinNum' label="最小值">
           </el-table-column>
           <el-table-column prop='goodsMaxNum' label="最大值">
@@ -154,7 +155,12 @@ export default {
       console.log("submit!");
     },
     buttonsave: function() {},
-    buttonaudit: function() {}
+    buttonaudit: function() {},
+    warningStyle (row, column, rowIndex, columnIndex) {
+      if (row.column.label === '最小值' || row.column.label === '最大值' ||row.column.label === '预警时间') {
+        return 'background: pink' 
+      }
+    }
   }
 };
 </script>

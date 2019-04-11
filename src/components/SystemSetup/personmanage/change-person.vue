@@ -85,5 +85,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.user_name {
+  margin: 20px 30px 0;
+  label {
+    font-size: 12px;
+    margin: 0 0 5px;
+    display: inline-block;
+    text-indent: 10px;
+    color: #aaa;
+    font-size: 14px;
+  }
+  .el-input {
+    margin-bottom: 16px; 
+  }
+  .el-select {
+    display: block;
+    margin-bottom: 16px;
+  }
+  .radio_wrapper {
+    height: 30px;
+    > span {
+      text-indent: 10px;
+      color: #aaa;
+      font-size: 14px;
+    }
+  }
+}
 </style>
 

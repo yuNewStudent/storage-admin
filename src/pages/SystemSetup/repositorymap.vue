@@ -7,7 +7,7 @@
             width="700"
             height="400"
             ref="cvs"
-            style=";display: block; margin:50px auto;border: 1px solid #ddd;"
+            style="display: block; margin:50px auto;border: 1px solid #ddd;"
           ></canvas>
         </el-tab-pane>
         <el-tab-pane label="楼上仓库地图" name="second">
@@ -15,7 +15,7 @@
             width="700"
             height="400"
             ref="cvss"
-            style=";display: block; margin:50px auto;border: 1px solid #ddd;"
+            style="display: block; margin:50px auto;border: 1px solid #ddd;"
           ></canvas>
         </el-tab-pane>
       </el-tabs>
@@ -271,8 +271,6 @@ export default {
     },
     changeColor() {
       var colors = [
-        // "#0f4560",
-        // "#ef9d0c",
         "rgba(76, 181, 216, 0.2)",
         "rgba(225, 215, 155, 0.1)",
         "rgba(230, 110, 250, 0.2)",
@@ -310,30 +308,29 @@ export default {
           y: v.Trim().split(" ")[1]
         };
       });
-      return d;
+      console.log(d)
+      return d
     },
     ///楼上
-    upstairs:function(){
-      let canva = this.$refs.cvss;
-      console.log(canva)
-      var index = this.rooms.layout;
-      var subrooms = this.rooms.subrooms;
-      let tangram = {};
-      tangram.room = {};
-      tangram.room.p = this.changeData(index);
-      tangram.room.color = this.changeColor();
-      tangram.room.bordercolor = this.changeColor();
-      tangram.room.title = this.room.name;
-      tangram.module = [];
+    upstairs () {
+      let canva = this.$refs.cvss
+      var index = this.rooms.layout
+      var subrooms = this.rooms.subrooms
+      let tangram = {}
+      tangram.room = {}
+      tangram.room.p = this.changeData(index)
+      tangram.room.color = this.changeColor()
+      tangram.room.bordercolor = this.changeColor()
+      tangram.room.title = this.room.name
+      tangram.module = []
       tangram.module = subrooms.map(v => {
         return {
           p: this.changeData(v.layout),
           title: v.name,
           color: this.changeColor(),
           bordercolor: this.changeColor()
-        };
-      });
-      console.log(CanvasZoom);
+        }
+      })
       this.canvasZoom = new CanvasZoom({
         canvas: canva,
         mapInfo: tangram,
@@ -345,26 +342,25 @@ export default {
       });
     },
     //楼下仓库
-    updates:function() {
-      let canvas = this.$refs.cvs;
-      var index = this.room.layout;
-      var subrooms = this.room.subrooms;
+    updates () {
+      let canvas = this.$refs.cvs
+      var index = this.room.layout
+      var subrooms = this.room.subrooms
       let tangram = {};
-      tangram.room = {};
-      tangram.room.p = this.changeData(index);
-      tangram.room.color = this.changeColor();
-      tangram.room.bordercolor = this.changeColor();
+      tangram.room = {}
+      tangram.room.p = this.changeData(index)
+      tangram.room.color = this.changeColor()
+      tangram.room.bordercolor = this.changeColor()
       tangram.room.title = this.room.name;
-      tangram.module = [];
+      tangram.module = []
       tangram.module = subrooms.map(v => {
-        console.log(v.layout)
         return {
           p: this.changeData(v.layout),
           title: v.name,
           color: this.changeColor(),
           bordercolor: this.changeColor()
-        };
-      });
+        }
+      })
       this.canvasZoom = new CanvasZoom({
         canvas: canvas,
         mapInfo: tangram,
@@ -373,29 +369,7 @@ export default {
           x: 8.8,
           y: 4.3
         }
-      });
-      // point.forEach(v => {
-      // 	v.forEach(data => {
-      // 		this.canvasZoom.setMarker({
-      // 			name: data.fields.name,
-      // 			x: data.fields.point_x,
-      // 			y: data.fields.point_y
-      // 		}, {
-      // 			marker: {
-      // 				lineWidth: 1,
-      // 				strokeStyle: '#333',
-      // 				fillStyle: '#333',
-      // 				R: 4
-      // 			},
-      // 			label: {
-      // 				show: true,
-      // 				fillStyle: '#eee',
-      // 				strokeStyle: '#666',
-      // 				textColor: '#333'
-      // 			}
-      // 		})
-      // 	})
-      // })
+      })
     }
   }
 };

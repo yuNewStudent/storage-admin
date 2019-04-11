@@ -6,18 +6,22 @@
     <el-table
       :data="tableData3"
       border
-      size='small'>
+      size='small'
+      :span-method="arraySpanMethod">
       <el-table-column
         prop="仓库编号"
         label="仓库编号"
-        align='center'
-        width="150">
+        align='center'>
       </el-table-column>
       <el-table-column
         align='center'
         prop="仓库名称"
-        label="仓库名称"
-        width="150">
+        label="仓库名称">
+      </el-table-column>
+      <el-table-column
+        align='center'
+        prop="仓库货位"
+        label="仓库货位">
       </el-table-column>
       <el-table-column
         align='center'
@@ -56,15 +60,48 @@ export default {
       tableData3: [
         {
           仓库编号: '001',
-          仓库名称: 'A区'
+          仓库名称: 'A区',
+          仓库货位: 'A区1-1'
+        },
+        {
+          仓库编号: '001',
+          仓库名称: 'A区',
+          仓库货位: 'A区1-2'
+        },
+        {
+          仓库编号: '001',
+          仓库名称: 'A区',
+          仓库货位: 'A区2-1'
         },
         {
           仓库编号: '002',
-          仓库名称: 'B区'
+          仓库名称: 'B区',
+          仓库货位: 'B区1-1'
+        },
+        {
+          仓库编号: '002',
+          仓库名称: 'B区',
+          仓库货位: 'B区1-2'
+        },
+        {
+          仓库编号: '002',
+          仓库名称: 'B区',
+          仓库货位: 'B区2-1'
         },
         {
           仓库编号: '003',
-          仓库名称: 'C区'
+          仓库名称: 'C区',
+          仓库货位: 'C区1-1'
+        },
+        {
+          仓库编号: '003',
+          仓库名称: 'C区',
+          仓库货位: 'C区1-2'
+        },
+        {
+          仓库编号: '003',
+          仓库名称: 'C区',
+          仓库货位: 'C区1-3'
         }
       ],
       messageBoxType: {
@@ -96,7 +133,18 @@ export default {
     },
     editorStorage () {
       this.isShowEditorStorage = false
-    }
+    },
+    // 列合并
+    // arraySpanMethod ({ row, column, rowIndex, columnIndex }) {
+    //   if (columnIndex === 0) {
+    //     if (row['仓库名称'] === 'A区') {
+          
+    //       if (rowIndex === 0) {
+            
+    //       }
+    //     }
+    //   } 
+    // }
   }
 }
 </script>

@@ -1,17 +1,13 @@
 <template>
 	<div class="MessageBox">
 		<div class="add_user_wrapper">
-      <el-row class="header">系统管理>{{type}}</el-row>
+      <el-row class="header">系统管理>{{type}}<span @click='handleCancel' v-if='btns.reset'>X</span></el-row>
       <slot></slot>
       <el-row class='footer'>
         <el-button size='medium ' type='primary' v-if='btns.reset'>重置</el-button>
         <el-button size='medium ' type='primary' v-if='!btns.reset' @click='handleCancel'>取消</el-button>
         <el-button size='medium ' type='primary' @click='handleSetting' ref='close'>确定</el-button>
       </el-row>
-    </div>
-    <div class="close" @click='handleCancel' v-if='btns.reset'>
-    	<img src="@/assets/icon/系统管理-人员管理/取消圆弧.png" alt="">
-      <span>X</span>
     </div>
 	</div>
 </template>
@@ -70,30 +66,9 @@ export default {
       color: white;
       line-height: 50px;
       padding: 0 20px;
-    }
-    .user_name {
-      margin: 30px 30px 0;
-      label {
-        font-size: 12px;
-        margin: 0 0 5px;
-        display: inline-block;
-        text-indent: 10px;
-        color: #aaa;
-        font-size: 14px;
-      }
-      .el-input {
-        margin-bottom: 16px; 
-      }
-      .el-select {
-        display: block;
-        margin-bottom: 16px;
-      }
-      .radio_wrapper {
-        > span {
-          text-indent: 10px;
-          color: #aaa;
-          font-size: 14px;
-        }
+      span {
+        float: right;
+        cursor: pointer;
       }
     }
     .footer {

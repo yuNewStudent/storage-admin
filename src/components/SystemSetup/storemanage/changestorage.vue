@@ -8,6 +8,8 @@
       <el-input size='large'></el-input>
       <label>仓库名称:</label>
       <el-input size='large'></el-input>
+      <label>仓库货位:</label>
+      <el-input size='large'></el-input>
     </div>
   </message-box>
 </template>

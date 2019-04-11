@@ -21,7 +21,7 @@ const menus = [
       { label: '订货单审核', name: 'outorderaudit'},
       { label: '历史订货单', name: 'historyorder'},
       { label: '采购入库', name: 'purchase'},
-      { label: '反退入库', name: 'reverseretirement'}
+      { label: '归还入库', name: 'reverseretirement'}
     ]
   },
   {

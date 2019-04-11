@@ -18,7 +18,6 @@
             :key='i'
             :class="{active: currentMenuGroupActive === i}"
             @click='handleMenGroup(i, item.name)'
-            @mouseenter="changeMenuGroupActive(i)"
             >{{item.label}}</li>
         </ul>
         <router-view></router-view>
