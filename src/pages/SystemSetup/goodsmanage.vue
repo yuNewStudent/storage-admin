@@ -73,6 +73,18 @@
         <el-table-column prop='remark' label="备注">
         </el-table-column>
       </el-table>
+       <div class="block">
+        <span class="demonstration"></span>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[100, 200, 300, 400]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400"
+        ></el-pagination>
+      </div>
     </el-main>
     <set-measurement
       :type='messageBoxType.measurement'
@@ -115,6 +127,7 @@ import outputTable from '@/assets/js/outputTable'
 export default {
   data () {
   	return {
+      currentPage:4,
       messageBoxType: {
         add: '商品管理>新增',
         measurement: '商品管理>计量单位设置',
@@ -188,6 +201,12 @@ export default {
     handleSelectionChange () {
       console.log(1)
     },
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
     handleDelGoods () {
       this.isShowDelGoods = true
     },
