@@ -20,7 +20,11 @@
           :value="item.部门编号">
         </el-option>
       </el-select>
-      <label><span style='color: red'>*</span>登录账户:</label>
+      <label><span style='color: red'>*</span>邮箱:</label>
+      <!-- <el-input
+        size='small'
+        v-model="userInfo.loginName"></el-input>
+      <label><span style='color: red'>*</span>登录账户:</label> -->
       <el-input
         size='small'
         v-model="userInfo.loginName"></el-input>

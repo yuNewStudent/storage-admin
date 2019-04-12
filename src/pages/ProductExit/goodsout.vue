@@ -1,37 +1,19 @@
 <template>
   <div class="goodsout">
-    <div class="goodsout_unit">
-      <div class="goodsout_unitl">
-        <span class="demonstration">供应单位:</span>
-        <el-select v-model="value" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-      </div>
-      
-      <div class="goodsout_operationl">
-        <div class="block">
-          <span class="demonstration">填写日期:</span>
-          <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
-        </div>
-      </div>
-      <div class="goodsout_unitr">
-        <p>
-          订单编号:
-          <span>166767767777</span>
-        </p>
-      </div>
-    </div>
-    <div style="clear: both;"></div>
     <div class="goodsout_operation">
       <div class="goodsout_operationr">
         <el-row>
-          <el-button type="primary" size="medium" @click="buttonaudit">审核</el-button>
-          <el-button type="info" size="medium" @click="buttonaudit">导出</el-button>
+          订单号：
+          <el-select v-model="value" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+          <el-button type="primary" size="medium" @click="buttonaudit">提交出库</el-button>
+          <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
         </el-row>
       </div>
     </div>
@@ -40,15 +22,23 @@
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
+        <el-table-column prop="date" label="收货单位">
+        </el-table-column>
+        <el-table-column prop="name" label="订单编号"></el-table-column>
         <el-table-column prop="date" label="商品类别"></el-table-column>
         <el-table-column prop="name" label="商品名称"></el-table-column>
-        <el-table-column prop="address" label="申请采购数量"></el-table-column>
+        <el-table-column prop="name" label="商品规格"></el-table-column>
         <el-table-column prop="address" label="单位"></el-table-column>
         <el-table-column prop="address" label="所在仓库"></el-table-column>
-        <el-table-column prop="address" label="经办人"></el-table-column>
-        <el-table-column prop="address" label="用途"></el-table-column>
+        <el-table-column prop="address" label="申请出库数量"></el-table-column>
+        <el-table-column prop="address" label="商品单价"></el-table-column>
+        <el-table-column prop="address" label="商品总价"></el-table-column>
+        <el-table-column prop="address" label="申请人"></el-table-column>
+        <el-table-column prop="address" label="收货地址"></el-table-column>
+        <el-table-column prop="address" label="收货人"></el-table-column>
+        <el-table-column prop="address" label="联系方式"></el-table-column>
+        <el-table-column prop="address" label="出库用途"></el-table-column>
         <el-table-column prop="address" label="备注"></el-table-column>
-        <el-table-column label="物流信息"></el-table-column>
       </el-table>
        <div class="block">
         <span class="demonstration"></span>
@@ -63,56 +53,6 @@
         ></el-pagination>
       </div>
     </div>
-    <!-- <div class="goodsout_list" v-else>
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="date" label="商品类别">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="name" label="商品名称">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="申请采购数量">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="单位">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="所在仓库">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="经办人">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="用途">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="备注">
-          <el-input></el-input>
-        </el-table-column>
-      </el-table>
-    </div> -->
   </div>
 </template>
 
@@ -131,16 +71,6 @@ export default {
           date: "2016-05-04",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
         }
       ],
       options: [

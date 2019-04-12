@@ -26,10 +26,10 @@
       <el-input
         size='small'
           v-model='supplierInfo.phone'></el-input>
-      <label for="">传真:</label>
+      <!-- <label for="">传真:</label>
       <el-input
         v-model="supplierInfo.fox"
-        size='small'></el-input>
+        size='small'></el-input> -->
       <label for="">邮箱:</label>
       <el-input
         v-model="supplierInfo.email"

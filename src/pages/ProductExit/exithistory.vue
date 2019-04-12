@@ -2,7 +2,7 @@
   <div class="exithistory">
     <el-header>
         <div class="select_company">
-          供货单位:
+          收货单位:
           <el-select size='medium' v-model="supplyCompany" placeholder="请选择">
             <el-option
               v-for="item in options"
@@ -14,10 +14,10 @@
         </div>
         
         <div class="select_goods_name">
-          商品名称:
+          申请状态:
           <el-select size='medium' v-model="supplyCompany" placeholder="请选择">
             <el-option
-              v-for="item in options"
+              v-for="item in ordersStatus"
               :key="item.value"
               :label="item.label"
               :value="item.label">
@@ -25,14 +25,45 @@
           </el-select>
         </div>
         <div class="select_date">
-          填写日期:
+          查询日期:
           <el-date-picker size='medium' v-model="writeDate" type="date" placeholder="选择日期"></el-date-picker>
+          -<el-date-picker size='medium' v-model="writeDate" type="date" placeholder="选择日期"></el-date-picker>
         </div>
     </el-header>
     <el-main>
       <el-header>
         <el-button type='primary' size='small' @click='handleOutput'>导出</el-button>
       </el-header>
+      <el-table
+        :data="orders"
+        border
+        size='small'
+        style="width: 100%">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          type="index"
+          width="55">
+        </el-table-column>
+        <el-table-column label="订单号" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="收货单位" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="收货地址" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="申请人" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="申请时间" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="状态" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="操作" prop='goodsCategory'>
+          <el-button>详情</el-button>
+          <el-button>修改</el-button>
+        </el-table-column>
+      </el-table>
       <el-table
         :data="ordersTables"
         border
@@ -45,25 +76,24 @@
         </el-table-column>
         <el-table-column prop='goodsName' label="商品名称">
         </el-table-column>
-        <el-table-column prop='goodsNum' label="采购数量">
-        </el-table-column>
         <el-table-column prop='goodsUnit' label="单位">
+        </el-table-column>
+        <el-table-column prop='goodsNum' label="出库数量">
+        </el-table-column>
+        <el-table-column label="商品单价" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="商品总价" prop='goodsCategory'>
         </el-table-column>
         <el-table-column prop='goodsStorage' label="所在仓库">
         </el-table-column>
-        <el-table-column prop='goodsPar' label="供货单位">
-        </el-table-column>
-        <el-table-column prop='orderCode' label="订单编号">
-        </el-table-column>
         <el-table-column prop='writeDate' label="填写日期">
-        </el-table-column>
-        <el-table-column prop='operatorUser' label="经办人">
         </el-table-column>
         <el-table-column prop='purpose' label="用途">
         </el-table-column>
         <el-table-column prop='remark' label="备注">
         </el-table-column>
-        <el-table-column prop='status' label="状态">
+        <el-table-column label="回退理由" prop='goodsCategory'>
+          <el-input></el-input>
         </el-table-column>
       </el-table>
       <div class="block">
@@ -110,6 +140,20 @@ export default {
         {
           value: "选项5",
           label: "北京经贸技校公司"
+        }
+      ],
+      ordersStatus: [
+        {
+          label: '审核通过',
+        },
+        {
+          label: '待审核',
+        },
+        {
+          label: '审核未通过',
+        },
+        {
+          label: '已出库',
         }
       ],
       ordersTables: [

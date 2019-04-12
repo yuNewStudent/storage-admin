@@ -31,7 +31,7 @@ const menus = [
     group: [
       { label: '填写出库单', name: 'writewarehousereceipt'},
       { label: '出库单审核', name: 'exitorderaudit'},
-      { label: '出库历史订单', name: 'exithistory'},
+      { label: '历史申请单', name: 'exithistory'},
       { label: '商品出库', name: 'goodsout'}
     ]
   },

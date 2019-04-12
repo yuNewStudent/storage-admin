@@ -13,15 +13,17 @@
           </el-select>
         </div>
         <div class="select_date">
-          填写日期:
+          开始日期:
+          <el-date-picker size='medium' v-model="writeDate" type="date" placeholder="选择日期"></el-date-picker>
+          结束日期:
           <el-date-picker size='medium' v-model="writeDate" type="date" placeholder="选择日期"></el-date-picker>
         </div>
         
         <div class="select_goods_name">
-          商品名称:
+          订单状态:
           <el-select size='medium' v-model="supplyCompany" placeholder="请选择">
             <el-option
-              v-for="item in options"
+              v-for="item in status"
               :key="item.value"
               :label="item.label"
               :value="item.label">
@@ -34,36 +36,64 @@
         <el-button type='primary' size='small' @click='handleOutput'>导出</el-button>
       </el-header>
       <el-table
-        :data="ordersTables"
+        :data="orders"
         border
         size='small'
         style="width: 100%">
-        <el-table-column type="selection" width="55">
+        <el-table-column
+          type="selection"
+          width="55">
         </el-table-column>
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop='goodsCategory' label="商品类别">
+        <el-table-column
+          type="index"
+          width="55">
         </el-table-column>
-        <el-table-column prop='goodsName' label="商品名称">
+        <el-table-column label="订单号" prop='goodsCategory'>
         </el-table-column>
-        <el-table-column prop='goodsNum' label="采购数量">
+        <el-table-column label="供应商" prop='goodsCategory'>
         </el-table-column>
-        <el-table-column prop='goodsUnit' label="单位">
+        <el-table-column label="申请人" prop='goodsCategory'>
         </el-table-column>
-        <el-table-column prop='goodsStorage' label="所在仓库">
+        <el-table-column label="申请时间" prop='goodsCategory'>
         </el-table-column>
-        <el-table-column prop='goodsPar' label="供货单位">
+        <el-table-column label="状态" prop='goodsCategory'>
         </el-table-column>
-        <el-table-column prop='orderCode' label="订单编号">
+        <el-table-column label="操作" prop='goodsCategory'>
+          <el-button>详情</el-button>
+          <el-button>修改</el-button>
         </el-table-column>
-        <el-table-column prop='writeDate' label="填写日期">
+      </el-table>
+      <el-table
+        :data="orders"
+        border
+        size='small'
+        style="width: 100%">
+        <el-table-column
+          type="selection"
+          width="55">
         </el-table-column>
-        <el-table-column prop='operatorUser' label="经办人">
+        <el-table-column
+          type="index"
+          width="55">
         </el-table-column>
-        <el-table-column prop='purpose' label="用途">
+        <el-table-column label='商品名称' prop='goodsCategory'>
         </el-table-column>
-        <el-table-column prop='remark' label="备注">
+        <el-table-column label="商品类型" prop='goodsCategory'>
         </el-table-column>
-        <el-table-column prop='status' label="状态">
+        <el-table-column label="单位" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="申请数量" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="预估单价" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="预估总价" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="用途" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="申请人备注" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="回退理由" prop='goodsCategory'>
+          <el-input></el-input>
         </el-table-column>
       </el-table>
        <div class="block">
@@ -90,6 +120,20 @@ export default {
       supplyCompany: '',
       currentPage:4,
       writeDate: '',
+      status: [
+        {
+          label: '已审核',
+        },
+        {
+          label: '待审核',
+        },
+        {
+          label: '未通过',
+        },
+        {
+          label: "已入库"
+        }
+      ],
       options: [
         {
           value: "选项1",

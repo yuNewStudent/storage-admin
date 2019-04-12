@@ -4,8 +4,8 @@
     :type='type'
     :btns='btns'>
     <div class="content">
-      <label>仓库编号:</label>
-      <el-input size='large'></el-input>
+      <!-- <label>仓库编号:</label>
+      <el-input size='large'></el-input> -->
       <label>仓库名称:</label>
       <el-input size='large'></el-input>
       <label>仓库货位:</label>

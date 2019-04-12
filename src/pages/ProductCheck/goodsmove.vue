@@ -22,7 +22,6 @@
       <div class="goodsmove_operationr">
         <el-row>
           <el-button type="primary" size="medium" @click="buttonaudit">保存</el-button>
-          <el-button type="primary" size="medium" @click="buttonaudit">审核</el-button>
         </el-row>
       </div>
     </div>
@@ -102,12 +101,6 @@
         </el-table-column>
       </el-table>
     </div> -->
-    <div class="goodsmove_operation">
-      <p>
-        操作人:
-        <span>黎先生</span>
-      </p>
-    </div>
   </div>
 </template>
 <script>

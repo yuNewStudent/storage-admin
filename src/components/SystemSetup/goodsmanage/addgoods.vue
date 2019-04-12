@@ -21,14 +21,14 @@
                 :value="item.value">
               </el-option>
             </el-select>
-            <label for=""><span>*</span>规格型号:</label>
+            <!-- <label for=""><span>*</span>规格型号:</label>
             <el-input
               size='small'
-              v-model='goodsInfo.model'></el-input>
-            <label for=""><span>*</span>商品编码:</label>
+              v-model='goodsInfo.model'></el-input> -->
+            <!-- <label for=""><span>*</span>商品编码:</label>
             <el-input
               size='small'
-               v-model='goodsInfo.code'></el-input>
+               v-model='goodsInfo.code'></el-input> -->
             <label for=""><span>*</span>所在货位:</label>
             <el-select
               v-model="goodsInfo.address"
@@ -53,21 +53,35 @@
                 :value="item.value">
               </el-option>
             </el-select>
+            
+            <label>备注:</label>
+            <el-input size='small' v-model='goodsInfo.name'></el-input>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="商品数量">
+        <el-tab-pane label="商品设置">
           <div class="content_wrapper">
-            <label for=""><span>*</span>商品预警数:</label>
+            <label for=""><span>*</span>商品预警数</label>
+            <label for="">最大值:</label>
             <el-input
               v-model="goodsInfo.GoodsNumWarning"
               size='small'></el-input>
+            <label for="">最小值:</label>
+            <el-input
+              v-model="goodsInfo.GoodsNumWarning"
+              size='small'></el-input>
+              
+            <hr/>
             <label for="">当前库存:</label>
+            <el-input
+              v-model="goodsInfo.currentGoodsNum"
+              size='small'></el-input>
+            <label for="">预估单价:</label>
             <el-input
               v-model="goodsInfo.currentGoodsNum"
               size='small'></el-input>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="日期设置">
+        <!-- <el-tab-pane label="日期设置">
           <div class="content_wrapper">
             <label for="">采购时间:</label>
             <el-date-picker
@@ -108,7 +122,7 @@
               placeholder="选择日期">
             </el-date-picker>
           </div>
-        </el-tab-pane>
+        </el-tab-pane> -->
       </el-tabs>
     </div>
   </message-box>

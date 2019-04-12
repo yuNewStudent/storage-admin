@@ -1,37 +1,11 @@
 <template>
   <div class="reverseretirement">
-    <div class="reverseretirement_unit">
-      <div class="reverseretirement_unitl">
-        <span class="demonstration">供应单位:</span>
-        <el-select v-model="value" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-      </div>
-      
-      <div class="reverseretirement_operationl">
-        <div class="blockk">
-          <span class="demonstration">填写日期:</span>
-          <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
-        </div>
-      </div>
-      <div class="reverseretirement_unitr">
-        <p>
-          订单编号:
-          <span>166767767777</span>
-        </p>
-      </div>
-    </div>
-    <div style="clear: both;"></div>
+    
     <div class="reverseretirement_operation">
       <div class="reverseretirement_operationr">
         <el-row>
-          <el-button type="primary" size="medium" @click="handleAudit">审核</el-button>
-          <el-button type="info" size="medium" @click="handleOutput">导出</el-button>
+          <el-button type="primary" size="medium" @click="handleAudit">入库</el-button>
+          <el-button type="primary" size="medium" @click="handleOutput">导出</el-button>
         </el-row>
       </div>
     </div>
@@ -40,14 +14,27 @@
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
+        <el-table-column prop="name" label="出库订单号"></el-table-column>
+        <el-table-column prop="date" label="收货商"></el-table-column>
         <el-table-column prop="date" label="商品类别"></el-table-column>
         <el-table-column prop="name" label="商品名称"></el-table-column>
-        <el-table-column prop="address" label="申请采购数量"></el-table-column>
+        <el-table-column prop="name" label="商品规格"></el-table-column>
         <el-table-column prop="address" label="单位"></el-table-column>
-        <el-table-column prop="address" label="所在仓库"></el-table-column>
-        <el-table-column prop="address" label="经办人"></el-table-column>
-        <el-table-column prop="address" label="用途"></el-table-column>
-        <el-table-column prop="address" label="备注"></el-table-column>
+        <el-table-column prop="address" label="所在库位"></el-table-column>
+        <el-table-column prop="name" label="条形码"></el-table-column>
+        <el-table-column prop="address" label="申请出库数量"></el-table-column>
+        <el-table-column prop="address" label="归还入库数">
+          <el-input></el-input>
+        </el-table-column>
+        <el-table-column prop="name" label="生产日期"></el-table-column>
+        <el-table-column prop="name" label="保质期"></el-table-column>
+        <el-table-column prop="name" label="到期时间"></el-table-column>
+        <el-table-column prop="name" label="到期时间预警"></el-table-column>
+        <el-table-column label="商品单价">
+        </el-table-column>
+        <el-table-column label="归还理由">
+          <el-input></el-input>
+        </el-table-column>
       </el-table>
        <div class="block">
         <span class="demonstration"></span>
@@ -131,16 +118,6 @@ export default {
           date: "2016-05-04",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
         }
       ],
       options: [

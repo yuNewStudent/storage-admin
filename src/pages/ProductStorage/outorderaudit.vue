@@ -2,7 +2,7 @@
   <div class="outorderaudit">
     <el-header>
       <div class="selectStore">
-        经办人:
+        申请人:
         <el-select size='medium' v-model="value" placeholder="请输入经办人">
           <el-option
             v-for="item in options"
@@ -31,8 +31,7 @@
         </el-date-picker>
       </div>
       <div class="buttons">
-        <el-button type='primary' size='medium'>回退</el-button>
-        <el-button type='primary' size='medium'>审核</el-button>
+        <el-button type='primary' size='medium'>提交</el-button>
         <el-button type='primary' size='medium' @click='handleOutput'>导出</el-button>
       </div>
     </el-header>
@@ -50,17 +49,23 @@
           type="index"
           width="55">
         </el-table-column>
-        <el-table-column label="商品类别" prop='goodsCategory'>
+        <el-table-column label="订单号" prop='goodsCategory'>
         </el-table-column>
-        <el-table-column label="商品名称" prop='goodsCategory'>
+        <el-table-column label="供应商" prop='goodsCategory'>
         </el-table-column>
-        <el-table-column label="申请采购数量" prop='goodsCategory'>
-        </el-table-column>
-        <el-table-column label="单位" prop='goodsCategory'>
-        </el-table-column>
-        <el-table-column label="所在仓库" prop='goodsCategory'>
+        <el-table-column label="申请人" prop='goodsCategory'>
         </el-table-column>
         <el-table-column label="申请时间" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="状态" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="操作" prop='goodsCategory'>
+          <el-button>详情</el-button>
+          <el-button>回退</el-button>
+        </el-table-column>
+        <!-- <el-table-column label="单位" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="所在仓库" prop='goodsCategory'>
         </el-table-column>
         <el-table-column label="订单号" prop='goodsCategory'>
         </el-table-column>
@@ -70,7 +75,40 @@
         </el-table-column>
         <el-table-column label="备注" prop='goodsCategory'>
         </el-table-column>
-        <el-table-column label="状态" prop='goodsCategory'>
+         -->
+      </el-table>
+      
+      <el-table
+        :data="orders"
+        border
+        size='small'
+        style="width: 100%">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          type="index"
+          width="55">
+        </el-table-column>
+        <el-table-column label="商品类型" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label='商品名称' prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="单位" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="申请数量" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="预估单价" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="预估总价" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="用途" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="申请人备注" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="回退理由" prop='goodsCategory'>
+          <el-input></el-input>
         </el-table-column>
       </el-table>
        <div class="block">

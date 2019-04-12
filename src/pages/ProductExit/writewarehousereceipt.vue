@@ -1,31 +1,5 @@
 <template>
   <div class="writewarehousereceipt">
-   <div class="writewarehousereceipt_unit">
-      <div class="writewarehousereceipt_unitl">
-        <span class="demonstration">发货单位:</span>
-        <el-select v-model="SupplyCompany" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-      </div>
-      
-      <div class="writewarehousereceipt_operationl">
-        <div class="blockk">
-          <span class="demonstration">填写日期:</span>
-          <el-date-picker v-model="writeDate" type="date" placeholder="选择日期"></el-date-picker>
-        </div>
-      </div>
-      <div class="writewarehousereceipt_unitr">
-        <p>
-          订单编号:
-          <span>166767767777</span>
-        </p>
-      </div>
-    </div>
     <div style="clear: both;"></div>
     <div class="writewarehousereceipt_operation">
       <div class="writewarehousereceipt_operationr">
@@ -43,8 +17,21 @@
         size='small'
         style="width: 100%">
         <el-table-column
-          type="selection"
+          type="index"
           width="55">
+        </el-table-column>
+        <el-table-column label="收货单位">
+          <template slot-scope="scope">
+            <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.label">
+              </el-option>
+            </el-select>
+            <el-button size="mini">+</el-button>
+          </template>
         </el-table-column>
         <el-table-column label="商品类别">
           <template slot-scope="scope">
@@ -60,12 +47,14 @@
         </el-table-column>
         <el-table-column label="商品名称">
           <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].goodsName"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column label="出库数量">
-          <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].goodsNum"></el-input>
+            <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.label">
+              </el-option>
+            </el-select>
           </template>
         </el-table-column>
         <el-table-column label="单位">
@@ -92,12 +81,42 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="经办人">
+        <el-table-column label="出库数量">
+          <template slot-scope="scope">
+            <el-input v-model="orders[scope.$index].goodsNum"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="商品单价">
+          <template slot-scope="scope">
+            <el-input v-model="orders[scope.$index].goodsNum"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="商品总额">
+          <template slot-scope="scope">
+            <el-input v-model="orders[scope.$index].goodsNum"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="收货地址">
+          <template slot-scope="scope">
+            <el-input v-model="orders[scope.$index].remark"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="收货人">
+          <template slot-scope="scope">
+            <el-input v-model="orders[scope.$index].remark"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="联系方式">
+          <template slot-scope="scope">
+            <el-input v-model="orders[scope.$index].remark"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="申请人">
           <template slot-scope="scope">
             <el-input v-model="orders[scope.$index].operatorUser"></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="用途">
+        <el-table-column label="出库用途">
           <template slot-scope="scope">
             <el-input v-model="orders[scope.$index].purpose"></el-input>
           </template>
@@ -105,6 +124,11 @@
         <el-table-column label="备注">
           <template slot-scope="scope">
             <el-input v-model="orders[scope.$index].remark"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button>删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -115,15 +139,22 @@
 
     <div
       class="allGoods">
+      <div class="header">参考数据(实际数据以提交订单时为准)</div>
       <el-table
         :data='allgoods'
         border>
-        <el-table-column
-          label="姓名"></el-table-column>
-        <el-table-column
-          label="xingb"></el-table-column>
-        <el-table-column
-          label="xingb"></el-table-column>
+        <el-table-column label="商品类别">
+        </el-table-column>
+        <el-table-column label="商品名称">
+        </el-table-column>
+        <el-table-column label="商品单价">
+        </el-table-column>
+        <el-table-column label="单位">
+        </el-table-column>
+        <el-table-column label="所在仓库">
+        </el-table-column>
+        <el-table-column label="库存数量">
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -257,4 +288,8 @@ export default {
 .allGoods {
   margin-top: 20px;
 }
+  .header {
+    padding: 0;
+    height: 40px;
+  }
 </style>

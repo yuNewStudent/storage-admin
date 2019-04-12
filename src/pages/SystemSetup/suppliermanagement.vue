@@ -36,6 +36,11 @@
           type="selection"
           width="55">
         </el-table-column>
+        
+        <el-table-column
+          type="index"
+          width="55">
+        </el-table-column>
         <el-table-column
           label="供货单位"
           prop='suplierPar'>
@@ -51,13 +56,18 @@
         </el-table-column>
         <el-table-column
           prop="fox"
-          label="传真"
+          label="联系电话"
           show-overflow-tooltip>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
+          prop="fox"
+          label="传真"
+          show-overflow-tooltip> -->
+        <!-- </el-table-column> -->
+        <!-- <el-table-column
           prop="remarks"
           label="备注"
-          show-overflow-tooltip>
+          show-overflow-tooltip> -->
         </el-table-column>
         <el-table-column
           label="操作"

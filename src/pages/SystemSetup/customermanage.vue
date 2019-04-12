@@ -2,7 +2,7 @@
   <div class="customermanage">
   	<el-header>
       <div class="selectAddress">
-        供货地:
+        收货地址:
         <el-select v-model="value" placeholder="请选择">
           <el-option
             v-for="item in options"
@@ -13,8 +13,8 @@
         </el-select>
       </div>
       <div class="search">
-        供货单位:
-        <el-input size='medium' placeholder="请输入供货单位"></el-input>
+        收货单位:
+        <el-input size='medium' placeholder="请输入收货单位"></el-input>
         <el-button size='medium' type="primary">搜索</el-button>
       </div>
       <div class="buttons">
@@ -51,7 +51,7 @@
         </el-table-column>
         <el-table-column
           prop="fox"
-          label="传真"
+          label="电话"
           width="120">
         </el-table-column>
         <el-table-column

@@ -171,7 +171,7 @@ export default {
 <style lang="scss" scoped>
 .storemanage {
   margin: 20px 30px;
-  width: 400px;
+  width: 600px;
   > p {
     margin-bottom: 20px;
     text-align: right;

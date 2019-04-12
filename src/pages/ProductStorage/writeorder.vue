@@ -1,7 +1,7 @@
 <template>
   <div class="writeorder">
     <el-header>
-      <el-row>
+      <!-- <el-row>
         <el-col :span="10">
           供应单位:
           <el-select v-model="SupplyCompany" size='medium' placeholder="请选择">
@@ -21,7 +21,7 @@
           订单编号:
           <span>166767767777</span>
         </el-col>
-      </el-row>
+      </el-row> -->
       <el-row class="btns">
           <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
           <el-button type="primary" size="medium" @click="handleOut">导出</el-button>
@@ -38,6 +38,18 @@
             type="selection"
             width="55">
           </el-table-column>
+          <el-table-column label='供应商'>
+            <template slot-scope="scope">
+              <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.label">
+                </el-option>
+              </el-select>
+            </template>
+          </el-table-column>
           <el-table-column label="商品类别">
             <template slot-scope="scope">
               <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
@@ -52,7 +64,14 @@
           </el-table-column>
           <el-table-column label="商品名称">
             <template slot-scope="scope">
-              <el-input v-model="orders[scope.$index].goodsName"></el-input>
+              <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.label">
+                </el-option>
+              </el-select>
             </template>
           </el-table-column>
           <el-table-column label="申请采购数量">
@@ -61,15 +80,9 @@
             </template>
           </el-table-column>
           <el-table-column label="单位">
+            
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].goodsUnit" placeholder="请选择">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.label">
-                </el-option>
-              </el-select>
+              <el-input v-model="orders[scope.$index].goodsNum"></el-input>
             </template>
           </el-table-column>
           <el-table-column label="商品预估单价">
@@ -82,7 +95,7 @@
               <el-input v-model="orders[scope.$index].goodsTotal"></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="所在仓库">
+          <!-- <el-table-column label="所在仓库">
             <template slot-scope="scope">
               <el-select v-model="orders[scope.$index].goodsStorage" placeholder="请选择">
                 <el-option
@@ -93,8 +106,8 @@
                 </el-option>
               </el-select>
             </template>
-          </el-table-column>
-          <el-table-column label="经办人">
+          </el-table-column> -->
+          <el-table-column label="申请人">
             <template slot-scope="scope">
               <el-input v-model="orders[scope.$index].operatorUser"></el-input>
             </template>
@@ -109,13 +122,15 @@
               <el-input v-model="orders[scope.$index].remark"></el-input>
             </template>
           </el-table-column>
+          <el-table-column label="回退理由">
+          </el-table-column>
         </el-table>
         <el-row class='add_row'>
           <el-button type='primary' @click='addRow'>新增行</el-button>
         </el-row>
       </div>
       
-      <div class="all_oders">
+      <!-- <div class="all_oders">
         <el-table size='mini' :data="allOrders" border style="width: 100%">
           <el-table-column type='selection'>
           </el-table-column>
@@ -145,7 +160,7 @@
           </el-table-column>
           <el-table-column prop="address" label="存放货位"></el-table-column>
         </el-table>
-      </div>
+      </div> -->
     </el-main>
   </div>
 </template>

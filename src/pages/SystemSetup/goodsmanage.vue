@@ -18,8 +18,8 @@
         <el-button type="primary">搜索</el-button>
       </div>
       <div class="buttons">
-        <!-- <el-button type="primary" @click='isShowAddGoods=true'>新增</el-button> -->
-        <el-button type="primary" @click='isShowSetMeasurement=true'>计量单位</el-button>
+        <el-button type="primary" @click='isShowAddGoods=true'>新增</el-button>
+        <!-- <el-button type="primary" @click='isShowSetMeasurement=true'>计量单位</el-button> -->
         <el-button type="primary" @click='handleGoodsCategory'>商品类别</el-button>
         <el-button class="del" @click='handleDelGoods'>删除</el-button>
         <el-button class="output" @click='handleOutput'>导出</el-button>
@@ -52,10 +52,8 @@
         </el-table-column>
         <el-table-column prop='goodsName' label="商品名称">
         </el-table-column>
-        <el-table-column prop='goodsCode' label="商品编码">
-        </el-table-column>
-        <el-table-column prop='goodsModel' label="规格型号">
-        </el-table-column>
+        <!-- <el-table-column prop='goodsCode' label="商品编码">
+        </el-table-column> -->
         <el-table-column prop='goodsUnit' label="单位">
         </el-table-column>
         <el-table-column prop='goodsStorage' label="所在仓库">
@@ -68,7 +66,7 @@
           <el-table-column prop='goodsMaxNum' label="最大值">
           </el-table-column>
         </el-table-column>
-        <el-table-column prop='price' label="采购单价">
+        <el-table-column prop='price' label="预估单价">
         </el-table-column>
         <el-table-column prop='remark' label="备注">
         </el-table-column>
@@ -110,10 +108,10 @@
       v-if='isShowGoodsCategory'
       @hideGoodsCategory='isShowGoodsCategory=!isShowGoodsCategory'></goods-category>
     
-    <!-- <add-goods
+    <add-goods
       :type='messageBoxType.add'
       v-if='isShowAddGoods'
-      @hideGoodsCategory='isShowAddGoods=!isShowAddGoods'></add-goods> -->
+      @hideGoodsCategory='isShowAddGoods=!isShowAddGoods'></add-goods>
   </div>
 </template>
 
