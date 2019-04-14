@@ -25,16 +25,20 @@
       </div>
       <div class="select_date">
         日期选择:
-        <el-date-picker size="medium" v-model="value1" type="date"></el-date-picker>
-        -
-        <el-date-picker size="medium" v-model="value1" type="date"></el-date-picker>
+        <el-date-picker
+          v-model="value15"
+          type="monthrange"
+          range-separator="至"
+          start-placeholder="开始月份"
+          end-placeholder="结束月份">
+        </el-date-picker>
       </div>
-    </el-header>
-    <el-main>
       <div class="buttons">
         <el-button type="primary" size="medium">提交</el-button>
         <el-button type="primary" size="medium" @click="handleOutput">导出</el-button>
       </div>
+    </el-header>
+    <el-main>
       <el-table
         :data="orders"
         border
@@ -63,6 +67,17 @@
           <el-button>回退</el-button>
         </el-table-column>
       </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400"
+      ></el-pagination>
+
+      <h5>订单详情：</h5>
       <el-table
         :data="tableData"
         border
@@ -169,18 +184,6 @@
         <el-table-column label="备注" prop="goodsCategory"></el-table-column>
         <el-table-column label="状态" prop="goodsCategory"></el-table-column>
       </el-table> -->
-      <div class="block">
-        <span class="demonstration"></span>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
-        ></el-pagination>
-      </div>
     </el-main>
   </div>
 </template>
@@ -255,11 +258,20 @@ export default {
     .select_date {
       margin-left: 20px;
     }
+    .buttons {
+      float: right;
+      text-align: right;
+    }
   }
   .el-main {
     padding: 0;
-    .buttons {
+    
+    .el-pagination {
+      margin-top: 10px;
       text-align: right;
+    }
+    h5 {
+      margin: 30px 0 10px;
     }
   }
 }

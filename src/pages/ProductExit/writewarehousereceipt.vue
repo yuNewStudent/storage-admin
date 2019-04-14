@@ -139,7 +139,7 @@
 
     <div
       class="allGoods">
-      <div class="header">参考数据(实际数据以提交订单时为准)</div>
+      <h4 class="header">参考数据(实际数据以提交订单时为准)</h4>
       <el-table
         :data='allgoods'
         border>
@@ -289,7 +289,6 @@ export default {
   margin-top: 20px;
 }
   .header {
-    padding: 0;
-    height: 40px;
+    margin: 0 0 10px;
   }
 </style>

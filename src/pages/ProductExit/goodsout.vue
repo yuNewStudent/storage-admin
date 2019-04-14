@@ -1,24 +1,21 @@
 <template>
   <div class="goodsout">
-    <div class="goodsout_operation">
-      <div class="goodsout_operationr">
-        <el-row>
-          订单号：
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-          <el-button type="primary" size="medium" @click="buttonaudit">提交出库</el-button>
-          <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
-        </el-row>
+    <el-header>
+      订单号：
+      <el-select v-model="value" placeholder="请选择">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        ></el-option>
+      </el-select>
+      <div class="btns">
+        <el-button type="primary" size="medium" @click="buttonaudit">提交出库</el-button>
+        <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
       </div>
-    </div>
-    <div style="clear: both;"></div>
-    <div class="goodsout_list">
+    </el-header>
+    <el-main>
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
@@ -40,19 +37,16 @@
         <el-table-column prop="address" label="出库用途"></el-table-column>
         <el-table-column prop="address" label="备注"></el-table-column>
       </el-table>
-       <div class="block">
-        <span class="demonstration"></span>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
-        ></el-pagination>
-      </div>
-    </div>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400"
+      ></el-pagination>
+    </el-main>
   </div>
 </template>
 
@@ -120,36 +114,29 @@ export default {
   }
 };
 </script>
-<style>
+<style lang='scss' scoped>
 .goodsout {
-  padding: 20px 30px;
-}
-.goodsout_unitl {
-  float: left;
-}
-.goodsout_unitr {
-  line-height: 30px;
-  float: right;
-  text-align: center;
-}
-.goodsout_unitr p {
-  color: #777777;
-}
-.goodsout_unitr span {
-  border-bottom: 1px solid #777777;
-  color: #000;
-}
-.goodsout_operation {
-  margin-top: 10px;
-}
-.goodsout_operationl {
-  float: left;
-  margin-left: 60px;
-}
-.goodsout_operationr {
-  float: right;
-}
-.goodsout_list {
-  margin-top: 20px;
+  padding: 20px 30px 0;
+  .el-header {
+    padding: 0;
+    .btns {
+      float: right;
+    }
+  }
+  .el-main {
+    padding: 0;
+    .el-header {
+      padding: 0;
+      text-align: right;
+    }
+    
+    .el-pagination {
+      margin-top: 10px;
+      text-align: right;
+    }
+    h5 {
+      margin: 20px 0 10px;
+    }
+  }
 }
 </style>

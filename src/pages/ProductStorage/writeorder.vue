@@ -1,30 +1,9 @@
 <template>
   <div class="writeorder">
     <el-header>
-      <!-- <el-row>
-        <el-col :span="10">
-          供应单位:
-          <el-select v-model="SupplyCompany" size='medium' placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-col>
-        <el-col :span="10">
-          填写日期:
-          <el-date-picker size='medium' v-model="writeDate" type="date" placeholder="选择日期"></el-date-picker>
-        </el-col>
-        <el-col :span="4" class="order_num">
-          订单编号:
-          <span>166767767777</span>
-        </el-col>
-      </el-row> -->
       <el-row class="btns">
-          <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
-          <el-button type="primary" size="medium" @click="handleOut">导出</el-button>
+        <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
+        <el-button type="primary" size="medium" @click="handleOut">导出</el-button>
       </el-row>
     </el-header>
     <el-main class="writeorder_list">
@@ -130,37 +109,6 @@
         </el-row>
       </div>
       
-      <!-- <div class="all_oders">
-        <el-table size='mini' :data="allOrders" border style="width: 100%">
-          <el-table-column type='selection'>
-          </el-table-column>
-          <el-table-column prop='goodsCategory' label="商品类别">
-          </el-table-column>
-          <el-table-column prop='goodsName' label="商品名称">
-          </el-table-column>
-          <el-table-column prop='goodsCode' label="商品编码">
-          </el-table-column>
-          <el-table-column prop='goodsModel' label="规格型号">
-          </el-table-column>
-          <el-table-column prop='goodsUnit' label="单位">
-          </el-table-column>
-          <el-table-column prop='goodsStorage' label="所在仓库">
-          </el-table-column>
-          <el-table-column prop='currentNum' label="当前库存">
-          </el-table-column>
-          <el-table-column label="商品预警数">
-            <el-table-column prop='goodsMinNum' label="最小值">
-            </el-table-column>
-            <el-table-column prop='goodsMaxNum' label="最大值">
-            </el-table-column>
-          </el-table-column>
-          <el-table-column prop='price' label="采购单价">
-          </el-table-column>
-          <el-table-column prop='remark' label="备注">
-          </el-table-column>
-          <el-table-column prop="address" label="存放货位"></el-table-column>
-        </el-table>
-      </div> -->
     </el-main>
   </div>
 </template>
@@ -290,9 +238,6 @@ export default {
     input {
       border: none;
     }
-    .all_oders {
-      margin-top: 30px;
-    }
   }
 }
 .btns {
@@ -300,7 +245,6 @@ export default {
 
 }
 .writeorder_list {
-  margin-top: 40px;
   .add_row {
     text-align: right;
     margin-top: 10px;

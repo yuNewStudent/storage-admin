@@ -13,12 +13,15 @@
           </el-select>
         </div>
         <div class="select_date">
-          开始日期:
-          <el-date-picker size='medium' v-model="writeDate" type="date" placeholder="选择日期"></el-date-picker>
-          结束日期:
-          <el-date-picker size='medium' v-model="writeDate" type="date" placeholder="选择日期"></el-date-picker>
+          日期选择:
+          <el-date-picker
+            v-model="value15"
+            type="monthrange"
+            range-separator="至"
+            start-placeholder="开始月份"
+            end-placeholder="结束月份">
+          </el-date-picker>
         </div>
-        
         <div class="select_goods_name">
           订单状态:
           <el-select size='medium' v-model="supplyCompany" placeholder="请选择">
@@ -63,6 +66,17 @@
           <el-button>修改</el-button>
         </el-table-column>
       </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400"
+      ></el-pagination>
+
+      <h5>订单详情：</h5>
       <el-table
         :data="orders"
         border
@@ -96,18 +110,6 @@
           <el-input></el-input>
         </el-table-column>
       </el-table>
-       <div class="block">
-        <span class="demonstration"></span>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
-        ></el-pagination>
-      </div>
     </el-main>
   </div>
 </template>
@@ -190,7 +192,7 @@ export default {
 
 <style lang="scss" scoped>
 .history_order {
-  margin: 20px 100px 0 20px;
+  margin: 20px 0px 0 0;
   .el-header {
     overflow: hidden;
     .select_company {
@@ -209,6 +211,14 @@ export default {
     .el-header {
       padding: 0;
       text-align: right;
+      height: 40px;
+    }
+    .el-pagination {
+      margin-top: 10px;
+      text-align: right;
+    }
+    h5 {
+      margin: 20px 0 10px;
     }
   }
 }

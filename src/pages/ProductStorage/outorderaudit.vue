@@ -25,9 +25,17 @@
       </div>
       <div class="select_date">
         日期选择:
-        <el-date-picker size='medium'
+        <!-- <el-date-picker size='medium'
           v-model="value1"
           type="date">
+        </el-date-picker> -->
+        <el-date-picker
+          v-model="date"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          @change='pickDate'>
         </el-date-picker>
       </div>
       <div class="buttons">
@@ -77,7 +85,17 @@
         </el-table-column>
          -->
       </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400"
+      ></el-pagination>
       
+      <h5>订单详情：</h5>
       <el-table
         :data="orders"
         border
@@ -111,18 +129,6 @@
           <el-input></el-input>
         </el-table-column>
       </el-table>
-       <div class="block">
-        <span class="demonstration"></span>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
-        ></el-pagination>
-      </div>
     </el-main>
   </div>
 </template>
@@ -132,6 +138,7 @@ export default {
   data () {
     return {
       currentPage:4,
+      date: '',
       options: [
         {
           value: "选项1",
@@ -187,6 +194,9 @@ export default {
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
       },
+      pickDate (date) {
+        console.log(this.date)
+      }
   }
 }
 </script>
@@ -215,6 +225,13 @@ export default {
   }
   .el-main {
     padding: 0;
+    h5 {
+      margin: 30px 0 10px;
+    }
+    .el-pagination {
+      margin-top: 10px; 
+      text-align: right;
+    }
   }
 }
 </style>

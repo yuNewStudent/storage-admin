@@ -1,16 +1,10 @@
 <template>
   <div class="reverseretirement">
-    
-    <div class="reverseretirement_operation">
-      <div class="reverseretirement_operationr">
-        <el-row>
-          <el-button type="primary" size="medium" @click="handleAudit">入库</el-button>
-          <el-button type="primary" size="medium" @click="handleOutput">导出</el-button>
-        </el-row>
-      </div>
-    </div>
-    <div style="clear: both;"></div>
-    <div class="reverseretirement_list">
+    <el-header>
+      <el-button type="primary" size="medium" @click="handleAudit">入库</el-button>
+      <el-button type="primary" size="medium" @click="handleOutput">导出</el-button>
+    </el-header>
+    <el-main>
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
@@ -36,69 +30,16 @@
           <el-input></el-input>
         </el-table-column>
       </el-table>
-       <div class="block">
-        <span class="demonstration"></span>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
-        ></el-pagination>
-      </div>
-    </div>
-    <!-- <div class="reverseretirement_list" v-else>
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="date" label="商品类别">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="name" label="商品名称">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="申请采购数量">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="单位">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="所在仓库">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="经办人">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="用途">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="备注">
-          <el-input></el-input>
-        </el-table-column>
-      </el-table>
-    </div> -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400"
+      ></el-pagination>
+    </el-main>
   </div>
 </template>
 
@@ -170,38 +111,19 @@ export default {
   }
 };
 </script>
-<style>
+<style lang='scss' scoped>
 .reverseretirement {
-  padding: 20px 30px;
-}
-.reverseretirement_unit {
-}
-.reverseretirement_unitl {
-  float: left;
-}
-.reverseretirement_unitr {
-  line-height: 30px;
-  float: right;
-  text-align: center;
-}
-.reverseretirement_unitr p {
-  color: #777777;
-}
-.reverseretirement_unitr span {
-  border-bottom: 1px solid #777777;
-  color: #000;
-}
-.reverseretirement_operation {
-  margin-top: 10px;
-}
-.reverseretirement_operationl {
-  float: left;
-  margin-left: 60px;
-}
-.reverseretirement_operationr {
-  float: right;
-}
-.reverseretirement_list {
-  margin-top: 20px;
+  padding: 20px 30px 0;
+  .el-header {
+    padding: 0;
+    text-align: right;
+  }
+  .el-main {
+    padding: 0;
+    .el-pagination {
+      margin-top: 10px;
+      text-align: right;
+    }
+  }
 }
 </style>

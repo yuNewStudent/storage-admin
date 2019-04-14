@@ -2,7 +2,7 @@
   <div class="suppliermanagement">
   	<el-header>
       <div class="selectAddress">
-        供货地:
+        供货地址:
         <el-select size='medium' v-model="value" placeholder="请选择">
           <el-option
             v-for="item in options"
@@ -68,7 +68,6 @@
           prop="remarks"
           label="备注"
           show-overflow-tooltip> -->
-        </el-table-column>
         <el-table-column
           label="操作"
           align='center'

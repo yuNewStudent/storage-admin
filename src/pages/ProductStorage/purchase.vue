@@ -1,19 +1,10 @@
 <template>
   <div class="purchase">
-    <div class="purchase_unit">
-      <div class="purchase_unitr">
-          <el-button type="primary" size="medium" @click="handleAudit">入库</el-button>
-          <el-button type="primary" size="medium" @click="handleOutput">导出</el-button>
-      </div>
-    </div>
-    <div style="clear: both;"></div>
-    <!-- <div class="purchase_operation">
-      <div class="purchase_operationr">
-        
-      </div>
-    </div> -->
-    <div style="clear: both;"></div>
-    <div class="purchase_list">
+    <el-header>
+      <el-button type="primary" size="medium" @click="handleAudit">入库</el-button>
+      <el-button type="primary" size="medium" @click="handleOutput">导出</el-button>
+    </el-header>
+    <el-main>
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
@@ -40,84 +31,17 @@
         <el-table-column prop="address" label="申请用途"></el-table-column>
         <el-table-column prop="address" label="申请人备注"></el-table-column>
       </el-table>
-       <div class="block">
-        <span class="demonstration"></span>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
-        ></el-pagination>
-      </div>
-    </div>
-    <!-- <div class="purchase_list" v-else>
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="date" label="商品类别">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="name" label="商品名称">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="申请采购数量">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="实际到货数">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="单位">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="所在仓库">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="经办人">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="用途">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="备注">
-          <el-input></el-input>
-        </el-table-column>
-      </el-table>
-       <div class="block">
-        <span class="demonstration"></span>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
-        ></el-pagination>
-      </div>
-    </div> -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400"
+      ></el-pagination>
+    </el-main>
+    
   </div>
 </template>
 
@@ -190,39 +114,19 @@ export default {
   }
 };
 </script>
-<style>
+<style lang='scss' scoped>
 .purchase {
-  padding: 20px 30px;
-}
-.purchase_unitl {
-  float: left;
-}
-.purchase_unitr {
-  line-height: 30px;
-  float: right;
-  text-align: center;
-  .el-button {
-    color: white;
+  padding: 20px 30px 0;
+  .el-header {
+    padding: 0;
+    text-align: right;
   }
-}
-.purchase_unitr p {
-  color: #777777;
-}
-.purchase_unitr span {
-  border-bottom: 1px solid #777777;
-  color: #000;
-}
-.purchase_operation {
-  margin-top: 10px;
-}
-.purchase_operationl {
-  float: left;
-  margin-left: 90px;
-}
-.purchase_operationr {
-  float: right;
-}
-.purchase_list {
-  margin-top: 20px;
+  .el-main {
+    padding: 0;
+    .el-pagination {
+      margin-top: 10px;
+      text-align: right;
+    }
+  }
 }
 </style>

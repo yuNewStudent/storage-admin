@@ -36,18 +36,6 @@
         @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55">
         </el-table-column>
-        <el-table-column label="操作"
-          align='center'
-          width="100">
-          <template slot-scope="scope">
-            <span @click="handleEditorGoods(scope.row)">
-              <img src="@/assets/icon/系统管理-商品管理/修改IC.png">
-            </span>
-            <span @click='handleDelGoods'>
-              <img src="@/assets/icon/系统管理-人员管理/删除IC.png">
-            </span>
-          </template>
-        </el-table-column>
         <el-table-column prop='goodsCategory' label="商品类别">
         </el-table-column>
         <el-table-column prop='goodsName' label="商品名称">
@@ -69,6 +57,18 @@
         <el-table-column prop='price' label="预估单价">
         </el-table-column>
         <el-table-column prop='remark' label="备注">
+        </el-table-column>
+        <el-table-column label="操作"
+          align='center'
+          width="100">
+          <template slot-scope="scope">
+            <span @click="handleEditorGoods(scope.row)">
+              <img src="@/assets/icon/系统管理-商品管理/修改IC.png">
+            </span>
+            <span @click='handleDelGoods'>
+              <img src="@/assets/icon/系统管理-人员管理/删除IC.png">
+            </span>
+          </template>
         </el-table-column>
       </el-table>
        <div class="block">
@@ -221,7 +221,7 @@ export default {
 
 <style lang="scss" scoped>
 .el-header {
-  margin: 20px 0;
+  margin: 20px 0 0;
   > div {
     display: inline-block;
   }
@@ -248,7 +248,6 @@ export default {
 }
 .el-main {
   padding-top: 0;
-  
   img {
     vertical-align: middle;
     width: 13px;

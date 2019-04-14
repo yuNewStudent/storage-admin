@@ -1,23 +1,32 @@
 <template>
-  <div class='menus_wrapper'>
-    <ul class="menus">
-      <li
-        v-for='(item, index) in menus'
-        :key='index'
-        class="menus_item"
-        :class="{active: menuActive === index}"
-        @mouseenter='showMenuGroup(index)'
-        @click='handleGroup(index, item.name)'>
+  <el-menu
+    background-color='#0b223a'
+    text-color="#fff"
+    active-text-color="#ffd04b"
+    unique-opened='true'>
+    <el-submenu
+      v-for='(menu, index) in menus'
+      :index="menu.name"
+      :key='index'
+      >
+      <template slot="title">
         <img :src="images[index].src" alt="">
-        <span>{{item.title}}</span>
-      </li>
-    </ul>
-  </div>
+        <span>{{menu.title}}</span>
+      </template>
+      <el-menu-item-group>
+        <el-menu-item
+          v-for='(item, i) in menu.group'
+          :key='i'
+          @click='hnadle(menu.name, item.name)'
+          :index="item.name">{{item.label}}</el-menu-item>
+      </el-menu-item-group>
+    </el-submenu>
+  </el-menu>
 </template>
 
 <script>
 export default {
-  props: ['menus', 'menuActive'],
+  props: ['menus'],
   data () {
     return {
       images: [
@@ -30,76 +39,18 @@ export default {
     }
   },
   methods: {
-    getUrl (name) {
-      return `../../assets/icon/${name}ic.png`
-      console.log(url)
-    },
-    // 选择不同的模块 跳转至不同界面
-    handleGroup (index, name) {
-      // 获取模块名字
-      this.$emit('setMenuGroup', index)
-      const title = this.menus[index].title
-      this.$router.push({ path: `/${name}` })
-    },
-    
-    // 鼠标放置一级模块上，显示子项
-    showMenuGroup (index) {
-      // 设置模块子项
-      this.$emit('showMenuGroup', index)
+    hnadle(faName, sonName){
+      console.log(faName, sonName)
+      this.$router.push({path: `/${faName}/${sonName}`})
     }
-  },
-  created () {
-    console.log(this.menus)
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.menus_wrapper {
-  position: relative;
-  width: 160px;
-  .menus {
-    cursor: pointer;
-    .menus_item {
-      position: relative;
-      border-bottom: 1px solid white; 
-      padding: 0 30px;
-      height: 40px;
-      line-height: 40px;
-      font-size: 14px;
-      background: #0b223a;
-      color: white;
-      z-index: 1;
-      img {
-        width: 14px;
-        vertical-align: top;
-        margin-top: 13px;
-        margin-right: 2px;
-      }
-      &.active {
-        background: #4499f2;
-      }
-      > span {
-        letter-spacing: 2px;
-      }
-      .menu_group {
-        position: absolute;
-        width: 150px;
-        top: 0;
-        right: -150px;
-        background: rgb(135,186,239);
-        .menu_group_item {
-          padding: 0 10px;
-          height: 40px;
-          line-height: 40px;
-          &.active {
-            background: rgb(170,210,251);
-          }
-        }
-      }
-    }
-  }
-  
+img {
+  width: 18px;
+  margin-right: 10px;
 }
 </style>
 
