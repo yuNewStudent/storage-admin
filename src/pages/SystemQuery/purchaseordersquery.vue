@@ -71,7 +71,6 @@
         <el-table-column prop="address" label="所在仓库"></el-table-column>
         <el-table-column prop="name" label="条形码"></el-table-column>
         <el-table-column prop="address" label="入库数量"></el-table-column>
-        </el-table-column>
         <el-table-column prop="name" label="生产日期"></el-table-column>
         <el-table-column prop="name" label="保质期"></el-table-column>
         <el-table-column prop="name" label="到期时间"></el-table-column>
