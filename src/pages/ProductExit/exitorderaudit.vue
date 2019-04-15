@@ -41,6 +41,7 @@
     <el-main>
       <el-table
         :data="orders"
+        type="expand"
         border
         size='small'
         style="width: 100%">

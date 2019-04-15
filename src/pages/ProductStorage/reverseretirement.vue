@@ -16,7 +16,7 @@
         <el-table-column prop="address" label="单位"></el-table-column>
         <el-table-column prop="address" label="所在库位"></el-table-column>
         <el-table-column prop="name" label="条形码"></el-table-column>
-        <el-table-column prop="address" label="申请出库数量"></el-table-column>
+        <el-table-column prop="address" label="出库数量"></el-table-column>
         <el-table-column prop="address" label="归还入库数">
           <el-input></el-input>
         </el-table-column>
