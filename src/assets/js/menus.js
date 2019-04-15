@@ -50,7 +50,7 @@ const menus = [
     name: 'systemquery',
     icon: '@/assets/icon/系统查询ic.png',
     group: [
-      { label: '采购单查询', name: 'purchaseordersquery'},
+      { label: '入库单查询', name: 'purchaseordersquery'},
       { label: '归还入库查询', name: 'returnquery'},
       { label: '出库单查询', name: 'outorderquery'},
       { label: '库存查询', name: 'stockquery'},

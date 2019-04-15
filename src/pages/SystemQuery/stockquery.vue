@@ -17,30 +17,79 @@
         <el-input placeholder="请输入商品名称"></el-input>
         <el-button type="primary">搜索</el-button>
       </div>
-      <div class="select_date">
-        日期选择:
-        <el-date-picker v-model="value1" type="date"></el-date-picker>
+      <div class="search">
+        商品状态:
+        <el-select v-model="value" placeholder="请选择">
+          <el-option
+            v-for="item in ordersStatus"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </div>
       <div class="out_put">
         <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
       </div>
     </el-header>
     <div class="stockquery_list">
-      <el-table :data="tableData" border style="width: 100%">
+      <!-- <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="category" label="商品类别"></el-table-column>
-        <el-table-column prop="commodity" label="商品名称"></el-table-column>
-        <el-table-column prop="specifications" label="商品规格"></el-table-column>
-        <el-table-column prop="number" label="出库数量"></el-table-column>
-        <el-table-column prop="number1" label="入库数量"></el-table-column>
-        <el-table-column prop="unit" label="单位"></el-table-column>
-        <el-table-column prop="warehouse" label="所在仓库"></el-table-column>
-        <el-table-column prop="Barcode" label="条形码"></el-table-column>
-        <el-table-column prop="agent" label="经办人"></el-table-column>
-        <el-table-column prop="procurement" label="采购用途"></el-table-column>
-        <el-table-column prop="outboundthedata" label="出库日期"></el-table-column>
-        <el-table-column prop="putthedata" label="再次入库日期"></el-table-column>
-        <el-table-column prop="note" label="备注"></el-table-column>
+        <el-table-column label="商品类别" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="商品名称" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="商品编码" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="仓库名称" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="商品总库存" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="商品状态" prop='goodsCategory'>
+        </el-table-column>
+        <el-table-column label="操作" prop='goodsCategory'>
+          <el-button>详情</el-button>
+        </el-table-column>
+      </el-table>
+
+      <h5>商品详情：</h5> -->
+      <el-table size='mini' :data="tableData" border style="width: 100%" :cell-style='warningStyle'>
+        <el-table-column type='selection'>
+        </el-table-column>
+        <el-table-column prop='goodsCategory' label="条形码">
+        </el-table-column>
+        <el-table-column prop='goodsCategory' label="商品类别">
+        </el-table-column>
+        <el-table-column prop='goodsName' label="商品名称">
+        </el-table-column>
+        <el-table-column prop='goodsCode' label="商品编码">
+        </el-table-column>
+        <el-table-column prop='goodsModel' label="规格型号">
+        </el-table-column>
+        <el-table-column prop='goodsUnit' label="单位">
+        </el-table-column>
+        <el-table-column prop='goodsStorage' label="所在货位">
+        </el-table-column>
+        <el-table-column prop='currentNum' label="商品库存">
+        </el-table-column>
+        <!-- <el-table-column label="商品预警数"
+          class-name='warning'>
+          <el-table-column prop='goodsMinNum' label="最小值">
+          </el-table-column>
+          <el-table-column prop='goodsMaxNum' label="最大值">
+        </el-table-column> -->
+        <el-table-column prop='price' label="采购单价">
+        </el-table-column>
+        <el-table-column prop="address" label="购入时间"></el-table-column>
+        <el-table-column prop="address" label="生产日期"></el-table-column>
+        <el-table-column prop="address" label="保质期"></el-table-column>
+        <el-table-column prop="address" label="到期时间"></el-table-column>
+        <el-table-column prop="address" label="预警时间"></el-table-column>
+        <el-table-column prop="address" label="上次入库时间"></el-table-column>
+        <!-- <el-table-column prop="address" label="库管员"></el-table-column>
+        <el-table-column prop="address" label="联系电话"></el-table-column> -->
+        <el-table-column prop="address" label="状态">
+        </el-table-column>
       </el-table>
     </div>
     <div class="block">
@@ -113,6 +162,17 @@ export default {
     return {
       input10: "",
       currentPage: 4,
+      ordersStatus: [
+        {
+          label: '正常',
+        },
+        {
+          label: '已过期',
+        },
+        {
+          label: '预警状态',
+        }
+      ],
       tableData: [
         {
           category: "医药",

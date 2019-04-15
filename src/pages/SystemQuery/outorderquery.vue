@@ -2,7 +2,7 @@
   <div class="outorderquery">
     <el-header>
       <div class="selectStore">
-        仓库选择:
+        订单号:
         <el-select v-model="value" placeholder="请输入仓库名称">
           <el-option
             v-for="item in options"
@@ -12,14 +12,22 @@
           ></el-option>
         </el-select>
       </div>
-      <div class="search">
-        商品名称:
-        <el-input placeholder="请输入商品名称"></el-input>
-        <el-button type="primary">搜索</el-button>
-      </div>
       <div class="select_date">
         日期选择:
-        <el-date-picker v-model="value1" type="date"></el-date-picker>
+        <el-date-picker
+          v-model="value1"
+          type="date">
+        </el-date-picker>
+        -
+        <el-date-picker
+          v-model="value1"
+          type="date">
+        </el-date-picker>
+      </div>
+      <div class="search">
+        申请人:
+        <el-input placeholder="请输入申请人"></el-input>
+        <el-button type="primary">搜索</el-button>
       </div>
       <div class="out_put">
         <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
@@ -29,23 +37,25 @@
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="category" label="商品类别"></el-table-column>
-        <el-table-column prop="commodity" label="商品名称"></el-table-column>
-        <el-table-column prop="specifications" label="商品规格"></el-table-column>
-        <el-table-column prop="number" label="出库数量"></el-table-column>
-        <el-table-column prop="unit" label="单位"></el-table-column>
-        <el-table-column prop="warehouse" label="所在仓库"></el-table-column>
-        <el-table-column prop="outboundthedata" label="出库日期"></el-table-column>
-
-        <!-- <el-table-column prop="Barcode" label="条形码"></el-table-column> -->
-        <el-table-column prop="address" label="发货地址"></el-table-column>
-        <el-table-column prop="contact" label="联系人"></el-table-column>
-        <el-table-column prop="phone" label="联系电话"></el-table-column>
-        <el-table-column prop="agent" label="申请人"></el-table-column>
-        <el-table-column prop="procurement" label="采购用途"></el-table-column>
-        <!-- <el-table-column prop="outboundthedata" label="出库日期"></el-table-column>
-        <el-table-column prop="putthedata" label="再次入库日期"></el-table-column>-->
-        <el-table-column prop="note" label="备注"></el-table-column>
+        
+        <el-table-column prop="date" label="收货单位">
+        </el-table-column>
+        <el-table-column prop="name" label="订单编号"></el-table-column>
+        <el-table-column prop="date" label="商品类别"></el-table-column>
+        <el-table-column prop="name" label="商品名称"></el-table-column>
+        <el-table-column prop="name" label="商品规格"></el-table-column>
+        <el-table-column prop="address" label="单位"></el-table-column>
+        <el-table-column prop="address" label="所在仓库"></el-table-column>
+        <el-table-column prop="address" label="出库数量"></el-table-column>
+        <el-table-column prop="address" label="商品单价"></el-table-column>
+        <el-table-column prop="address" label="商品总价"></el-table-column>
+        <el-table-column prop="address" label="申请人"></el-table-column>
+        <el-table-column prop="address" label="收货地址"></el-table-column>
+        <el-table-column prop="address" label="收货人"></el-table-column>
+        <el-table-column prop="address" label="联系方式"></el-table-column>
+        <el-table-column prop="address" label="出库用途"></el-table-column>
+        <el-table-column prop="address" label="出库日期"></el-table-column>
+        <el-table-column prop="address" label="备注"></el-table-column>
       </el-table>
       <div class="block">
         <span class="demonstration"></span>

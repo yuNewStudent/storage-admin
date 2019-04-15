@@ -2,7 +2,7 @@
   <div class="purchaseordersquery">
     <el-header>
       <div class="selectStore">
-        仓库选择:
+        订单号:
         <el-select v-model="value" placeholder="请输入仓库名称">
           <el-option
             v-for="item in options"
@@ -13,12 +13,17 @@
         </el-select>
       </div>
       <div class="search">
-        商品名称:
-        <el-input placeholder="请输入商品名称"></el-input>
+        申请人:
+        <el-input placeholder="请输入申请人"></el-input>
         <el-button type="primary">搜索</el-button>
       </div>
       <div class="select_date">
         日期选择:
+        <el-date-picker
+          v-model="value1"
+          type="date">
+        </el-date-picker>
+        -
         <el-date-picker
           v-model="value1"
           type="date">
@@ -29,7 +34,7 @@
       </div>
     </el-header>
     <div class="purchaseordersquery_list">
-      <el-table :data="tableData" border
+      <!-- <el-table :data="tableData" border
         size='small'
         style="width: 100%">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
@@ -43,6 +48,40 @@
         <el-table-column prop="thedata" label="采购时间"></el-table-column>
         <el-table-column prop="procurement" label="采购用途"></el-table-column>
         <el-table-column prop="note" label="备注"></el-table-column>
+      </el-table> -->
+      
+      <el-table
+        :data="orders"
+        border
+        size='small'
+        style="width: 100%">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          type="index"
+          width="55">
+        </el-table-column>
+        <el-table-column prop="name" label="采购订单号"></el-table-column><el-table-column prop="date" label="供应商"></el-table-column>
+        <el-table-column prop="date" label="商品类别"></el-table-column>
+        <el-table-column prop="name" label="商品名称"></el-table-column>
+        <el-table-column prop="name" label="商品规格"></el-table-column>
+        <el-table-column prop="address" label="单位"></el-table-column>
+        <el-table-column prop="address" label="所在仓库"></el-table-column>
+        <el-table-column prop="name" label="条形码"></el-table-column>
+        <el-table-column prop="address" label="入库数量"></el-table-column>
+        </el-table-column>
+        <el-table-column prop="name" label="生产日期"></el-table-column>
+        <el-table-column prop="name" label="保质期"></el-table-column>
+        <el-table-column prop="name" label="到期时间"></el-table-column>
+        <el-table-column prop="name" label="到期时间预警"></el-table-column>
+        <el-table-column label="商品单价">
+        </el-table-column>
+        <el-table-column label="商品总价">
+        </el-table-column>
+        <el-table-column prop="address" label="申请人"></el-table-column>
+        <el-table-column prop="address" label="申请用途"></el-table-column>
       </el-table>
        <div class="block">
         <span class="demonstration"></span>
