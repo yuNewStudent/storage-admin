@@ -7,8 +7,6 @@ const Login = () => import('@/pages/login')
 const Register = () => import('@/pages/register')
 const Forget = () => import('@/pages/Forget')
 
-
-// const suppliermanagement =() => import('@/pages/SystemSetup/suppliermanagement')
 const SystemSetup = name => () => import('@/pages/SystemSetup/' + name)
 const SystemQuery = name => () => import('@/pages/SystemQuery/' + name)
 const ProductCheck = name => () => import('@/pages/ProductCheck/' + name)
@@ -20,7 +18,7 @@ const information = name => () => import('@/pages/information/' + name)
 
 
 export default new Router({
-  mode:'history',
+  
   routes: [
     {
       path: '/',

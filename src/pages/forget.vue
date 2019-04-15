@@ -158,7 +158,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .forget {
   width: 100%;
   height: 100%;
