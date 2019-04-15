@@ -157,7 +157,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .register {
   width: 100%;
   height: 100%;
