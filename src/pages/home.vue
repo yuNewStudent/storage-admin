@@ -26,6 +26,7 @@ export default {
   },
   created () {
     this.menus = menus
+    console.log(config)
   },
   components: {
     AppHeader,
@@ -41,6 +42,7 @@ export default {
   background: #f3f3f3;
   position: fixed;
   top: 60px;
+  bottom: 0;
   .el-menu {
     width: 200px;
   }

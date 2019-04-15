@@ -178,7 +178,13 @@ export default new Router({
               path: '/systemquery/goodsmovequery',
               name: 'goodsmovequery',
               component: SystemQuery('goodsmovequery')
+            },
+            {
+              path: '/systemquery/goodscountingquery',
+              name: 'goodscountingquery',
+              component: SystemQuery('goodscountingquery')
             }
+            
           ]
         },
         {

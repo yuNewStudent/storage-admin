@@ -54,7 +54,8 @@ const menus = [
       { label: '归还入库查询', name: 'returnquery'},
       { label: '出库单查询', name: 'outorderquery'},
       { label: '库存查询', name: 'stockquery'},
-      { label: '移库查询', name: 'goodsmovequery'}
+      { label: '移库查询', name: 'goodsmovequery'},
+      { label: '盘点查询', name: 'goodscountingquery'}
     ]
   }
 ]

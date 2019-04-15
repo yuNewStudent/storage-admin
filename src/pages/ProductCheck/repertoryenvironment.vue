@@ -112,6 +112,7 @@ export default {
   margin: 10px 30px;
   .el-header {
     line-height: 60px;
+    padding: 0;
     .el-button {
       float: right;
       margin-top: 13px;

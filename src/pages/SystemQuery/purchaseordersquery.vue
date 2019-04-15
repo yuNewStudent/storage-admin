@@ -20,13 +20,11 @@
       <div class="select_date">
         日期选择:
         <el-date-picker
-          v-model="value1"
-          type="date">
-        </el-date-picker>
-        -
-        <el-date-picker
-          v-model="value1"
-          type="date">
+          v-model="value6"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期">
         </el-date-picker>
       </div>
       <div class="out_put">
@@ -219,22 +217,23 @@ export default {
     display: inline-block;
   }
   .selectStore {
-    width: 250px;
+    width: 200px;
     .el-select {
-      width: 150px;
+      width: 130px;
     }
   }
   .select_date {
-    margin-left: 100px;
+    margin-left: 20px;
   }
   .search {
-    width: 380px;
+    margin-left: 20px;
+    width: 350px;
     .el-input {
       width: 200px;
     }
   }
   .out_put {
-    margin-left: 30px;
+    float: right;
   }
 }
 

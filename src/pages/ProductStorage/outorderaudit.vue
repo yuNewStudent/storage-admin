@@ -216,9 +216,6 @@ export default {
         width: 150px;
       }
     }
-    .select_date {
-      margin-left: 20px;
-    }
     .buttons {
       float: right;
     }

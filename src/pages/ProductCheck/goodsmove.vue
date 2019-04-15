@@ -1,19 +1,9 @@
 <template>
   <div class="goodsmove">
     <div class="goodsmove_unit">
-      <div class="goodsmove_unitl">
-        <span class="demonstration">货物移库</span>
-      </div>
+      <span class="demonstration">货物移库</span>
+      <el-button type="primary" size="medium" @click="buttonaudit">保存</el-button>
     </div>
-    <div style="clear: both;"></div>
-    <div class="goodsmove_operation">
-      <div class="goodsmove_operationr">
-        <el-row>
-          <el-button type="primary" size="medium" @click="buttonaudit">保存</el-button>
-        </el-row>
-      </div>
-    </div>
-    <div style="clear: both;"></div>
     <div class="goodsmove_list">
       <el-table :data="tableData" border style="width: 100%" size='small'>
         <el-table-column type="selection" width="55"></el-table-column>
@@ -117,40 +107,18 @@ export default {
   }
 };
 </script>
-<style>
+<style lang='scss' scoped>
 .goodsmove {
   padding: 20px 20px;
-}
-.goodsmove_unit {
-  overflow: hidden;
-  line-height: 40px;
-}
-.goodsmove_unitl {
-  float: left;
-}
-.goodsmove_unitr {
-  line-height: 30px;
-  float: right;
-  text-align: center;
-}
-.goodsmove_unitr p {
-  color: #777777;
-}
-.goodsmove_unitr span {
-  border-bottom: 1px solid #777777;
-  color: #000;
-}
-.goodsmove_operation {
-  margin-top: 10px;
-}
-.goodsmove_operationl {
-  float: left;
-  margin-left: 60px;
-}
-.goodsmove_operationr {
-  float: right;
-}
-.goodsmove_list {
-  margin-top: 20px;
+  .goodsmove_unit {
+    overflow: hidden;
+    line-height: 40px;
+    .el-button {
+      float: right;
+    }
+  }
+  .goodsmove_list {
+    margin-top: 20px;
+  }
 }
 </style>

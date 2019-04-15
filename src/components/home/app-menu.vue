@@ -3,7 +3,7 @@
     background-color='#0b223a'
     text-color="#fff"
     active-text-color="#ffd04b"
-    unique-opened='true'>
+    :unique-opened='true'>
     <el-submenu
       v-for='(menu, index) in menus'
       :index="menu.name"
@@ -48,6 +48,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-menu {
+  height: 100%;
+  overflow-y: auto;
+}
 img {
   width: 18px;
   margin-right: 10px;

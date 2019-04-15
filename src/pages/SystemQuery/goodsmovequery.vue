@@ -47,56 +47,6 @@
       :total="400">
     </el-pagination>
   </div>
-    <!-- <div class="goodsmovequery_list" v-else>
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="date" label="商品类别">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="name" label="商品名称">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="申请采购数量">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="单位">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="所在仓库">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="经办人">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="用途">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="备注">
-          <el-input></el-input>
-        </el-table-column>
-      </el-table>
-    </div> -->
   </div>
 </template>
 <script>
@@ -220,30 +170,19 @@ export default {
   >div {
     display: inline-block;
   }
-  .selectStore {
-    width: 250px;
-    .el-select {
-      width: 150px;
-    }
-  }
-  .select_date {
-    margin-left: 100px;
-  }
   .search {
-    width: 380px;
+    width: 250px;
     .el-input {
-      width: 200px;
+      width: 150px;
     }
   }
   .out_put {
     margin-left: 30px;
+    float: right;
   }
 }
 .goodsmovequery {
-  padding: 0 20px;
-}
-.goodsmovequery_list {
-  margin-top: 20px;
+  padding: 0 30px;
 }
 .block{
   float: right;
