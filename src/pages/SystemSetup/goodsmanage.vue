@@ -14,8 +14,8 @@
       </div>
       <div class="search">
         商品名称:
-        <el-input placeholder="请输入商品名称"></el-input>
-        <el-button type="primary">搜索</el-button>
+        <el-input placeholder="请输入商品名称" v-model="goods"></el-input>
+        <el-button type="primary" @click="Commodity()">搜索</el-button>
       </div>
       <div class="buttons">
         <el-button type="primary" @click='isShowAddGoods=true'>新增</el-button>
@@ -36,27 +36,28 @@
         @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55">
         </el-table-column>
-        <el-table-column prop='goodsCategory' label="商品类别">
+        <el-table-column prop='category' label="商品类别">
         </el-table-column>
-        <el-table-column prop='goodsName' label="商品名称">
+        <el-table-column prop='name' label="商品名称">
         </el-table-column>
         <!-- <el-table-column prop='goodsCode' label="商品编码">
         </el-table-column> -->
-        <el-table-column prop='goodsUnit' label="单位">
+        <el-table-column prop='unit' label="单位">
         </el-table-column>
-        <el-table-column prop='goodsStorage' label="所在仓库">
+        <el-table-column prop='location' label="所在仓库">
         </el-table-column>
-        <el-table-column prop='currentNum' label="当前库存">
+        <el-table-column prop='stock_quantity' label="当前库存">
         </el-table-column>
         <el-table-column label="商品预警数">
-          <el-table-column prop='goodsMinNum' label="最小值">
+          <el-table-column prop='waring_quantity_min' label="最小值">
           </el-table-column>
-          <el-table-column prop='goodsMaxNum' label="最大值">
+          <el-table-column prop='waring_quantity_max' label="最大值">
           </el-table-column>
         </el-table-column>
-        <el-table-column prop='price' label="预估单价">
+        <el-table-column prop='estimated_price' label="预估单价">
         </el-table-column>
-        <el-table-column prop='remark' label="备注">
+        <el-table-column prop='comment' label="备注">
+
         </el-table-column>
         <el-table-column label="操作"
           align='center'
@@ -126,6 +127,7 @@ export default {
   data () {
   	return {
       currentPage:4,
+      goods:"",
       messageBoxType: {
         add: '商品管理>新增',
         measurement: '商品管理>计量单位设置',
@@ -159,17 +161,17 @@ export default {
       value: '',
       allgoods: [
         {
-          goodsCategory: '医用物资',
-          goodsName: '阿莫西林',
-          goodsCode: '123',
-          goodsModel: '1/23/4',
-          goodsUnit: '箱',
-          goodsStorage: 'a区101',
-          currentNum: 12,
-          goodsMinNum: 20,
-          goodsMaxNum: 100,
-          price: 23,
-          remark: '',
+          category: '医用物资',
+          name: '阿莫西林',
+          unit: '箱',
+          // location: '1/23/4',
+          // goodsUnit: '箱',
+          location: 'a区101',
+          stock_quantity: 12,
+          waring_quantity_min: 20,
+          waring_quantity_max: 100,
+          estimated_price: 23,
+          comment: '',
           // status: '',
           // orderCode: '',
           // writeDate: '',
@@ -188,6 +190,34 @@ export default {
     EditorGoods
   },
   methods: {
+    //查询所有的商品
+    medicine(){
+      let _this=this;
+      this.$http.post('${config.httpBaseUrl}/medicine/query_medicine/',{
+         "repertory":"",
+         "goods":"",
+      }).then(res=>{
+        this.allgoods=res.data.allgoods;
+      })
+    },
+    //查询仓库名称
+    storage(){
+       let _this=this;
+      this.$http.post('${config.httpBaseUrl}/storage/get_repertory/').then(res=>{
+        this.options=res.data.allgoods;
+      })
+    },
+    //根据商品名称搜索
+    Commodity(){
+      let goods=this.goods;
+      this.allgoods=[];
+        this.$http.post('${config.httpBaseUrl}/storage/get_repertory/',{
+          goods:goods,
+        }).then(res=>{
+        this.allgoods=res.data.allgoods;
+      })
+      
+    },
     // 展示修改商品页面
     handleEditorGoods (row) {
       console.log(row)

@@ -55,7 +55,7 @@
             </el-select>
             
             <label>备注:</label>
-            <el-input size='small' v-model='goodsInfo.name'></el-input>
+            <el-input size='small' v-model='goodsInfo.comment'></el-input>
           </div>
         </el-tab-pane>
         <el-tab-pane label="商品设置">
@@ -63,66 +63,24 @@
             <label for=""><span>*</span>商品预警数</label>
             <label for="">最大值:</label>
             <el-input
-              v-model="goodsInfo.GoodsNumWarning"
+              v-model="goodsInfo.waring_quantity_min"
               size='small'></el-input>
             <label for="">最小值:</label>
             <el-input
-              v-model="goodsInfo.GoodsNumWarning"
+              v-model="goodsInfo.waring_quantity_max"
               size='small'></el-input>
               
             <hr/>
             <label for="">当前库存:</label>
             <el-input
-              v-model="goodsInfo.currentGoodsNum"
+              v-model="goodsInfo.stock_quantity"
               size='small'></el-input>
             <label for="">预估单价:</label>
             <el-input
-              v-model="goodsInfo.currentGoodsNum"
+              v-model="goodsInfo.estimated_price"
               size='small'></el-input>
           </div>
         </el-tab-pane>
-        <!-- <el-tab-pane label="日期设置">
-          <div class="content_wrapper">
-            <label for="">采购时间:</label>
-            <el-date-picker
-              v-model="goodsInfo.buyTime"
-              type="date"
-              size='small'
-              placeholder="选择日期">
-            </el-date-picker><label for=""><span>*</span>生产日期:</label>
-            <el-date-picker
-              v-model="goodsInfo.productionTime"
-              type="date"
-              size='small'
-              placeholder="选择日期">
-            </el-date-picker>
-            <label for=""><span>*</span>保质期:</label>
-            <el-input
-              size='small'
-              v-model="goodsInfo.fullTime"></el-input>
-            <label for="">到期时间:</label>
-            <el-date-picker
-              v-model="goodsInfo.expireTime"
-              type="date"
-              size='small'
-              placeholder="选择日期">
-            </el-date-picker>
-            <label for="">到期时间预警:</label>
-            <el-date-picker
-              v-model="goodsInfo.expireTimeWarning"
-              type="date"
-              size='small'
-              placeholder="选择日期">
-            </el-date-picker>
-            <label for=""><span>*</span>上次入库时间:</label>
-            <el-date-picker
-              v-model="goodsInfo.lastOutTime"
-              type="date"
-              size='small'
-              placeholder="选择日期">
-            </el-date-picker>
-          </div>
-        </el-tab-pane> -->
       </el-tabs>
     </div>
   </message-box>
@@ -138,6 +96,24 @@ export default {
         comfirm: '确定',
         cancel: '取消'
       },
+      options: [
+        {
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }
+      ],
       goodsInfo: {
         name: '',
         type: '',
@@ -158,6 +134,9 @@ export default {
   },
   components: {
     MessageBox
+  },
+  methods:{
+    
   }
 }
 </script>
