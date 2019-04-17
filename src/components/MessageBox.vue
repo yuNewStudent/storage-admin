@@ -4,7 +4,7 @@
       <el-row class="header">系统管理>{{type}}<span @click='handleCancel' v-if='btns.reset'>X</span></el-row>
       <slot></slot>
       <el-row class='footer'>
-        <el-button size='medium ' type='primary' v-if='btns.reset'>重置</el-button>
+        <el-button size='medium ' type='primary' v-if='btns.reset' @click='handleReset'>重置</el-button>
         <el-button size='medium ' type='primary' v-if='!btns.reset' @click='handleCancel'>取消</el-button>
         <el-button size='medium ' type='primary' @click='handleSetting' ref='close'>确定</el-button>
       </el-row>
@@ -27,11 +27,14 @@ export default {
     //确定
     handleSetting () {
       this.$emit("closeMessageBox", true)
+    },
+    // 重置
+    handleReset () {
+      this.$emit('reset')
     }
   },
   mounted () {
     this.$nextTick(() => {
-      console.log( this.$refs.close)
       if (this.right) {
         this.$refs.close.$el.style['margin-right'] = this.right - 20 + 'px'
       } 
