@@ -87,6 +87,7 @@ export default {
             return
           }
         }
+        
         this.$emit('hideChangePerson', this.userInfo)
       } else {
         this.$emit("hideChangePerson")

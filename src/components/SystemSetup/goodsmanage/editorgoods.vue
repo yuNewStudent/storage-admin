@@ -8,10 +8,10 @@
         <el-tab-pane label="基础设置">
           <div class="content_wrapper">
             <label><span>*</span>商品名称:</label>
-            <el-input size='small' v-model='goodsInfo.goodsName'></el-input>
+            <el-input size='small' v-model='goodsInfo.name'></el-input>
             <label for=""><span>*</span>商品类型:</label>
             <el-select
-              v-model='goodsInfo.goodsCategory'
+              v-model='goodsInfo.category'
               placeholder="请选择"
               size='small'>
               <el-option
@@ -24,7 +24,7 @@
             <label for=""><span>*</span>规格型号:</label>
             <el-input
               size='small'
-              v-model='goodsInfo.goodsModel'></el-input>
+              v-model='goodsInfo.unit'></el-input>
             <label for=""><span>*</span>商品编码:</label>
             <el-input
               size='small'
@@ -53,6 +53,10 @@
                 :value="item.value">
               </el-option>
             </el-select>
+            <label for=""><span>*</span>备注:</label>
+            <el-input
+              v-model="goodsInfo.comment"
+              size='small'></el-input>
           </div>
         </el-tab-pane>
         
@@ -62,16 +66,16 @@
               <label for=""><span>*</span>商品预警数:</label>
               <label for="">最高库存预警:</label>
               <el-input
-                v-model="goodsInfo.goodsMaxNum"
+                v-model="goodsInfo.waring_quantity_min"
                 size='small'></el-input>
               <label for="">最低库存预警:</label>
               <el-input
-                v-model="goodsInfo.goodsMinNum"
+                v-model="goodsInfo.waring_quantity_max"
                 size='small'></el-input>
             </div>
             <label for="">采购单价:</label>
             <el-input
-              v-model="goodsInfo.price"
+              v-model="goodsInfo.estimated_price"
               size='small'></el-input>
           </div>
         </el-tab-pane>
@@ -154,17 +158,15 @@ export default {
         // GoodsNumWarning: 0,
         // currentGoodsNum: 0,
         // price: '',
-        goodsCategory: '医用物资',
-        goodsName: '阿莫西林',
-        goodsCode: '123',
-        goodsModel: '1/23/4',
-        goodsUnit: '箱',
-        goodsStorage: 'a区101',
-        currentNum: 12,
-        goodsMinNum: 20,
-        goodsMaxNum: 100,
-        price: 23,
-        remark: '',
+        category: '医用物资',
+        name: '阿莫西林',
+        unit:'',
+        location:'',
+        stock_quantity:'',
+        waring_quantity_min:'',
+        waring_quantity_max:'',
+        estimated_price:'',
+        comment:'',
         // buyTime: '',
         // productionTime: '',
         // fullTime: '',
@@ -178,11 +180,33 @@ export default {
     MessageBox
   },
   methods: {
+      storage(){
+       let _this=this;
+      this.$http.post('${config.httpBaseUrl}/storage/get_repertory/').then(res=>{
+        this.options=res.data.allgoods;
+      })
+    },
     hideGoodsEditor (bol) {
       // 确认修改
       if (bol) {
+          for (var k in this.goodsInfo) {
+          if (!this.goodsInfo[k]) {
+            this.$message({
+              message: '信息不能为空',
+              type: 'warning'
+            })
+            return
+          }
+        }
+        this.$http.post('${config.httpBaseUrl}/medicine/upd_medicine/',{
+          goodsInfo:this.goodsInfo,
+        }).then(res=>{
+        this.options=res.data.allgoods;
+        })
+        this.$emit('goodsEditor', this.goodsInfo)
+      } else {
+        this.$emit("goodsEditor")
       }
-      this.$emit("goodsEditor")
     }
   }
 }

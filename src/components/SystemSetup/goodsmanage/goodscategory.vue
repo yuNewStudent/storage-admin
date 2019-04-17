@@ -10,12 +10,12 @@
         style="width: 100%"
         size='mini'>
         <el-table-column
-          prop="商品类别编码"
+          prop="id"
           label="商品类别编码"
           align='center'>
         </el-table-column>
         <el-table-column
-          prop="商品类别"
+          prop="name"
           label="商品类别"
           align='center'>
         </el-table-column>
@@ -24,13 +24,13 @@
           align='center'
           width="150">
           <template slot-scope="scope">
-            <span>
+            <span @click="modifiModify(scope)">
               <img src="@/assets/icon/系统管理-商品管理/修改IC.png">
             </span>
-            <span>
+            <span @click="modifidelete(scope)">
               <img src="@/assets/icon/系统管理-人员管理/删除IC.png">
             </span>
-            <span>
+            <span @click="modification">
               <img src="@/assets/icon/系统管理-人员管理/插入行.png">
             </span>
           </template>
@@ -48,16 +48,16 @@ export default {
     return {
       tableData: [
         {
-          商品类别编码: '001',
-          商品类别: '个人防护'
+          id: '001',
+          name: '个人防护'
         },
         {
-          商品类别编码: '002',
-          商品类别: '医用器材'
+          id: '002',
+          name: '医用器材'
         },
         {
-          商品类别编码: '003',
-          商品类别: '医疗急救设备'
+          id: '003',
+          name: '医疗急救设备'
         }
       ],
       btns: {
@@ -67,6 +67,84 @@ export default {
   },
   components: {
     MessageBox
+  },
+  methods:{
+    modifiModify(scope){
+      this.$prompt('请输入商品类型', '修改商品类型', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        // inputErrorMessage: '邮箱格式不正确'
+      }).then(({value}) => {
+        if (!value) {return}
+        // 向后台发送新增部门
+        // this.$http.post(`${config.httpBaseUrl}/man/add_department/`, {
+        //   name: value
+        // }).then(res => {
+        //   console.log(res)
+        // })
+        this.$message({
+          type: 'success',
+          message: '商品修改成功'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消新增商品'
+        })
+      })
+
+    },
+    modifidelete(scope){
+      this.$confirm(`此操作将删除${scope.row.name}, 是否继续?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 删除本地部门
+          this.departmentData.splice(scope.$index, 1)
+          // 向后台发送删除部门
+          // this.$http.get(`${config.httpBaseUrl}/man/del_department/`, {
+          //   name: scop.name
+          // }).then(res => {
+          //   console.log(res)
+          // })
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })      
+        })
+    },
+    modification(){
+       this.$prompt('请输入商品类型', '新增商品类型', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        // inputErrorMessage: '邮箱格式不正确'
+      }).then(({value}) => {
+        if (!value) {return}
+        // 向后台发送新增部门
+        // this.$http.post(`${config.httpBaseUrl}/man/add_department/`, {
+        //   name: value
+        // }).then(res => {
+        //   console.log(res)
+        // })
+        this.$message({
+          type: 'success',
+          message: '商品新增成功'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消新增商品'
+        })
+      })
+    }
   }
 }
 </script>

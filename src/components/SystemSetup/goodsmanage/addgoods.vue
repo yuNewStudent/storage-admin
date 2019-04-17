@@ -1,6 +1,6 @@
 <template>
   <message-box
-    @closeMessageBox='$emit("hideGoodsCategory")'
+    @closeMessageBox='add'
     :type='type'
     :btns='btns'>
     <div class="content">
@@ -11,7 +11,7 @@
             <el-input size='small' v-model='goodsInfo.name'></el-input>
             <label for=""><span>*</span>商品类型:</label>
             <el-select
-              v-model='goodsInfo.type'
+              v-model='goodsInfo.stock_quantity'
               placeholder="请选择"
               size='small'>
               <el-option
@@ -31,7 +31,7 @@
                v-model='goodsInfo.code'></el-input> -->
             <label for=""><span>*</span>所在货位:</label>
             <el-select
-              v-model="goodsInfo.address"
+              v-model="goodsInfo.location"
               placeholder="请选择"
               size='small'>
               <el-option
@@ -42,7 +42,8 @@
               </el-option>
             </el-select>
             <label for=""><span>*</span>单位:</label>
-            <el-select
+            <el-input size='small' v-model='goodsInfo.unit'></el-input>
+            <!-- <el-select
               v-model="goodsInfo.company"
               placeholder="请选择"
               size='small'>
@@ -52,7 +53,7 @@
                 :label="item.label"
                 :value="item.value">
               </el-option>
-            </el-select>
+            </el-select> -->
             
             <label>备注:</label>
             <el-input size='small' v-model='goodsInfo.comment'></el-input>
@@ -89,7 +90,7 @@
 <script>
 import MessageBox from '@/components/MessageBox'
 export default {
-  props: ['type'],
+  props: ['type', 'selectUsers'],
   data () {
     return {
       btns: {
@@ -117,26 +118,71 @@ export default {
       goodsInfo: {
         name: '',
         type: '',
-        model: '',
-        code: '',
-        address: '',
-        company: '',
-        GoodsNumWarning: 0,
-        currentGoodsNum: 0,
-        buyTime: '',
-        productionTime: '',
-        fullTime: '',
-        expireTime: '',
-        expireTimeWarning: '',
-        lastOutTime: ''
+        unit:'',
+        location:'',
+        stock_quantity:'',
+        waring_quantity_min:'',
+        waring_quantity_max:'',
+        estimated_price:'',
+        comment:'',
       }
     }
   },
   components: {
-    MessageBox
+    MessageBox,
+  },
+  mounted(){
+     this.Commodity();
+     this.storage();
   },
   methods:{
-    
+    //商品类型
+    Commodity(){
+         this.$http.post('${config.httpBaseUrl}/storage/get_repertory/',{
+          // goods:goods,
+        }).then(res=>{
+        this.allgoods=res.data.allgoods;
+      })
+    },
+    //所在货位
+    storage(){
+       let _this=this;
+      this.$http.post('${config.httpBaseUrl}/storage/get_repertory/').then(res=>{
+        this.options=res.data.allgoods;
+      })
+    },
+    add(block){
+       if (block) {
+         console.log(this.goodsInfo)
+        // 信息不能为空
+        for (var k in this.goodsInfo) {
+          if (!this.goodsInfo[k]) {
+            this.$message({
+              message: '信息不能为空',
+              type: 'warning'
+            })
+            return
+          }
+        }
+        this.$http.post('${config.httpBaseUrl}/medicine/add_medicine/',{
+          goodsInfo:this.goodsInfo,
+        }).then(res=>{
+        this.options=res.data.allgoods;
+        })
+        this.$emit('isShowSettingPermission', this.goodsInfo)
+      } else {
+        this.$emit("isShowSettingPermission")
+      }
+    },
+    created () {
+    console.log(this.selectUsers)
+    // this.userInfo = this.selectUsers.userInfo
+    // 获取部门列表
+    // this.$http.post(`${config.httpBaseUrl}/man/get_department/`).then(res => {
+    //   console.log(res)
+    //   this.departmentData = res.data
+    // })
+  }
   }
 }
 </script>

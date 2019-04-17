@@ -19,7 +19,7 @@
           </el-table-column>
           <el-table-column label='供应商'>
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
+              <el-select v-model="orders[scope.$index].supplier" placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -31,7 +31,7 @@
           </el-table-column>
           <el-table-column label="商品类别">
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
+              <el-select v-model="orders[scope.$index].category" placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -43,7 +43,7 @@
           </el-table-column>
           <el-table-column label="商品名称">
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
+              <el-select v-model="orders[scope.$index].goods_name" placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -55,23 +55,23 @@
           </el-table-column>
           <el-table-column label="申请采购数量">
             <template slot-scope="scope">
-              <el-input v-model="orders[scope.$index].goodsNum"></el-input>
+              <el-input v-model="orders[scope.$index].apply_number"></el-input>
             </template>
           </el-table-column>
           <el-table-column label="单位">
             
             <template slot-scope="scope">
-              <el-input v-model="orders[scope.$index].goodsNum"></el-input>
+              <el-input v-model="orders[scope.$index].unit"></el-input>
             </template>
           </el-table-column>
           <el-table-column label="商品预估单价">
             <template slot-scope="scope">
-              <el-input v-model="orders[scope.$index].goodsPrice"></el-input>
+              <el-input v-model="orders[scope.$index].estimated_price"></el-input>
             </template>
           </el-table-column>
           <el-table-column label="商品预估总价">
             <template slot-scope="scope">
-              <el-input v-model="orders[scope.$index].goodsTotal"></el-input>
+              <el-input v-model="orders[scope.$index].estimated_money"></el-input>
             </template>
           </el-table-column>
           <!-- <el-table-column label="所在仓库">
@@ -88,7 +88,7 @@
           </el-table-column> -->
           <el-table-column label="申请人">
             <template slot-scope="scope">
-              <el-input v-model="orders[scope.$index].operatorUser"></el-input>
+              <el-input v-model="orders[scope.$index].applicant"></el-input>
             </template>
           </el-table-column>
           <el-table-column label="用途">
@@ -98,7 +98,7 @@
           </el-table-column>
           <el-table-column label="备注">
             <template slot-scope="scope">
-              <el-input v-model="orders[scope.$index].remark"></el-input>
+              <el-input v-model="orders[scope.$index].apply_comment"></el-input>
             </template>
           </el-table-column>
           <el-table-column label="回退理由">
@@ -145,16 +145,17 @@ export default {
       SupplyCompany: '',
       orders: [
         {
-          goodsCategory: '',
-          goodsName: '',
-          goodsNum: '',
-          goodsPrice: '',
-          goodsTotal: '',
-          goodsUnit: '',
-          goodsStorage: '',
-          operatorUser: '',
+          supplier: '',
+          category: '',
+          goods_name: '',
+          apply_number: '',
+          unit: '',
+          estimated_price: '',
+          estimated_money: '',
+          applicant: '',
           purpose: '',
-          remark: ''
+          apply_comment: '',
+          apply_datetime:'',
         }
       ],
       allOrders: [
@@ -203,6 +204,11 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+         this.$http.post('${config.httpBaseUrl}/medicine/add_in_storage_receipt/',{
+           orders:this.orders
+         }).then(res=>{
+            this.options=res.data.allgoods;
+          })
         this.$message({
           type: 'success',
           message: '提交成功!'

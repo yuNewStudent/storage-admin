@@ -128,6 +128,10 @@ export default {
   	return {
       currentPage:4,
       goods:"",
+      selectUsers: {
+        index: '',
+        allgoods: []
+      },
       messageBoxType: {
         add: '商品管理>新增',
         measurement: '商品管理>计量单位设置',
