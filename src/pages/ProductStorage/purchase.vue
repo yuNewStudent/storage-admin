@@ -8,9 +8,14 @@
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="name" label="采购订单号"></el-table-column><el-table-column prop="date" label="供应商"></el-table-column>
+        <el-table-column prop="name" label="采购订单号">
+          <el-input></el-input>
+        </el-table-column>
+        <el-table-column prop="name" label="商品名称">
+          <el-input></el-input>
+        </el-table-column>
+        <el-table-column prop="date" label="供应商"></el-table-column>
         <el-table-column prop="date" label="商品类别"></el-table-column>
-        <el-table-column prop="name" label="商品名称"></el-table-column>
         <el-table-column prop="name" label="商品规格"></el-table-column>
         <el-table-column prop="address" label="单位"></el-table-column>
         <el-table-column prop="address" label="所在仓库"></el-table-column>
@@ -91,7 +96,12 @@ export default {
     };
   },
   components: {},
+  mounted() {
+  },
   methods: {
+     allinbound:function(){
+        
+    },
     buttonModifythe: function() {
       if (this.show == false) {
         this.show = true;

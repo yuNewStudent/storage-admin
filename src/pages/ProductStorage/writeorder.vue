@@ -19,7 +19,7 @@
           </el-table-column>
           <el-table-column label='供应商'>
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].supplier" placeholder="请选择">
+              <el-select v-model="orders[scope.$index].supplier" filterable placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -31,7 +31,7 @@
           </el-table-column>
           <el-table-column label="商品类别">
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].category" placeholder="请选择">
+              <el-select v-model="orders[scope.$index].category" filterable placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -43,7 +43,7 @@
           </el-table-column>
           <el-table-column label="商品名称">
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].goods_name" placeholder="请选择">
+              <el-select v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"

@@ -48,6 +48,7 @@
         :data="orders"
         border
         size='small'
+        highlight-current-row
         style="width: 100%">
         <el-table-column
           type="selection"
@@ -67,9 +68,11 @@
         </el-table-column>
         <el-table-column label="状态" prop='status'>
         </el-table-column>
-        <el-table-column label="操作" scope="scope">
-          <el-button @click="outordetails(scope.$index, scope.row)">详情</el-button>
-          <el-button>回退</el-button>
+        <el-table-column label="操作" >
+          <template slot-scope="scope">
+               <el-button @click="outordetails(scope.$index, scope.row)">详情</el-button>
+          <el-button @click="outorfallback(scope.$index, scope.row)">回退</el-button>
+          </template>
         </el-table-column>
         <!-- <el-table-column label="单位" prop='goodsCategory'>
         </el-table-column>
@@ -97,7 +100,7 @@
       
       <h5>订单详情：</h5>
       <el-table
-        :data="orders"
+        :data="data"
         border
         size='small'
         style="width: 100%">
@@ -140,6 +143,7 @@ export default {
       currentPage:4,
       date: '',
       data:[],
+      reason_return:"",
       options: [
         {
           value: "选项1",
@@ -163,19 +167,18 @@ export default {
         }
       ],
       receipt_no:"",
-      value1:"",
+      value:"",
       orders: [
         {
-          goodsCategory: '哈德',
-          goodsName: '哈德',
-          goodsNum: '哈德',
-          goodsUnit: '哈德',
-          goodsStorage: '哈德',
-          operatorUser: '哈德',
-          purpose: '哈德',
-          remark: '哈德'
+          receipt_no: '哈德',
+          supplier: '哈德',
+          applicant: '哈德',
+          apply_datetime: '哈德',
+          status: '哈德',
         }
       ],
+      starttime:"",
+      endtime:"",
       ordersStatus: [
         {
           label: '已审核',
@@ -198,10 +201,38 @@ export default {
           this.orders=res.data.allgoods;
         })
       },
+      //详情
       outordetails(index, row){
+        console.log(index)
       this.receipt_no=row.receipt_no;
        this.$http.post('${config.httpBaseUrl}/medicine/get_inStorageReceipt/',{
             receipt_no: this.receipt_no,
+          }).then(res=>{
+          this.data=res.data.allgoods;
+        })
+      },
+      //提交审核
+      goodsubmit(){
+        this.$http.post('${config.httpBaseUrl}/medicine/get_goods/',{
+            receipt_no: this.receipt_no,
+          }).then(res=>{
+          this.data=res.data.allgoods;
+        })
+      },
+      //回退
+      outorfallback(index, row){
+        var receipt_no=receipt_no;
+        var goods_name=goods_name;
+        var reason_return=this.reason_return;
+        var auditor=auditor;
+        var date=new Date();
+         let times=this.moment(date[0]).format("YYYY-MM-DD HH:mm:ss");
+        this.$http.post('${config.httpBaseUrl}/medicine/get_inStorageReceipt/',{
+            receipt_no: receipt_no,
+            goods_name:goods_name,
+            reason_return:reason_return,
+            auditor:auditor,
+            audited_datetime:date,
           }).then(res=>{
           this.data=res.data.allgoods;
         })
@@ -212,9 +243,18 @@ export default {
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
       },
+      //日期查询
       pickDate (date) {
-        console.log(this.date)
+        let time=date;
+        let starttime=this.moment(time[0]).format("YYYY-MM-DD HH:mm:ss");
+        let endtime=this.moment(time[1]).format("YYYY-MM-DD HH:mm:ss");
+        this.starttime=starttime;
+        this.endtime=endtime;
+        console.log(this.starttime,this.endtime)
       },
+      handleOutput(){
+        
+      }
   }
 }
 </script>
