@@ -9,7 +9,7 @@
     <el-main class="writeorder_list">
       <div class="write_order_wrapper">
         <el-table
-          :data="tableData"
+          :data="orders"
           border
           size='small'
           style="width: 100%">
@@ -21,7 +21,7 @@
             <template slot-scope="scope">
               <el-select v-model="orders[scope.$index].supplier" filterable placeholder="请选择">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in suppliers"
                   :key="item.value"
                   :label="item.label"
                   :value="item.label">
@@ -33,7 +33,7 @@
             <template slot-scope="scope">
               <el-select v-model="orders[scope.$index].category" filterable placeholder="请选择">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in categories"
                   :key="item.value"
                   :label="item.label"
                   :value="item.label">
@@ -45,7 +45,7 @@
             <template slot-scope="scope">
               <el-select v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in goodses"
                   :key="item.value"
                   :label="item.label"
                   :value="item.label">
@@ -74,18 +74,6 @@
               <el-input v-model="orders[scope.$index].estimated_money"></el-input>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="所在仓库">
-            <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].goodsStorage" placeholder="请选择">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.label">
-                </el-option>
-              </el-select>
-            </template>
-          </el-table-column> -->
           <el-table-column label="申请人">
             <template slot-scope="scope">
               <el-input v-model="orders[scope.$index].applicant"></el-input>
@@ -101,14 +89,13 @@
               <el-input v-model="orders[scope.$index].apply_comment"></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="回退理由">
+          <el-table-column label="回退理由" v-if='isEditor'>
           </el-table-column>
         </el-table>
         <el-row class='add_row'>
           <el-button type='primary' @click='addRow'>新增行</el-button>
         </el-row>
       </div>
-      
     </el-main>
   </div>
 </template>
@@ -118,8 +105,19 @@ import outputTable from '@/assets/js/outputTable'
 export default {
   data() {
     return {
-      tableData: [{}],
-      options: [
+      // 供应商
+      suppliers: [
+        {
+          value: "选项1",
+          label: "四川省经济贸易公司"
+        },
+        {
+          value: "选项2",
+          label: "四川棋照科技有限公司"
+        }
+      ],
+      // 商品类别
+      categories: [
         {
           value: "选项1",
           label: "四川省经济贸易公司"
@@ -131,18 +129,24 @@ export default {
         {
           value: "选项3",
           label: "攀枝花攀钢公司"
+        }
+      ],
+      // 商品名称
+      goodses: [
+        {
+          value: "选项1",
+          label: "四川省经济贸易公司"
         },
         {
-          value: "选项4",
-          label: "阿里巴巴有限公司"
+          value: "选项2",
+          label: "四川棋照科技有限公司"
         },
         {
-          value: "选项5",
-          label: "北京经贸技校公司"
+          value: "选项3",
+          label: "攀枝花攀钢公司"
         }
       ],
       writeDate: '',
-      SupplyCompany: '',
       orders: [
         {
           supplier: '',
@@ -158,18 +162,7 @@ export default {
           apply_datetime:'',
         }
       ],
-      allOrders: [
-        {
-          date: "哈哈哈",
-          name: "王小虎",
-          address: "1518 弄"
-        },
-        {
-          date: "话啊哈哈哈",
-          name: "王小虎",
-          address: "1517 弄"
-        }
-      ]
+      isEditor: false
     };
   },
   components: {},
@@ -180,21 +173,18 @@ export default {
     handleOut () {
       outputTable(tableData)
     },
-    handleCheck () {
-
-    },
     addRow () {
-      this.tableData.push({})
       this.orders.push(
         {
-          goodsCategory: '',
-          goodsName: '',
-          goodsNum: '',
-          goodsPart: '',
-          goodsStorage: '',
-          operatorUser: '',
+          supplier: '',
+          category: '',
+          apply_numberapply_number: '',
+          unit: '',
+          estimated_price: '',
+          estimated_money: '',
+          applicant: '',
           purpose: '',
-          remark: ''
+          apply_comment: ''
         }
       )
     },
@@ -204,11 +194,14 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-         this.$http.post('${config.httpBaseUrl}/medicine/add_in_storage_receipt/',{
-           orders:this.orders
-         }).then(res=>{
-            this.options=res.data.allgoods;
-          })
+        let apply_datetime = this.moment(new Date()).format('YYYY-MM-DD')
+        this.orders.map(item => {
+          item.apply_datetime = apply_datetime
+        })
+        //  this.$http.post('${config.httpBaseUrl}/medicine/add_in_storage_receipt/',{
+        //    this.orders
+        //  }).then(res=>{
+        //   })
         this.$message({
           type: 'success',
           message: '提交成功!'
@@ -220,6 +213,12 @@ export default {
         })         
       })
     }
+  },
+  created () {
+    // 如果是修改订单
+    // if (this.$route.params.订单号) {
+    //   this.isEditor = true
+    // }
   }
 };
 </script>
