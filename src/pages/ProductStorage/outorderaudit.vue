@@ -39,7 +39,7 @@
         </el-date-picker>
       </div>
       <div class="buttons">
-        <el-button type='primary' size='medium'>提交</el-button>
+        <el-button type='primary' size='medium' @click="goodsubmit">提交</el-button>
         <el-button type='primary' size='medium' @click='handleOutput'>导出</el-button>
       </div>
     </el-header>
@@ -57,18 +57,18 @@
           type="index"
           width="55">
         </el-table-column>
-        <el-table-column label="订单号" prop='goodsCategory'>
+        <el-table-column label="订单号" prop='receipt_no'>
         </el-table-column>
-        <el-table-column label="供应商" prop='goodsCategory'>
+        <el-table-column label="供应商" prop='supplier'>
         </el-table-column>
-        <el-table-column label="申请人" prop='goodsCategory'>
+        <el-table-column label="申请人" prop='applicant'>
         </el-table-column>
-        <el-table-column label="申请时间" prop='goodsCategory'>
+        <el-table-column label="申请时间" prop='apply_datetime'>
         </el-table-column>
-        <el-table-column label="状态" prop='goodsCategory'>
+        <el-table-column label="状态" prop='status'>
         </el-table-column>
-        <el-table-column label="操作" prop='goodsCategory'>
-          <el-button>详情</el-button>
+        <el-table-column label="操作" scope="scope">
+          <el-button @click="outordetails(scope.$index, scope.row)">详情</el-button>
           <el-button>回退</el-button>
         </el-table-column>
         <!-- <el-table-column label="单位" prop='goodsCategory'>
@@ -109,24 +109,24 @@
           type="index"
           width="55">
         </el-table-column>
-        <el-table-column label="商品类型" prop='goodsCategory'>
+        <el-table-column label="商品类型" prop='category'>
         </el-table-column>
-        <el-table-column label='商品名称' prop='goodsCategory'>
+        <el-table-column label='商品名称' prop='goods_name'>
         </el-table-column>
-        <el-table-column label="单位" prop='goodsCategory'>
+        <el-table-column label="单位" prop='unit'>
         </el-table-column>
-        <el-table-column label="申请数量" prop='goodsCategory'>
+        <el-table-column label="申请数量" prop='apply_number'>
         </el-table-column>
-        <el-table-column label="预估单价" prop='goodsCategory'>
+        <el-table-column label="预估单价" prop='estimated_price'>
         </el-table-column>
-        <el-table-column label="预估总价" prop='goodsCategory'>
+        <el-table-column label="预估总价" prop='estimated_money'>
         </el-table-column>
-        <el-table-column label="用途" prop='goodsCategory'>
+        <el-table-column label="用途" prop='purpose'>
         </el-table-column>
-        <el-table-column label="申请人备注" prop='goodsCategory'>
+        <el-table-column label="申请人备注" prop='apply_comment'>
         </el-table-column>
-        <el-table-column label="回退理由" prop='goodsCategory'>
-          <el-input></el-input>
+        <el-table-column label="回退理由">
+          <el-input v-model="reason_return"></el-input>
         </el-table-column>
       </el-table>
     </el-main>
@@ -139,6 +139,7 @@ export default {
     return {
       currentPage:4,
       date: '',
+      data:[],
       options: [
         {
           value: "选项1",
@@ -161,6 +162,7 @@ export default {
           label: "北京经贸技校公司"
         }
       ],
+      receipt_no:"",
       value1:"",
       orders: [
         {
@@ -188,6 +190,22 @@ export default {
     }
   },
   methods:{
+    //查询所有的订单
+      allaudit(){
+        this.$http.post('${config.httpBaseUrl}/medicine/get_inStorageReceipt/',{
+            all: 1,
+          }).then(res=>{
+          this.orders=res.data.allgoods;
+        })
+      },
+      outordetails(index, row){
+      this.receipt_no=row.receipt_no;
+       this.$http.post('${config.httpBaseUrl}/medicine/get_inStorageReceipt/',{
+            receipt_no: this.receipt_no,
+          }).then(res=>{
+          this.data=res.data.allgoods;
+        })
+      },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
@@ -196,7 +214,7 @@ export default {
       },
       pickDate (date) {
         console.log(this.date)
-      }
+      },
   }
 }
 </script>

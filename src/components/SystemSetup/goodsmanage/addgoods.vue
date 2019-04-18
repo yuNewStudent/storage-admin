@@ -151,8 +151,8 @@ export default {
         this.options=res.data.allgoods;
       })
     },
-    add(block){
-       if (block) {
+    add(blo){
+       if (blo) {
          console.log(this.goodsInfo)
         // 信息不能为空
         for (var k in this.goodsInfo) {

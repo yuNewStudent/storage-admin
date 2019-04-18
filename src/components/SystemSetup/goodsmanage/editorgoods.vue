@@ -21,14 +21,14 @@
                 :value="item.value">
               </el-option>
             </el-select>
-            <label for=""><span>*</span>规格型号:</label>
+            <!-- <label for=""><span>*</span>规格型号:</label>
             <el-input
               size='small'
-              v-model='goodsInfo.unit'></el-input>
-            <label for=""><span>*</span>商品编码:</label>
+              v-model='goodsInfo.unit'></el-input> -->
+            <!-- <label for=""><span>*</span>商品编码:</label>
             <el-input
               size='small'
-               v-model='goodsInfo.goodsCode'></el-input>
+               v-model='goodsInfo.goodsCode'></el-input> -->
             <label for=""><span>*</span>所在货位:</label>
             <el-select
               v-model="goodsInfo.goodsStorage"
