@@ -39,7 +39,7 @@
         <el-button type='primary' size='small' @click='handleOutput'>导出</el-button>
       </el-header>
       <el-table
-        :data="orders"
+        :data="ordersTable"
         border
         size='small'
         style="width: 100%">
@@ -51,19 +51,28 @@
           type="index"
           width="55">
         </el-table-column>
-        <el-table-column label="订单号" prop='goodsCategory'>
+        <el-table-column label="订单号" prop='receipt_no'>
         </el-table-column>
-        <el-table-column label="供应商" prop='goodsCategory'>
+        <el-table-column label="供应商" prop='supplier'>
         </el-table-column>
-        <el-table-column label="申请人" prop='goodsCategory'>
+        <el-table-column label="申请人" prop='applicant'>
         </el-table-column>
-        <el-table-column label="申请时间" prop='goodsCategory'>
+        <el-table-column label="申请时间" prop='apply_datetime'>
         </el-table-column>
-        <el-table-column label="状态" prop='goodsCategory'>
+        <el-table-column label="状态" prop='status'>
         </el-table-column>
-        <el-table-column label="操作" prop='goodsCategory'>
-          <el-button>详情</el-button>
-          <el-button>修改</el-button>
+        <el-table-column
+          label="操作"
+          prop='goodsCategory'
+          width="180">
+          <template slot-scope="scope">
+            <el-button 
+              size='mini'
+              @click='handleOrderInfo(scope.row)'>详情</el-button>
+            <el-button
+              size='mini'
+              @click='handleOrderEditor(scope.row)'>修改</el-button>
+          </template>
         </el-table-column>
       </el-table>
       <el-pagination
@@ -78,36 +87,31 @@
 
       <h5>订单详情：</h5>
       <el-table
-        :data="orders"
+        :data="ordersInfo"
         border
         size='small'
         style="width: 100%">
         <el-table-column
-          type="selection"
-          width="55">
-        </el-table-column>
-        <el-table-column
           type="index"
           width="55">
         </el-table-column>
-        <el-table-column label='商品名称' prop='goodsCategory'>
+        <el-table-column label='商品类型' prop='category'>
         </el-table-column>
-        <el-table-column label="商品类型" prop='goodsCategory'>
+        <el-table-column label="商品名称" prop='goods_name'>
         </el-table-column>
-        <el-table-column label="单位" prop='goodsCategory'>
+        <el-table-column label="单位" prop='unit'>
         </el-table-column>
-        <el-table-column label="申请数量" prop='goodsCategory'>
+        <el-table-column label="申请数量" prop='apply_number'>
         </el-table-column>
-        <el-table-column label="预估单价" prop='goodsCategory'>
+        <el-table-column label="预估单价" prop='estimated_price'>
         </el-table-column>
-        <el-table-column label="预估总价" prop='goodsCategory'>
+        <el-table-column label="预估总价" prop='estimated_money'>
         </el-table-column>
-        <el-table-column label="用途" prop='goodsCategory'>
+        <el-table-column label="用途" prop='purpose'>
         </el-table-column>
-        <el-table-column label="申请人备注" prop='goodsCategory'>
+        <el-table-column label="申请人备注" prop='apply_comment'>
         </el-table-column>
-        <el-table-column label="回退理由" prop='goodsCategory'>
-          <el-input></el-input>
+        <el-table-column label="回退理由" prop='reason_return'>
         </el-table-column>
       </el-table>
     </el-main>
@@ -158,34 +162,87 @@ export default {
           label: "北京经贸技校公司"
         }
       ],
-      ordersTables: [
+      ordersInfo: [
         {
-          goodsCategory: '',
-          goodsName: '',
-          goodsNum: '',
-          goodsUnit: '',
-          goodsStorage: '',
-          goodsPar: '',
-          orderCode: '',
-          writeDate: '',
-          operatorUser: '',
-          purpose: '',
-          remark: '',
-          status: ''
+          category: '商品类别',
+          goods_name: '商品名称',
+          unit: '个',
+          apply_number: 10,
+          estimated_price: 2.3,
+          estimated_money: 23,
+          purpose: '用于治疗感冒',
+          apply_comment: '申请人备注',
+          reason_return: '审核不通过原因'
+        },
+        {
+          category: '商品类别',
+          goods_name: '商品名称',
+          unit: '个',
+          apply_number: 10,
+          estimated_price: 2.3,
+          estimated_money: 23,
+          purpose: '用于治疗感冒',
+          apply_comment: '申请人备注',
+          reason_return: '审核不通过原因'
+        }
+      ],
+      ordersTable: [
+        {
+          "receipt_no": "123",
+          "supplier": "供货商单位",
+          "applicant": "申请人",
+          "apply_datetime": "2019-4-16 10:00:00",
+          "status": "待审核"
+        },
+        {
+          "receipt_no": "456",
+          "supplier": "供货商单位",
+          "applicant": "申请人",
+          "apply_datetime": "2019-4-16 10:00:00",
+          "status": "已审核"
         }
       ]
     }
   },
   methods: {
+    // 导出表单
     handleOutput () {
       outputTable (this.ordersTables)
     },
+
+    // 翻页
     handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+    // 获取订单详情
+    handleOrderInfo (row) {
+      console.log(row.receipt_no)
+      // this.$http.post(`${config.httpBaseUrl}/medicine/detail_inStorageReceipt/`, {
+      //   receipt_no: row.receipt_no
+      // }).then(res => {
+      // console.log(res)
+      // this.ordersInfo = res.data
+      // })
+    },
+    // 获取所有订单列表
+    getOders () {
+      // this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, {
+      //   all: True
+      // }).then(res => {
+      // console.log(res)
+      // this.ordersTable = res.data
+      // })
+    },
+    // 修改错误订单
+    handleOrderEditor (row) {
+
+    }
+  },
+  created () {
+    this.getOders()
   }
 }
 </script>

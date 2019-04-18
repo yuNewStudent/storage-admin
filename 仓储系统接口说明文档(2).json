@@ -1,0 +1,615 @@
+##################################################
+1、系统管理——人员管理
+1）部门设置——添加部门
+接口：/man/add_department/
+接口请求：
+{
+    "name":"研发部"
+}
+2）部门设置——获取所有部门
+接口：/man/get_department/
+
+返回数组：
+[
+    {
+		"id":0,
+        "name":"研发部"
+    },
+    {
+		"id":1,
+        "name":"销售部"
+    }
+]
+3）部门设置：删除部门
+接口：/man/del_department/
+接口请求：
+{
+    "name":"研发部"
+}
+	
+3）添加人员
+接口：/man/add_employee/
+接口请求：
+{
+    "name":"",
+    "department":"",
+    "phone":"",
+    "email":"",
+    "is_leader": 0
+}
+4）删除人员
+接口：/man/del_employee/
+接口请求：
+{
+    "name":"",
+    "email":""
+}
+5）修改人员
+接口：/man/upd_employee/
+接口请求：
+{
+    "name":"",
+    "department":"",
+    "phone":"",
+    "email":"",
+    "is_leader": 0
+}
+###说明：邮箱是不可变的
+6）查询所有的员工
+接口：/man/get_employee/
+返回数组：
+[
+    {
+        "name":"",
+        "department": "",
+        "phone": "",
+        "email": "",
+        "is_leader": 0
+    },
+    {
+        "name":"",
+        "department": "",
+        "phone": "",
+        "email": "",
+        "is_leader": 0
+    }
+    ]
+7）根据姓名查询员工
+接口：/man/query_employee/
+接口请求：
+{
+    "name":"xiaowang"
+}
+返回数组：
+[
+    {
+        "name":"xiaowang",
+        "department": "",
+        "phone": "",
+        "email": "",
+        "is_leader": 0
+    },
+    {
+        "name":"xiaowang",
+        "department": "",
+        "phone": "",
+        "email": "",
+        "is_leader": 0
+    }
+    ]
+	
+2、系统管理——商品管理
+1）点击商品管理，查询所有的商品
+接口：/medicine/query_medicine/
+接口请求：
+{
+    "repertory":"",
+    "goods":""
+}
+######说明：查询所有的，repertory和goods 都是空字符串
+返回数组：
+[
+    {
+    "category":"",
+    "name":"",
+    "unit":"",
+    "location":"",
+    "stock_quantity":"",
+    "waring_quantity_min":"",
+    "waring_quantity_max":"",
+    "estimated_price":"",
+    "comment":""
+        
+    },
+    {
+    "category":"",
+    "name":"",
+    "unit":"",
+    "location":"",
+    "stock_quantity":"",
+    "waring_quantity_min":"",
+    "waring_quantity_max":"",
+    "estimated_price":"",
+    "comment":""
+}
+    ]
+2）新增商品
+接口：/medicine/add_medicine/
+接口请求：
+{
+    "category":"",
+    "name":"",
+    "unit":"",
+    "location":"",
+    "stock_quantity":"",
+    "waring_quantity_min":"",
+    "waring_quantity_max":"",
+    "estimated_price":"",
+    "comment":""
+}
+3）删除商品
+接口：/medicine/del_medicine/
+接口请求：
+{
+    "name":""
+}
+4）修改商品
+接口：/medicine/upd_medicine/
+接口请求：
+{
+    "category":"",
+    "name":"",
+    "unit":"",
+    "location":"",
+    "stock_quantity":"",
+    "waring_quantity_min":"",
+    "waring_quantity_max":"",
+    "estimated_price":"",
+    "comment":""
+}
+######说明：name 药品名称不可变
+5）根据仓库名称和商品名称查询商品
+接口：/medicine/query_medicine/
+接口请求：
+{
+    "repertory":"A区",
+    "goods":"阿妈西林"
+}
+返回数组：
+[
+    {
+    "category":"",
+    "name":"",
+    "unit":"",
+    "location":"",
+    "stock_quantity":"",
+    "waring_quantity_min":"",
+    "waring_quantity_max":"",
+    "estimated_price":"",
+    "comment":""
+        
+    },
+    {
+    "category":"",
+    "name":"",
+    "unit":"",
+    "location":"",
+    "stock_quantity":"",
+    "waring_quantity_min":"",
+    "waring_quantity_max":"",
+    "estimated_price":"",
+    "comment":""
+}
+    ]
+
+
+##################################################
+1、产品入库——填写订货单：
+接口：/medicine/add_in_storage_receipt/
+接口请求：
+[
+    {
+        "supplier":"供货商",
+        "category":"商品类别",
+        "goods_name":"商品名称",
+        "apply_number":10,
+        "unit":"个",
+        "estimated_price":2.3,
+        "estimated_money":23,
+        "applicant": "小王",
+        "purpose":"用于治疗感冒",
+        "apply_comment":"",
+        "apply_datetime": "2019-4-16 10:00:00"
+    },
+    {
+        "supplier":"供货商",
+        "category":"商品类别",
+        "goods_name":"商品名称",
+        "apply_number":10,
+        "unit":"个",
+        "estimated_price":2.0,
+        "estimated_money":20,
+        "applicant": "小王",
+        "purpose":"用于治疗感冒",
+        "apply_comment":"",
+        "apply_datetime": "2019-4-16 10:00:00"
+    }
+    ]
+说明：applicant（申请人）是当前登录用户的名称，apply_datetime（申请时间）是当前提交的时间
+2、产品入库——订货单审核
+1）点击订货单审核，查询出所有的订货单：
+接口：/medicine/get_inStorageReceipt/
+接口请求：
+{
+    "all": 1
+}
+返回数组：
+[
+    {
+        "receipt_no":"订货单单号",
+        "supplier":"供货商单位",
+        "applicant":"申请人",
+        "apply_datetime":"2019-4-16 10:00:00",
+        "status":"待审核"
+    },
+    {
+        "receipt_no":"订货单单号",
+        "supplier":"供货商单位",
+        "applicant":"申请人",
+        "apply_datetime":"2019-4-16 10:00:00",
+        "status":"未审核"
+    }
+    ]
+###### status：包含三种状态，未审核，已审核，未通过
+
+2）查询
+接口：/medicine/get_inStorageReceipt/
+接口请求：
+{
+    "all":0,
+    "applicant":"小王",
+    "status":1,
+    "apply_datetime_start":"2019-4-16 10:00:00",
+	"apply_datetime_end":"2019-4-17 10:00:00",
+}
+# 说明：如果某个字段没有输入查询条件，若字段是字符串类型，则传递""；若是数字类型，则传递-1
+# 例如：
+{
+    "all":False,
+    "applicant":"",
+    "status":-1,
+    "apply_datetime_start":"",
+	"apply_datetime_end":"",
+}
+返回数组：
+[
+    {
+        "receipt_no":"订货单单号",
+        "supplier":"供货商单位",
+        "applicant":"小王",
+        "apply_datetime":"2019-4-16 10:00:00",
+        "status":"待审核"
+    },
+    {
+        "receipt_no":"订货单单号",
+        "supplier":"供货商单位",
+        "applicant":"小王",
+        "apply_datetime":"2019-4-16 10:00:00",
+        "status":"待审核"
+    }
+    ]
+3）点击详情
+接口：/medicine/detail_inStorageReceipt/
+请求：
+{
+    "receipt_no":"I201904161053001"
+}
+返回数组：
+[
+    {
+    "category": "商品类别",
+    "goods_name": "商品名称",
+    "unit": "个",
+    "apply_number": 10,
+    "estimated_price": 2.3,
+    "estimated_money": 23,
+    "purpose": "用于治疗感冒",
+    "apply_comment": "申请人备注",
+    "reason_return": "审核不通过原因"
+},
+{
+    "category": "商品类别",
+    "goods_name": "商品名称",
+    "unit": "个",
+    "apply_number": 10,
+    "estimated_price": 2.3,
+    "estimated_money": 23,
+    "purpose": "用于治疗感冒",
+    "apply_comment": "申请人备注",
+    "reason_return": "审核不通过原因"
+}
+]
+
+4）点击回退
+接口请求：/medicine/return_inStorageReceipt/
+请求：
+{
+    
+    "I2019041614402001":[
+    {
+        "receipt_no":"I2019041614402001",
+        "goods_name":"商品名称",
+		"reason_return":"回退理由",
+		"auditor":"审核人",
+		"audited_datetime":"审核时间"
+    },
+    {
+        "receipt_no":"I2019041614402001",
+        "goods_name":"商品名称",
+		"reason_return":"回退理由",
+		"auditor":"审核人",
+		"audited_datetime":"审核时间"
+    }
+    ]
+}
+返回：页面刷新1），前端刷新，整个页面刷新，否则显示的查询条件和后端直接返回的结果不匹配
+5）批量提交
+接口请求：/medicine/audited_inStorageReceipt/
+请求：
+{
+    
+    "I2019041614402001":[
+    {
+        "receipt_no":"I2019041614402001",
+        "goods_name":"商品名称",
+		"reason_return":"回退理由",
+		"auditor":"审核人",
+		"audited_datetime":"审核时间"
+    },
+    {
+        "receipt_no":"I2019041614402001",
+        "goods_name":"商品名称",
+		"reason_return":"回退理由",
+		"auditor":"审核人",
+		"audited_datetime":"审核时间"
+    }
+    ],
+	"I2019041614402002":[
+    {
+        "receipt_no":"I2019041614402001",
+        "goods_name":"商品名称",
+		"reason_return":"回退理由",
+		"auditor":"审核人",
+		"audited_datetime":"审核时间"
+    },
+    {
+        "receipt_no":"I2019041614402001",
+        "goods_name":"商品名称",
+		"reason_return":"回退理由",
+		"auditor":"审核人",
+		"audited_datetime":"审核时间"
+    }
+    ]
+}
+返回：页面刷新1），前端刷新，整个页面刷新，否则显示的查询条件和后端直接返回的结果不匹配
+
+3、产品入库——历史订货单：
+1）点击历史订货单，查询所有的订货单
+接口：/medicine/history_inStorageReceipt/
+接口请求：
+{
+    "all": True
+}
+返回数组：
+[
+    {
+        "receipt_no":"订货单单号",
+        "supplier":"供货商单位",
+        "applicant":"申请人",
+        "apply_datetime":"2019-4-16 10:00:00",
+        "status":"待审核"
+    },
+    {
+        "receipt_no":"订货单单号",
+        "supplier":"供货商单位",
+        "applicant":"申请人",
+        "apply_datetime":"2019-4-16 10:00:00",
+        "status":"已审核"
+    }
+    ]
+###### status：包含四种状态
+2）查询
+接口：/medicine/history_inStorageReceipt/
+接口请求：
+{
+    "all":False,
+    "applicant":"小王",
+    "status":1,
+    "apply_datetime_start":"2019-4-16 10:00:00",
+	"apply_datetime_end":"2019-4-17 10:00:00",
+}
+# 说明：如果某个字段没有输入查询条件，若字段是字符串类型，则传递""；若是数字类型，则传递-1
+# 例如：
+{
+    "all":False,
+    "applicant":"",
+    "status":-1,
+    "apply_datetime_start":"",
+	"apply_datetime_end":"",
+}
+返回数组：
+[
+    {
+        "receipt_no":"订货单单号",
+        "supplier":"供货商单位",
+        "applicant":"小王",
+        "apply_datetime":"2019-4-16 10:00:00",
+        "status":"待审核"
+    },
+    {
+        "receipt_no":"订货单单号",
+        "supplier":"供货商单位",
+        "applicant":"小王",
+        "apply_datetime":"2019-4-16 10:00:00",
+        "status":"待审核"
+    }
+    ]
+
+3）点击详情
+接口：/medicine/detail_inStorageReceipt/
+请求：
+{
+    "receipt_no":"I201904161053001"
+}
+返回数组：
+[
+    {
+    "category": "商品类别",
+    "goods_name": "商品名称",
+    "unit": "个",
+    "apply_number": 10,
+    "estimated_price": 2.3,
+    "estimated_money": 23,
+    "purpose": "用于治疗感冒",
+    "apply_comment": "申请人备注",
+    "reason_return": "审核不通过原因"
+},
+{
+    "category": "商品类别",
+    "goods_name": "商品名称",
+    "unit": "个",
+    "apply_number": 10,
+    "estimated_price": 2.3,
+    "estimated_money": 23,
+    "purpose": "用于治疗感冒",
+    "apply_comment": "申请人备注",
+    "reason_return": "审核不通过原因"
+}
+]
+4、产品入库——采购入库
+1）输入采购订单号和商品名称，输出采购单上对应的商品详情
+接口请求：/medicine/get_goods/
+请求：
+{
+    "receipt_no":"订货单号",
+    "goods_name": "商品名称"
+}
+返回对象：
+{
+    "receipt_no":"订货单单号",
+    "supplier":"供货商单位",
+    "applicant":"小王",
+    "apply_datetime":"2019-4-16 10:00:00",
+    "status":"待审核",
+    "category": "商品类别",
+    "goods_name": "商品名称",
+    "unit": "个",
+    "apply_number": 10,
+    "estimated_price": 2.3,
+    "estimated_money": 23,
+    "purpose": "用于治疗感冒",
+    "apply_comment": "申请人备注",
+    "reason_return": "审核不通过原因"
+}
+2）入库
+接口请求：/medicine/audited_inStorageReceipt/
+请求：
+[
+    {
+	"receipt_no":"订货单单号",
+    "supplier":"供货商单位",
+    "applicant":"小王",
+    "apply_datetime":"2019-4-16 10:00:00",
+    "status":"待审核",
+    "category": "商品类别",
+    "goods_name": "商品名称",
+    "unit": "个",
+    "apply_number": 10,
+    "estimated_price": 2.3,
+    "estimated_money": 23,
+    "purpose": "用于治疗感冒",
+    "apply_comment": "申请人备注",
+    "reason_return": "审核不通过原因",
+	"goods_name": "商品名称",
+    "barcode":"条形码",
+    "specification":"商品规格",
+    "location":"货位",
+    "in_number":23,
+    "date_manufacture":"生产日期",
+    "shelf_life":"2个月",
+    "expired_time":"到期时间",
+    "expired_time_warning":"到期时间预警",
+	"in_storage_time":"入库时间",
+	"in_storage_person":"入库人"
+},
+{
+	"receipt_no":"订货单单号",
+    "supplier":"供货商单位",
+    "applicant":"小王",
+    "apply_datetime":"2019-4-16 10:00:00",
+    "status":"待审核",
+    "category": "商品类别",
+    "goods_name": "商品名称",
+    "unit": "个",
+    "apply_number": 10,
+    "estimated_price": 2.3,
+    "estimated_money": 23,
+    "purpose": "用于治疗感冒",
+    "apply_comment": "申请人备注",
+    "reason_return": "审核不通过原因"
+	"goods_name": "商品名称",
+    "barcode":"条形码",
+    "specification":"商品规格",
+    "location":"货位",
+    "in_number":23,
+    "date_manufacture":"生产日期",
+    "shelf_life":"2个月",
+    "expired_time":"到期时间",
+    "expired_time_warning":"到期时间预警",
+	"in_storage_time":"入库时间",
+	"in_storage_person":"入库人"
+}
+    ]
+
+	
+	
+	
+	
+	
+	####################################################################
+1、系统管理——仓库管理
+1）新增仓库
+接口：/storage/add_repertory/
+接口请求：
+{
+    "name":"仓库名称",
+    "starge_rack":"货位名称"
+}
+2）删除仓库
+接口：/storage/del_repertory/
+接口请求：
+{
+    "starge_rack":"货位名称"
+}
+3）修改仓库信息
+接口：/storage/upd_repertory/
+{
+    "name":"仓库名称",
+    "starge_rack":"货位名称"
+}
+####说明：starge_rack不可变
+4）获取仓库信息
+接口：/storage/get_repertory/
+返回数组：
+[
+    {
+        "id": "001",
+        "name":"仓库名称",
+        "starge_rack":"货位名称"
+    },
+    {
+        "id": "002",
+        "name":"仓库名称",
+        "starge_rack":"货位名称"
+    }
+    ]
