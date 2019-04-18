@@ -157,7 +157,60 @@ export default {
     }
   },
   components: {
-    MessageBox
+    MessageBox,
+  },
+  mounted(){
+     this.Commodity();
+     this.storage();
+  },
+  methods:{
+    //商品类型
+    Commodity(){
+         this.$http.post('${config.httpBaseUrl}/storage/get_repertory/',{
+          // goods:goods,
+        }).then(res=>{
+        this.allgoods=res.data.allgoods;
+      })
+    },
+    //所在货位
+    storage(){
+       let _this=this;
+      this.$http.post('${config.httpBaseUrl}/storage/get_repertory/').then(res=>{
+        this.options=res.data.allgoods;
+      })
+    },
+    add(blo){
+       if (blo) {
+         console.log(this.goodsInfo)
+        // 信息不能为空
+        for (var k in this.goodsInfo) {
+          if (!this.goodsInfo[k]) {
+            this.$message({
+              message: '信息不能为空',
+              type: 'warning'
+            })
+            return
+          }
+        }
+        this.$http.post('${config.httpBaseUrl}/medicine/add_medicine/',{
+          goodsInfo:this.goodsInfo,
+        }).then(res=>{
+        this.options=res.data.allgoods;
+        })
+        this.$emit('isShowSettingPermission', this.goodsInfo)
+      } else {
+        this.$emit("isShowSettingPermission")
+      }
+    },
+    created () {
+    console.log(this.selectUsers)
+    // this.userInfo = this.selectUsers.userInfo
+    // 获取部门列表
+    // this.$http.post(`${config.httpBaseUrl}/man/get_department/`).then(res => {
+    //   console.log(res)
+    //   this.departmentData = res.data
+    // })
+    }
   }
 }
 </script>

@@ -3,33 +3,41 @@
     <el-header>
         <div class="select_company">
           供货单位:
-          <el-select size='medium' v-model="supplyCompany" placeholder="请选择">
+          <el-select size='medium' 
+              @change='filterOrder'
+              v-model="filter.supplier"
+              placeholder="请选择">
             <el-option
-              v-for="item in options"
+              v-for="item in suppliers"
               :key="item.value"
               :label="item.label"
-              :value="item.label">
+              :value="item.value">
             </el-option>
           </el-select>
         </div>
         <div class="select_date">
           日期选择:
           <el-date-picker
-            v-model="value15"
-            type="monthrange"
+            v-model="apply_datetime"
+            type="daterange"
             range-separator="至"
-            start-placeholder="开始月份"
-            end-placeholder="结束月份">
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            @change='filterOrder'>
           </el-date-picker>
         </div>
         <div class="select_goods_name">
           订单状态:
-          <el-select size='medium' v-model="supplyCompany" placeholder="请选择">
+          <el-select
+              @change='filterOrder'
+              size='medium'
+              v-model="filter.status"
+              placeholder="请选择">
             <el-option
               v-for="item in status"
               :key="item.value"
               :label="item.label"
-              :value="item.label">
+              :value="item.id">
             </el-option>
           </el-select>
         </div>
@@ -120,27 +128,35 @@
 
 <script>
 import outputTable from '@/assets/js/outputTable'
+import filterTable from '@/assets/js/filterTable'
 export default {
   data () {
     return {
-      supplyCompany: '',
+      filter: {
+       supplier: '',
+       status: ''
+      },
+      apply_datetime: [],
       currentPage:4,
-      writeDate: '',
       status: [
         {
           label: '已审核',
+          id: 0
         },
         {
           label: '待审核',
+          id: 1
         },
         {
           label: '未通过',
+          id: 2
         },
         {
-          label: "已入库"
+          label: "已入库",
+          id: 3
         }
       ],
-      options: [
+      suppliers: [
         {
           value: "选项1",
           label: "四川省经济贸易公司"
@@ -189,20 +205,29 @@ export default {
       ordersTable: [
         {
           "receipt_no": "123",
-          "supplier": "供货商单位",
+          "supplier": "四川省经济贸易公司",
           "applicant": "申请人",
-          "apply_datetime": "2019-4-16 10:00:00",
+          "apply_datetime": "2019-4-16",
           "status": "待审核"
         },
         {
           "receipt_no": "456",
-          "supplier": "供货商单位",
+          "supplier": "北京经贸技校公司",
           "applicant": "申请人",
-          "apply_datetime": "2019-4-16 10:00:00",
+          "apply_datetime": "2019-4-16",
           "status": "已审核"
+        },
+        {
+          "receipt_no": "456",
+          "supplier": "北京经贸技校公司",
+          "applicant": "申请人",
+          "apply_datetime": "2019-4-16",
+          "status": "待审核"
         }
       ]
     }
+  },
+  computed: {
   },
   methods: {
     // 导出表单
@@ -239,6 +264,21 @@ export default {
     // 修改错误订单
     handleOrderEditor (row) {
 
+    },
+    
+    // 按照搜索框内容进行筛选
+    filterOrder () {
+      console.log(this.filter)
+      this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, {
+        all: False,
+        applicant: '',
+        status: this.filter.status >= 0 ? this.filter.status : -1,
+        apply_datetime_start: this.apply_datetime.length ? this.moment(this.apply_datetime[0]).format("YYYY-MM-DD") : '',
+        apply_datetime_end: this.apply_datetime.length ? this.moment(this.apply_datetime[1]).format("YYYY-MM-DD") : ''
+      }).then(res => {
+        console.log(res)
+        this.ordersTable = res.data
+      })
     }
   },
   created () {

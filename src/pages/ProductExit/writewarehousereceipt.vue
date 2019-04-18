@@ -12,7 +12,7 @@
     <div style="clear: both;"></div>
     <div class="writewarehousereceipt_list">
       <el-table
-        :data="tableData"
+        :data="orders"
         border
         size='small'
         style="width: 100%">
@@ -20,24 +20,29 @@
           type="index"
           width="55">
         </el-table-column>
-        <el-table-column label="收货单位">
+        <el-table-column label="收货单位" width='200'>
           <template slot-scope="scope">
-            <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
+            <el-select
+              size='mini'
+              v-model="orders[scope.$index].client" placeholder="请选择">
               <el-option
-                v-for="item in options"
+                v-for="item in clients"
                 :key="item.value"
                 :label="item.label"
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-button size="mini">+</el-button>
+            <el-button @click='handleAddCust' size="mini">+</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="商品类别">
+        <el-table-column label="商品类别" width='150'>
           <template slot-scope="scope">
-            <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
+            <el-select
+              size='mini'
+              v-model="orders[scope.$index].category"
+              placeholder="请选择">
               <el-option
-                v-for="item in options"
+                v-for="item in categories"
                 :key="item.value"
                 :label="item.label"
                 :value="item.label">
@@ -45,11 +50,15 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="商品名称">
+        <el-table-column label="商品名称" width='150'>
           <template slot-scope="scope">
-            <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
+            <el-select
+              v-model="orders[scope.$index].goods_name"
+              size='mini'
+              placeholder="请选择"
+              @change='selectGoodsName(orders[scope.$index].goods_name)'>
               <el-option
-                v-for="item in options"
+                v-for="item in goodses"
                 :key="item.value"
                 :label="item.label"
                 :value="item.label">
@@ -59,77 +68,96 @@
         </el-table-column>
         <el-table-column label="单位">
           <template slot-scope="scope">
-            <el-select v-model="orders[scope.$index].goodsPart" placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label">
-              </el-option>
-            </el-select>
+            <el-input 
+              size='mini'
+              v-model="orders[scope.$index].unit"></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="所在仓库">
+        <el-table-column label="所在仓库" width='150'>
           <template slot-scope="scope">
-            <el-select v-model="orders[scope.$index].goodsStorage" placeholder="请选择">
+            <el-select 
+                size='mini'
+                v-model="orders[scope.$index].location" placeholder="请选择">
               <el-option
-                v-for="item in options"
+                v-for="item in allStorage"
                 :key="item.value"
-                :label="item.label"
-                :value="item.label">
+                :label="item.name"
+                :value="item.name">
               </el-option>
             </el-select>
           </template>
         </el-table-column>
         <el-table-column label="出库数量">
           <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].goodsNum"></el-input>
+            <el-input 
+              size='mini'
+              v-model="orders[scope.$index].out_number"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="商品单价">
           <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].goodsNum"></el-input>
+            <el-input 
+              size='mini'
+              v-model="orders[scope.$index].price"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="商品总额">
           <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].goodsNum"></el-input>
+            <el-input 
+              size='mini'
+              v-model="orders[scope.$index].money"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="收货地址">
           <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].remark"></el-input>
+            <el-input 
+              size='mini'
+              v-model="orders[scope.$index].client_address"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="收货人">
           <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].remark"></el-input>
+            <el-input
+              size='mini'
+              v-model="orders[scope.$index].client_contact"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="联系方式">
           <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].remark"></el-input>
+            <el-input
+              size='mini'
+              v-model="orders[scope.$index].client_phone"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="申请人">
           <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].operatorUser"></el-input>
+            <el-input
+              size='mini'
+              v-model="orders[scope.$index].applicant"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="出库用途">
           <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].purpose"></el-input>
+            <el-input
+              size='mini'
+              v-model="orders[scope.$index].purpose"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="备注">
           <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].remark"></el-input>
+            <el-input
+              size='mini'
+              v-model="orders[scope.$index].apply_comment"></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <!-- <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button>删除</el-button>
+            <el-button
+              @click='handleDelOrder(scope.row, scope.$index)'
+              size='mini'>删除</el-button>
           </template>
+        </el-table-column> -->
+        <el-table-column label="回退理由" v-if='isEditor'>
         </el-table-column>
       </el-table>
       <el-row class='add_row'>
@@ -141,45 +169,59 @@
       class="allGoods">
       <h4 class="header">参考数据(实际数据以提交订单时为准)</h4>
       <el-table
-        :data='allgoods'
+        :data='allGoods'
         border>
-        <el-table-column label="商品类别">
+        <el-table-column prop='category' label="商品类别">
         </el-table-column>
-        <el-table-column label="商品名称">
+        <el-table-column prop='name' label="商品名称">
         </el-table-column>
-        <el-table-column label="商品单价">
+        <el-table-column prop='estimated_price' label="商品单价">
         </el-table-column>
-        <el-table-column label="单位">
+        <el-table-column prop='unit' label="单位">
         </el-table-column>
-        <el-table-column label="所在仓库">
+        <el-table-column prop='location' label="所在仓库">
         </el-table-column>
-        <el-table-column label="库存数量">
+        <el-table-column prop='stock_quantity' label="库存数量">
         </el-table-column>
       </el-table>
     </div>
+
+    <change-custom
+      v-if='isShowAddCustom'
+      :type='type'
+      @hideChangeCustom='addCustom'></change-custom>
   </div>
 </template>
 
 <script>
+import ChangeCustom from '@/components/SystemSetup/customermanage/changecustom'
 export default {
   data() {
     return {
       writeDate: '',
       SupplyCompany: '',
+      isShowAddCustom: false,
+      type: '客户管理>新增',
       orders: [
         {
-          goodsCategory: '',
-          goodsName: '',
-          goodsNum: '',
-          goodsPart: '',
-          goodsStorage: '',
-          operatorUser: '',
+          client: '',
+          client_address: '',
+          apply_datetime: '',
+          goods_name: '',
+          location: '',
+          category: '',
+          out_number: '', // 出库数量
+          unit: '',
+          price: '', // 价格
+          money: '', // 总价
+          client_contact: '',
+          client_phone: '',
           purpose: '',
-          remark: ''
-        }
+          apply_comment: ''
+        },
       ],
-      tableData: [{}],
-      options: [
+      // 商品类别
+      categories: [
         {
           value: "选项1",
           label: "四川省经济贸易公司"
@@ -191,45 +233,120 @@ export default {
         {
           value: "选项3",
           label: "攀枝花攀钢公司"
-        },
-        {
-          value: "选项4",
-          label: "阿里巴巴有限公司"
-        },
-        {
-          value: "选项5",
-          label: "北京经贸技校公司"
         }
       ],
-      allGoods: [{}]
-    };
+      // 仓库
+      allStorage: [
+        {
+            id: "001",
+            name:"仓库名称",
+            starge_rack:"货位名称"
+        },
+        {
+            id: "002",
+            name:"仓库名称",
+            starge_rack:"货位名称"
+        }
+      ],
+      // 收货单位
+      clients: [
+        {
+          value: "选项1",
+          label: "四川省经济贸易公司"
+        },
+        {
+          value: "选项2",
+          label: "四川棋照科技有限公司"
+        },
+        {
+          value: "选项3",
+          label: "攀枝花攀钢公司"
+        }
+      ],
+      goodses: [
+        {
+          value: "选项1",
+          label: "四川省经济贸易公司"
+        },
+        {
+          value: "选项2",
+          label: "四川棋照科技有限公司"
+        },
+        {
+          value: "选项3",
+          label: "攀枝花攀钢公司"
+        }
+      ],
+      allGoods: [
+        {
+          category:"商品类别",
+          name: "商品名称",
+          unit: "单位",
+          location: "所在货位",
+          stock_quantity: "库存",
+          waring_quantity_min: 10, // 库存预警最小值
+          waring_quantity_ma: 100, // 库存预警最大值
+          estimated_price: 2.3, // 预估价格
+          comment: "申请人备注"
+        }
+      ],
+      isEditor: false
+    }
   },
-  components: {},
+  components: {
+    ChangeCustom
+  },
   methods: {
+    // 保存提交申请单
     handleSave () {
-      console.log(this.orders)
       this.comfirm()
     },
+    // 导出表格
     handleOut () {
 
     },
-    handleCheck () {
-
+    // 弹出新增客户
+    handleAddCust () {
+      console.log(1)
+      this.isShowAddCustom = true
     },
+    addCustom () {
+      this.isShowAddCustom = false
+    },
+    
+    // 删除填写的商品
+    handleDelOrder (row, index) {
+      this.orders.splice(index, 1)
+    },
+    //新增行
     addRow () {
-      this.tableData.push({})
       this.orders.push(
         {
-          goodsCategory: '',
-          goodsName: '',
-          goodsNum: '',
-          goodsPart: '',
-          goodsStorage: '',
-          operatorUser: '',
-          purpose: '',
-          remark: ''
+          "client": '',
+          "client_address": '',
+          "apply_datetime": '',
+          "goods_name": '',
+          "location": '',
+          "category": '',
+          "out_number": '', // 出库数量
+          "unit": '',
+          "price": '', // 价格
+          "money": '', // 总价
+          "client_contact": '',
+          "client_phone": '',
+          "purpose": '',
+          "apply_comment": ''
         }
       )
+    },
+    //根据输入商品名字，返回对应商品信息
+    selectGoodsName (name) {
+      // this.$http.post(`${config.httpBaseUrl}/medicine/query_goods/`, {
+      //   name
+      // }).then(res => {
+      // console.log(res)
+      // this.allGoods = res.data
+      // })
     },
     // 弹出确认框
     comfirm () {
@@ -238,6 +355,12 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        // 向后台发送订单请求
+        // this.$http.post(`${config.httpBaseUrl}/medicine/add_outStorageReceipt/`, {
+        //   this.orders
+        // }).then(res => {
+        // console.log(res)
+        // })
         this.$message({
           type: 'success',
           message: '提交成功!'
@@ -280,6 +403,9 @@ export default {
 }
 .writewarehousereceipt_list {
   margin-top: 20px;
+  .el-select {
+    width: 130px;
+  }
   .add_row {
     text-align: right;
     margin-top: 20px;
