@@ -9,28 +9,28 @@
       size='small'
       :span-method="arraySpanMethod">
       <el-table-column
-        prop="仓库编号"
+        prop="id"
         label="仓库编号"
         align='center'>
       </el-table-column>
       <el-table-column
         align='center'
-        prop="仓库名称"
+        prop="name"
         label="仓库名称">
       </el-table-column>
       <el-table-column
         align='center'
-        prop="仓库货位"
+        prop="starge_rack"
         label="仓库货位">
       </el-table-column>
       <el-table-column
         align='center'
         label="操作">
         <template slot-scope="scope">
-          <span @click="handleEditorStorage">
+          <span @click="handleEditorStorage(scope.$index, scope.row)">
             <img src="@/assets/icon/系统管理-商品管理/修改IC.png">
           </span>
-          <span @click="handleDelStorage">
+          <span @click="handleDelStorage(scope.$index, scope.row)">
             <img src="@/assets/icon/系统管理-人员管理/删除IC.png">
           </span>
         </template>
@@ -51,7 +51,7 @@
     <del-storage
       :type='messageBoxType.del'
       v-if='isShowDelStorage'
-      @hideDelStorage='delStorage'></del-storage>
+      @hideDelStorage='delStorage' :Deltor="Deltor"></del-storage>
   <change-storage
     :type='messageBoxType.add'
     v-if='isShowAddStorage'
@@ -59,7 +59,8 @@
   <change-storage
   :type='messageBoxType.editorStorage'
   v-if='isShowEditorStorage'
-  @hideChangeStorage='editorStorage'></change-storage>
+  @hideChangeStorage='editorStorage'
+  :editor="editor"></change-storage>
   </div>
 </template>
 
@@ -70,52 +71,28 @@ export default {
   data () {
   	return {
       currentPage:4,
+      Deltor:{
+
+      },
+      editor:{
+
+      },
       tableData3: [
         {
-          仓库编号: '001',
-          仓库名称: 'A区',
-          仓库货位: 'A区1-1'
+          id: '001',
+          name: 'A区',
+          starge_rack: 'A区1-1'
         },
         {
-          仓库编号: '001',
-          仓库名称: 'A区',
-          仓库货位: 'A区1-2'
+          id: '002',
+          name: 'A区',
+          starge_rack: 'A区1-1'
         },
         {
-          仓库编号: '001',
-          仓库名称: 'A区',
-          仓库货位: 'A区2-1'
+          id: '003',
+          name: 'A区',
+          starge_rack: 'A区1-1'
         },
-        {
-          仓库编号: '002',
-          仓库名称: 'B区',
-          仓库货位: 'B区1-1'
-        },
-        {
-          仓库编号: '002',
-          仓库名称: 'B区',
-          仓库货位: 'B区1-2'
-        },
-        {
-          仓库编号: '002',
-          仓库名称: 'B区',
-          仓库货位: 'B区2-1'
-        },
-        {
-          仓库编号: '003',
-          仓库名称: 'C区',
-          仓库货位: 'C区1-1'
-        },
-        {
-          仓库编号: '003',
-          仓库名称: 'C区',
-          仓库货位: 'C区1-2'
-        },
-        {
-          仓库编号: '003',
-          仓库名称: 'C区',
-          仓库货位: 'C区1-3'
-        }
       ],
       messageBoxType: {
         add: '仓库管理>新增',
@@ -135,29 +112,32 @@ export default {
     delStorage () {
       this.isShowDelStorage = false
     },
-    handleDelStorage () {
+    handleDelStorage (index,row) {
+      this.Deltor=row;
       this.isShowDelStorage = true
     },
-    AddStorage () {
+    AddStorage (tableData3) {
+      this.tableData3=tableData3;
       this.isShowAddStorage = false
     },
-    handleEditorStorage () {
+    handleEditorStorage (index,row) {
+      this.editor=row;
       this.isShowEditorStorage = true
     },
     editorStorage () {
       this.isShowEditorStorage = false
     },
     // 列合并
-    // arraySpanMethod ({ row, column, rowIndex, columnIndex }) {
-    //   if (columnIndex === 0) {
-    //     if (row['仓库名称'] === 'A区') {
+    arraySpanMethod ({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0) {
+        if (row['仓库名称'] === 'A区') {
           
-    //       if (rowIndex === 0) {
+          if (rowIndex === 0) {
             
-    //       }
-    //     }
-    //   } 
-    // },
+          }
+        }
+      } 
+    },
      handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },

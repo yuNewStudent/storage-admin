@@ -42,7 +42,7 @@ Axios.interceptors.response.use(
       // router.push({ name: 'login' })
       return Promise.reject(new Error('身份过期'))
     } else {
-      return res
+      return res.data
     }
   }
 )

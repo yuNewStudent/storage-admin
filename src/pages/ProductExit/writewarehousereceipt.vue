@@ -28,8 +28,8 @@
               <el-option
                 v-for="item in clients"
                 :key="item.value"
-                :label="item.label"
-                :value="item.label">
+                :label="item.purchaser"
+                :value="item.purchaser">
               </el-option>
             </el-select>
             <el-button @click='handleAddCust' size="mini">+</el-button>
@@ -44,8 +44,8 @@
               <el-option
                 v-for="item in categories"
                 :key="item.value"
-                :label="item.label"
-                :value="item.label">
+                :label="item.category"
+                :value="item.category">
               </el-option>
             </el-select>
           </template>
@@ -223,16 +223,16 @@ export default {
       // 商品类别
       categories: [
         {
-          value: "选项1",
-          label: "四川省经济贸易公司"
+          id: "001",
+          category: "商品类别"
         },
         {
-          value: "选项2",
-          label: "四川棋照科技有限公司"
+          id: "002",
+          category: "商品类别"
         },
         {
-          value: "选项3",
-          label: "攀枝花攀钢公司"
+          id: "003",
+          category: "商品类别"
         }
       ],
       // 仓库
@@ -251,16 +251,16 @@ export default {
       // 收货单位
       clients: [
         {
-          value: "选项1",
-          label: "四川省经济贸易公司"
+          address: "天府四街1",
+          purchaser: "四川省经济贸易公司"
         },
         {
-          value: "选项2",
-          label: "四川棋照科技有限公司"
+          address: "天府四街1",
+          purchaser: "四川棋照科技有限公司"
         },
         {
-          value: "选项3",
-          label: "攀枝花攀钢公司"
+          address: "天府四街1",
+          purchaser: "攀枝花攀钢公司"
         }
       ],
       goodses: [
@@ -372,6 +372,36 @@ export default {
         })         
       })
     }
+  },
+  created () {
+    // 如果是修改订单
+    // if (this.$route.params.receipt_no) {
+    //   const receipt_no = this.$route.params.receipt_no
+    //   this.isEditor = true
+    //   this.$http.post('${config.httpBaseUrl}/medicine/get_abnormalInReceipt/',{
+    //     receipt_no
+    //   }).then(res=>{
+    //     this.orders = res.data.content
+    //   })
+    // }
+    // 获取所有客户
+    // this.$http.post(`${config.httpBaseUrl}/man/get_client/`, {
+    // 'purchaser': '',
+    // 'address': ''
+    // }).then(res => {
+    //   console.log(res)
+    //   this.clients = res.data.content
+    // })
+    // 获取所有的商品类别
+    // this.$http.post(`${config.httpBaseUrl}/medicine/get_category/`).then(res => {
+    //   console.log(res)
+    //   this.categories = res.data.content
+    // })
+    // 获取所有仓库
+    // this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res => {
+    //   console.log(res)
+    //   this.allStorage = res.data.content
+    // })
   }
 };
 </script>

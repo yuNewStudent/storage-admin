@@ -3,7 +3,7 @@
     <el-header>
       <div class="selectStore">
         申请人:
-        <el-select size="medium" v-model="value" placeholder="请输入经办人">
+        <el-select size="medium" filterable v-model="value" placeholder="请输入经办人">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -14,7 +14,7 @@
       </div>
       <div class="selectStore">
         订单状态:
-        <el-select size="medium" v-model="value" placeholder="全部">
+        <el-select size="medium" filterable v-model="value" placeholder="全部">
           <el-option
             v-for="item in ordersStatus"
             :key="item.label"
@@ -53,19 +53,21 @@
           type="index"
           width="55">
         </el-table-column>
-        <el-table-column label="出库订单编号" prop='goodsCategory'>
+        <el-table-column label="出库订单编号" prop='receipt_no'>
         </el-table-column>
-        <el-table-column label="收货单位" prop='goodsCategory'>
+        <el-table-column label="收货单位" prop='client'>
         </el-table-column>
-        <el-table-column label="申请人" prop='goodsCategory'>
+        <el-table-column label="申请人" prop='applicant'>
         </el-table-column>
-        <el-table-column label="申请时间" prop='goodsCategory'>
+        <el-table-column label="申请时间" prop='apply_datetime'>
         </el-table-column>
-        <el-table-column label="状态" prop='goodsCategory'>
+        <el-table-column label="状态" prop='status'>
         </el-table-column>
         <el-table-column label="操作" prop='goodsCategory'>
-          <el-button>详情</el-button>
-          <el-button>回退</el-button>
+          <template slot-scope="scope">
+              <el-button @click="exitordetails(scope.$index, scope.row)">详情</el-button>
+              <el-button @click="Outbound(scope.$index, scope.row)">回退</el-button>
+          </template>
         </el-table-column>
       </el-table>
       <el-pagination
@@ -79,8 +81,8 @@
       ></el-pagination>
 
       <h5>订单详情：</h5>
-      <el-table
-        :data="tableData"
+       <el-table
+        :data="tableData3"
         border
         size='small'
         style="width: 100%">
@@ -88,89 +90,37 @@
           type="index"
           width="55">
         </el-table-column>
-        <el-table-column label="商品类别">
+        <el-table-column label="商品类别" prop='category'>
         </el-table-column>
-        <el-table-column label="商品名称">
-          <template slot-scope="scope">
-            <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label">
-              </el-option>
-            </el-select>
-          </template>
+        <el-table-column label="商品名称" prop='goods_name'>
         </el-table-column>
-        <el-table-column label="单位">
-          <template slot-scope="scope">
-            <el-select v-model="orders[scope.$index].goodsPart" placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label">
-              </el-option>
-            </el-select>
-          </template>
+        <el-table-column label="单位" prop='unit'>
         </el-table-column>
-        <el-table-column label="所在仓库">
-          <template slot-scope="scope">
-            <el-select v-model="orders[scope.$index].goodsStorage" placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label">
-              </el-option>
-            </el-select>
-          </template>
+        <el-table-column label="所在仓库" prop='location'>
         </el-table-column>
-        <el-table-column label="出库数量">
-          <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].goodsNum"></el-input>
-          </template>
+        <el-table-column label="出库数量" prop='out_number'>
         </el-table-column>
-        <el-table-column label="商品单价">
-          <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].goodsNum"></el-input>
-          </template>
+        <el-table-column label="商品单价" prop='price'>
         </el-table-column>
-        <el-table-column label="商品总额">
-          <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].goodsNum"></el-input>
-          </template>
+        <el-table-column label="商品总额" prop='money'>
         </el-table-column>
-        <el-table-column label="收货地址">
-          <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].remark"></el-input>
-          </template>
+        <el-table-column label="收货地址" prop='client_address'>
         </el-table-column>
-        <el-table-column label="收货人">
-          <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].remark"></el-input>
-          </template>
+        <el-table-column label="收货人" prop='client_contact'>
         </el-table-column>
-        <el-table-column label="联系方式">
-          <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].remark"></el-input>
-          </template>
+        <el-table-column label="联系方式" prop='client_phone'>
         </el-table-column>
-        <el-table-column label="出库用途">
-          <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].purpose"></el-input>
-          </template>
+        <el-table-column label="出库用途" prop='purpose'>
         </el-table-column>
-        <el-table-column label="备注">
-          <template slot-scope="scope">
-            <el-input v-model="orders[scope.$index].remark"></el-input>
-          </template>
+        <el-table-column label="备注" prop='apply_comment'>
         </el-table-column>
         <el-table-column label="回退理由" prop='goodsCategory'>
-          <el-input></el-input>
+           <template slot-scope="scope">
+            <el-input v-model="tableData3[scope.$index].reason_return"></el-input>
+          </template>
         </el-table-column>
       </el-table>
-      <!-- <el-table :data="orders" border size="small" style="width: 100%">
+      <!-- <el-table :data="tableData3" border size="small" style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" width="55"></el-table-column>
         <el-table-column label="商品类别" prop="goodsCategory"></el-table-column>
@@ -205,32 +155,68 @@ export default {
           label: '未通过',
         }
       ],
-      orders: [
+      tableData3:[
         {
-          goodsCategory: "哈德",
-          goodsName: "哈德",
-          goodsNum: "哈德",
-          goodsUnit: "哈德",
-          goodsStorage: "哈德",
-          operatorUser: "哈德",
-          purpose: "哈德",
-          remark: "哈德"
+       goods_name:"商品名称",
+        category: "商品类别",
+        unit: "单位",
+        location: "所在位置",
+        out_number: 10,
+        price: 1.2, 
+        money: 12, 
+        client_address: "收货地址",
+        client_contact: "收货联系人",
+        client_phone: "收货联系电话",
+        purpose: "用途",
+        apply_comment: "申请理由"
         },
         
+      ],
+      orders: [
         {
-          goodsCategory: "哈德",
-          goodsName: "哈德",
-          goodsNum: "哈德",
-          goodsUnit: "哈德",
-          goodsStorage: "哈德",
-          operatorUser: "哈德",
-          purpose: "哈德",
-          remark: "哈德"
-        }
+          receipt_no: "哈德",
+          client: "哈德",
+          client_address: "哈德",
+          applicant: "哈德",
+          apply_datetime: "哈德",
+          status: "哈德",
+          client_contact: "哈德",
+          client_phone: "哈德"
+        },
+        
+         {
+          receipt_no: "哈德",
+          client: "哈德",
+          client_address: "哈德",
+          applicant: "哈德",
+          apply_datetime: "哈德",
+          status: "哈德",
+          client_contact: "哈德",
+          client_phone: "哈德"
+        },
       ]
     };
   },
+  mounted(){
+    // this.exitorder();
+  },
    methods: {
+     //请求所有的
+     exitorder(){
+            this.$http.post('${config.httpBaseUrl}/medicine/get_outStorageReceipt/',{
+               "all": 1,
+            }).then(res=>{
+              this.orders=res.tableData3;
+            });
+        },
+        //详情
+        exitordetails(index,row){
+            this.$http.post('${config.httpBaseUrl}/medicine/detail_outStorageReceipt/',{
+               receipt_no:row.receipt_no,
+            }).then(res=>{
+              this.tableData3=res.tableData3;
+            }); 
+        },
        handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },

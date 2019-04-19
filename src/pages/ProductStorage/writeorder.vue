@@ -19,31 +19,31 @@
           </el-table-column>
           <el-table-column label='供应商'>
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].supplier" placeholder="请选择">
+              <el-select v-model="orders[scope.$index].supplier" filterable placeholder="请选择">
                 <el-option
                   v-for="item in suppliers"
                   :key="item.value"
-                  :label="item.label"
-                  :value="item.label">
+                  :label="item.supplier"
+                  :value="item.supplier">
                 </el-option>
               </el-select>
             </template>
           </el-table-column>
           <el-table-column label="商品类别">
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].category" placeholder="请选择">
+              <el-select v-model="orders[scope.$index].category" filterable placeholder="请选择">
                 <el-option
                   v-for="item in categories"
                   :key="item.value"
-                  :label="item.label"
-                  :value="item.label">
+                  :label="item.category"
+                  :value="item.category">
                 </el-option>
               </el-select>
             </template>
           </el-table-column>
           <el-table-column label="商品名称">
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].goods_name" placeholder="请选择">
+              <el-select v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
                 <el-option
                   v-for="item in goodses"
                   :key="item.value"
@@ -89,7 +89,7 @@
               <el-input v-model="orders[scope.$index].apply_comment"></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="回退理由" v-if='isEditor'>
+          <el-table-column label="回退理由" v-if='isEditor' prop='reason_return'>
           </el-table-column>
         </el-table>
         <el-row class='add_row'>
@@ -108,27 +108,27 @@ export default {
       // 供应商
       suppliers: [
         {
-          value: "选项1",
-          label: "四川省经济贸易公司"
+          address: "供货商地址",
+          supplier: "四川省经济贸易公司"
         },
         {
-          value: "选项2",
-          label: "四川棋照科技有限公司"
+          address: "供货商地址",
+          supplier: "四川棋照科技有限公司"
         }
       ],
       // 商品类别
       categories: [
         {
-          value: "选项1",
-          label: "四川省经济贸易公司"
+          id: "001",
+          category: "商品类别"
         },
         {
-          value: "选项2",
-          label: "四川棋照科技有限公司"
+          id: "002",
+          category: "商品类别"
         },
         {
-          value: "选项3",
-          label: "攀枝花攀钢公司"
+          id: "003",
+          category: "商品类别"
         }
       ],
       // 商品名称
@@ -159,7 +159,7 @@ export default {
           applicant: '',
           purpose: '',
           apply_comment: '',
-          apply_datetime:'',
+          reason_return: '',
         }
       ],
       isEditor: false
@@ -215,9 +215,29 @@ export default {
     }
   },
   created () {
-    if (this.$route.params.receipt_no) {
-      this.isEditor = true
-    }
+    // 如果是修改订单
+    // if (this.$route.params.receipt_no) {
+    //   const receipt_no = this.$route.params.receipt_no
+    //   this.isEditor = true
+    //   this.$http.post('${config.httpBaseUrl}/medicine/get_abnormalInReceipt/',{
+    //     receipt_no
+    //   }).then(res=>{
+    //     this.orders = res.data.content
+    //   })
+    // }
+    // 获取所有的商品类别
+    // this.$http.post(`${config.httpBaseUrl}/medicine/get_category/`).then(res => {
+    //   console.log(res)
+    //   this.categories = res.data.content
+    // })
+    // 获取所有供应商
+    // this.$http.post(`${config.httpBaseUrl}/man/get_supplier/`, {
+    // supplier: '',
+    // address: ''
+    // }).then(res => {
+    //   console.log(res)
+    //   this.suppliers = res.data.content
+    // })
   }
 };
 </script>
