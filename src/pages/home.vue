@@ -27,12 +27,6 @@ export default {
   },
   created () {
     this.menus = menus
-    // 发送http请求
-    console.log(config)
-    this.$http.get(`${config.httpBaseUrl}/man/add_department/`)
-      .then(res => {
-        console.log(res)
-      })
   },
   components: {
     AppHeader,

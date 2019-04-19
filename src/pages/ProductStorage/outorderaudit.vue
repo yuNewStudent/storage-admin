@@ -227,15 +227,15 @@ export default {
         var auditor=auditor;
         var date=new Date();
          let times=this.moment(date[0]).format("YYYY-MM-DD HH:mm:ss");
-        this.$http.post('${config.httpBaseUrl}/medicine/get_inStorageReceipt/',{
-            receipt_no: receipt_no,
-            goods_name:goods_name,
-            reason_return:reason_return,
-            auditor:auditor,
-            audited_datetime:date,
-          }).then(res=>{
-          this.data=res.data.allgoods;
-        })
+        // this.$http.post('${config.httpBaseUrl}/medicine/get_inStorageReceipt/',{
+        //     receipt_no: receipt_no,
+        //     goods_name:goods_name,
+        //     reason_return:reason_return,
+        //     auditor:auditor,
+        //     audited_datetime:date,
+        //   }).then(res=>{
+        //   this.data=res.data.allgoods;
+        // })
       },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);

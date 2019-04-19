@@ -10,8 +10,8 @@
             <el-option
               v-for="item in suppliers"
               :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :label="item.supplier"
+              :value="item.supplier">
             </el-option>
           </el-select>
         </div>
@@ -47,11 +47,11 @@
         <el-button type='primary' size='small' @click='handleOutput'>导出</el-button>
       </el-header>
       <el-table
-        :data="ordersTable"
+        :data="orders"
         border
         size='small'
         style="width: 100%">
-        <el-table-column
+        <el-table-column label="序号"
           type="selection"
           width="55">
         </el-table-column>
@@ -95,11 +95,11 @@
 
       <h5>订单详情：</h5>
       <el-table
-        :data="ordersInfo"
+        :data="orderInfo"
         border
         size='small'
         style="width: 100%">
-        <el-table-column
+        <el-table-column label="序号"
           type="index"
           width="55">
         </el-table-column>
@@ -158,27 +158,27 @@ export default {
       ],
       suppliers: [
         {
-          value: "选项1",
-          label: "四川省经济贸易公司"
+          address: "供货商地址",
+          supplier: "四川省经济贸易公司"
         },
         {
-          value: "选项2",
-          label: "四川棋照科技有限公司"
+          address: "供货商地址",
+          supplier: "四川棋照科技有限公司"
         },
         {
-          value: "选项3",
-          label: "攀枝花攀钢公司"
+          address: "供货商地址",
+          supplier: "攀枝花攀钢公司"
         },
         {
-          value: "选项4",
-          label: "阿里巴巴有限公司"
+          address: "供货商地址",
+          supplier: "阿里巴巴有限公司"
         },
         {
-          value: "选项5",
-          label: "北京经贸技校公司"
+          address: "供货商地址",
+          supplier: "北京经贸技校公司"
         }
       ],
-      ordersInfo: [
+      orderInfo: [
         {
           category: '商品类别',
           goods_name: '商品名称',
@@ -202,7 +202,7 @@ export default {
           reason_return: '审核不通过原因'
         }
       ],
-      ordersTable: [
+      orders: [
         {
           "receipt_no": "123",
           "supplier": "四川省经济贸易公司",
@@ -232,7 +232,7 @@ export default {
   methods: {
     // 导出表单
     handleOutput () {
-      outputTable (this.ordersTables)
+      outputTable (this.orders)
     },
 
     // 翻页
@@ -249,7 +249,7 @@ export default {
       //   receipt_no: row.receipt_no
       // }).then(res => {
       // console.log(res)
-      // this.ordersInfo = res.data
+      // this.orderInfo = res.data
       // })
     },
     // 获取所有订单列表
@@ -258,31 +258,44 @@ export default {
       //   all: True
       // }).then(res => {
       // console.log(res)
-      // this.ordersTable = res.data
+      // this.orders = res.data
       // })
     },
     // 修改错误订单
     handleOrderEditor (row) {
-
+      this.$router.push({
+        name: 'writeorder', 
+        params: {
+          receipt_no: row.receipt_no
+        }
+      })
     },
     
     // 按照搜索框内容进行筛选
     filterOrder () {
       console.log(this.filter)
-      this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, {
-        all: False,
-        applicant: '',
-        status: this.filter.status >= 0 ? this.filter.status : -1,
-        apply_datetime_start: this.apply_datetime.length ? this.moment(this.apply_datetime[0]).format("YYYY-MM-DD") : '',
-        apply_datetime_end: this.apply_datetime.length ? this.moment(this.apply_datetime[1]).format("YYYY-MM-DD") : ''
-      }).then(res => {
-        console.log(res)
-        this.ordersTable = res.data
-      })
+      // this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, {
+      //   all: False,
+      //   applicant: '',
+      //   status: this.filter.status >= 0 ? this.filter.status : -1,
+      //   apply_datetime_start: this.apply_datetime.length ? this.moment(this.apply_datetime[0]).format("YYYY-MM-DD") : '',
+      //   apply_datetime_end: this.apply_datetime.length ? this.moment(this.apply_datetime[1]).format("YYYY-MM-DD") : ''
+      // }).then(res => {
+      //   console.log(res)
+      //   this.orders = res.data
+      // })
     }
   },
   created () {
     this.getOders()
+    // 获取所有供应商
+    // this.$http.post(`${config.httpBaseUrl}/man/get_supplier/`, {
+    // supplier: '',
+    // address: ''
+    // }).then(res => {
+    //   console.log(res)
+    //   this.suppliers = res.data.content
+    // })
   }
 }
 </script>

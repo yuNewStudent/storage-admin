@@ -1,16 +1,16 @@
 <template>
   <message-box
-    @closeMessageBox='$emit("hideDelCustom")'
+    @closeMessageBox='DelCustom'
     :type='type'
     :btns='btns'>
-    <p class="content">你确定要删除**公司的信息和相关资料吗?<br/>删除后系统不能回复</p>
+    <p class="content">你确定要删除{{selectClient.client.purchaser}}的信息和相关资料吗?<br/>删除后系统不能回复</p>
   </message-box>
 </template>
 
 <script>
 import MessageBox from '@/components/MessageBox'
 export default {
-  props: ['type'],
+  props: ['type', 'selectClient'],
   data () {
     return {
       btns: {
@@ -21,6 +21,11 @@ export default {
   },
   components: {
     MessageBox
+  },
+  methods: {
+    DelCustom (bol) {
+      this.$emit('hideDelCustom', bol)
+    }
   }
 }
 </script>

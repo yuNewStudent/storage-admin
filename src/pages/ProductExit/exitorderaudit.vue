@@ -69,7 +69,7 @@
         <el-table-column label="状态" prop='status'>
         </el-table-column>
         <el-table-column label="操作" prop='goodsCategory'>
-          <template scope="scope">
+          <template slot-scope="scope">
               <el-button @click="exitordetails(scope.$index, scope.row)">详情</el-button>
               <el-button @click="Outbound(scope.$index, scope.row)">回退</el-button>
           </template>

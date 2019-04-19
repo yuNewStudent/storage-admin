@@ -232,7 +232,6 @@ export default {
     handleDeletePerson (index, row) {
       this.selectUser.index = index
       this.selectUser.userInfo = row
-      console.log(this.selectUser)
       this.isShowDelUser = true
     },
     // 删除人员
@@ -243,27 +242,25 @@ export default {
         // 本地删除
         this.users.splice(this.selectUser.index, 1)
         // 服务器删除
-        // this.$http.post(`${config.httpBaseUrl}/man/del_employee/`, {
-        //   name: this.selectUseru.userInfo.name,
-        //   email: this.selectUseru.userInfo.email
-        // }).then(res => {
-        //   console.log(res)
-        // })
+        this.$http.post(`${config.httpBaseUrl}/man/del_employee/`, {
+          name: this.selectUser.userInfo.name,
+          email: this.selectUser.userInfo.email
+        }).then(res => {
+          console.log(res)
+        })
       }
     },
 
     // 权限操作
     handlePermission () {
-      console.log(1)
       this.isShowSettingPermission = true
     },
   },
   created () {
     // 获取人员列表
-    // this.$http.post(`${config.httpBaseUrl}/man/get_employee/`).then(res => {
-    //   console.log(res)
-    //   this.users = res.data
-    // })
+    this.$http.post(`${config.httpBaseUrl}/man/get_employee/`).then(res => {
+      this.users = res.content
+    })
   }
 }
 </script>
