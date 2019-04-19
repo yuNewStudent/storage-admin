@@ -215,10 +215,9 @@ export default {
     }
   },
   created () {
-    // 如果是修改订单
-    // if (this.$route.params.订单号) {
-    //   this.isEditor = true
-    // }
+    if (this.$route.params.receipt_no) {
+      this.isEditor = true
+    }
   }
 };
 </script>

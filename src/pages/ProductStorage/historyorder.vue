@@ -263,7 +263,12 @@ export default {
     },
     // 修改错误订单
     handleOrderEditor (row) {
-
+      this.$router.push({
+        name: 'writeorder', 
+        params: {
+          receipt_no: row.receipt_no
+        }
+      })
     },
     
     // 按照搜索框内容进行筛选

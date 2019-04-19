@@ -65,8 +65,10 @@
         <el-table-column label="状态" prop='goodsCategory'>
         </el-table-column>
         <el-table-column label="操作" prop='goodsCategory'>
-          <el-button>详情</el-button>
-          <el-button>修改</el-button>
+          <template slot-scope="scope">
+            <el-button>详情</el-button>
+            <el-button @click='handleOrderEditor(scope.row)'>修改</el-button>
+          </template>
         </el-table-column>
       </el-table>
       <el-pagination
@@ -182,12 +184,17 @@ export default {
     handleOutput () {
       outputTable (this.ordersTables)
     },
-       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+    handleOrderEditor (row) {
+      // this.$router.push({ path: '/productexit/writewarehousereceipt', params: {
+
+      // } })
+    }
   }
 }
 </script>
