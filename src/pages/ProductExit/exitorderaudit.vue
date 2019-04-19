@@ -3,7 +3,7 @@
     <el-header>
       <div class="selectStore">
         申请人:
-        <el-select size="medium" filterable v-model="value" placeholder="请输入经办人">
+        <el-select size="medium" filterable @click.native="getDivisdon()" v-model="value" placeholder="请输入经办人">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -14,27 +14,31 @@
       </div>
       <div class="selectStore">
         订单状态:
-        <el-select size="medium" filterable v-model="value" placeholder="全部">
+        <el-select size="medium" filterable @click.native="getDivision()"
+     placeholder="全部"  v-model="valuees" >
           <el-option
             v-for="item in ordersStatus"
-            :key="item.label"
+            filterable
+            :key="item.status"
             :label="item.label"
-            :value="item.label"
+            :value="item.status"
           ></el-option>
         </el-select>
       </div>
       <div class="select_date">
         日期选择:
-        <el-date-picker
-          v-model="value15"
-          type="monthrange"
-          range-separator="至"
-          start-placeholder="开始月份"
-          end-placeholder="结束月份">
+         <el-date-picker
+          v-model="value9"
+          type="daterange"
+          start-placeholder="开始日期"
+          value9
+          @change='pickDate'
+          end-placeholder="结束日期"
+          default-value="2010-10-01">
         </el-date-picker>
       </div>
       <div class="buttons">
-        <el-button type="primary" size="medium">提交</el-button>
+        <el-button type="primary" size="medium" @click="Outboundxc">提交</el-button>
         <el-button type="primary" size="medium" @click="handleOutput">导出</el-button>
       </div>
     </el-header>
@@ -44,6 +48,7 @@
         type="expand"
         border
         size='small'
+        @selection-change="handleSelectionChange"
         style="width: 100%">
         <el-table-column
           type="selection"
@@ -147,14 +152,18 @@ export default {
       ordersStatus: [
         {
           label: '已审核',
+          status:0,
         },
         {
           label: '待审核',
+          status:1,
         },
         {
           label: '未通过',
+          status:2,
         }
       ],
+      options:[],
       tableData3:[
         {
        goods_name:"商品名称",
@@ -168,9 +177,24 @@ export default {
         client_contact: "收货联系人",
         client_phone: "收货联系电话",
         purpose: "用途",
-        apply_comment: "申请理由"
+        apply_comment: "",
+        reason_return:"",
         },
-        
+         {
+       goods_name:"商品名称",
+        category: "商品类别",
+        unit: "单位",
+        location: "所在位置",
+        out_number: 10,
+        price: 1.2, 
+        money: 12, 
+        client_address: "收货地址",
+        client_contact: "收货联系人",
+        client_phone: "收货联系电话",
+        purpose: "用途",
+        apply_comment: "",
+        reason_return:"",
+        },
       ],
       orders: [
         {
@@ -194,28 +218,106 @@ export default {
           client_contact: "哈德",
           client_phone: "哈德"
         },
-      ]
+      ],
+      multipleSelection:[],
+      value8:"",
+      value:"",
+      value9:"",
+      valuees:"",
+      starttime:"",
+      endtime:"",
     };
   },
   mounted(){
     // this.exitorder();
   },
    methods: {
-     //请求所有的
-     exitorder(){
-            this.$http.post('${config.httpBaseUrl}/medicine/get_outStorageReceipt/',{
-               "all": 1,
+     getDivisdon(){
+         this.conditions();
+     },
+      //申请人
+     applicant(){
+          this.$http.post('${config.httpBaseUrl}/man/get_all_client/',{
+              all:0,
+              applicant:"",
+              status:this.valuees,
+              apply_datetime_start:this.starttime,
+              apply_datetime_end:this.endtime,
             }).then(res=>{
-              this.orders=res.tableData3;
+              this.options=res.tableData3;
             });
-        },
-        //详情
-        exitordetails(index,row){
-            this.$http.post('${config.httpBaseUrl}/medicine/detail_outStorageReceipt/',{
-               receipt_no:row.receipt_no,
+     },
+     //审核
+       getDivision() {
+        this.conditions();
+      },
+     //s审核
+    //  exitorstate(status){
+    //   console.log(status)
+    //  },
+     //日期选择
+     pickDate(date){
+       let time=date;
+        let starttime=this.moment(time[0]).format("YYYY-MM-DD HH:mm:ss");
+        let endtime=this.moment(time[1]).format("YYYY-MM-DD HH:mm:ss");
+        this.starttime=starttime;
+        this.endtime=endtime;
+        this.conditions();
+     },
+     //条件查询
+     conditions(){
+         this.$http.post('${config.httpBaseUrl}/medicine/get_outStorageReceipt/',{
+              all:0,
+              applicant:this.value,
+              status:this.valuees,
+              apply_datetime_start:this.starttime,
+              apply_datetime_end:this.endtime,
             }).then(res=>{
-              this.tableData3=res.tableData3;
-            }); 
+              // this.orders=res.tableData3;
+            });
+     },
+     //提交审核
+     Outboundxc(){
+       var audited_datetime
+        this.$http.post('${config.httpBaseUrl}/medicine/audited_outStorageReceipt/',{
+              multipleSelection:this.multipleSelection,
+              audited_datetime:audited_datetime,
+               audited_datetime:this.moment(new Date()).format('YYYY-MM-DD')
+            }).then(res=>{
+              // this.orders=res.tableData3;
+            });
+     },
+     handleSelectionChange(val){
+         this.multipleSelection = val;
+     },
+     //请求所有的
+    //  exitorder(){
+    //         this.$http.post('${config.httpBaseUrl}/medicine/get_outStorageReceipt/',{
+    //            "all": 1,
+    //         }).then(res=>{
+    //           this.orders=res.tableData3;
+    //         });
+    //     },
+    //     //详情
+    //     exitordetails(index,row){
+    //         this.$http.post('${config.httpBaseUrl}/medicine/detail_outStorageReceipt/',{
+    //            receipt_no:row.receipt_no,
+    //         }).then(res=>{
+    //           this.tableData3=res.tableData3;
+    //         }); 
+    //     },
+        //回退
+        // Outbound(index,row){
+        //     this.$http.post('${config.httpBaseUrl}/medicine/return_outStorageReceipt/',{
+        //        receipt_no:row.receipt_no,
+        //        tabledata3:this.tableData3,
+        //        auditor:"",
+        //     }).then(res=>{
+        //       this.tableData3=res.tableData3;
+        //     }); 
+        // },
+        handleOutput(){
+         console.log(121);
         },
        handleSizeChange(val) {
         console.log(`每页 ${val} 条`);

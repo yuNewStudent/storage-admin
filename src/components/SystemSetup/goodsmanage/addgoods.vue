@@ -181,7 +181,6 @@ export default {
     },
     add(blo){
        if (blo) {
-         console.log(this.goodsInfo)
         // 信息不能为空
         for (var k in this.goodsInfo) {
           if (!this.goodsInfo[k]) {

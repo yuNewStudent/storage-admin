@@ -250,7 +250,7 @@ export default {
         let endtime=this.moment(time[1]).format("YYYY-MM-DD HH:mm:ss");
         this.starttime=starttime;
         this.endtime=endtime;
-        console.log(this.starttime,this.endtime)
+  
       },
       handleOutput(){
         
