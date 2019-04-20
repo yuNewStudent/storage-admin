@@ -8,17 +8,17 @@
         <el-tab-pane label="基础设置">
           <div class="content_wrapper">
             <label><span>*</span>商品名称:</label>
-            <el-input size='small' v-model='goodsInfo.name'></el-input>
+            <el-input size='small' :disabled="true" v-model='goodsInfo.name'></el-input>
             <label for=""><span>*</span>商品类型:</label>
             <el-select
               v-model='goodsInfo.category'
               placeholder="请选择"
               size='small'>
               <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="item in allgoods"
+                :key="item.category"
+                :label="item.category"
+                :value="item.category">
               </el-option>
             </el-select>
             <!-- <label for=""><span>*</span>规格型号:</label>
@@ -31,28 +31,18 @@
                v-model='goodsInfo.goodsCode'></el-input> -->
             <label for=""><span>*</span>所在货位:</label>
             <el-select
-              v-model="goodsInfo.goodsStorage"
+              v-model="goodsInfo.location"
               placeholder="请选择"
               size='small'>
               <el-option
                 v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                :key="item.starge_rack"
+                :label="item.starge_rack"
+                :value="item.starge_rack">
               </el-option>
             </el-select>
             <label for=""><span>*</span>单位:</label>
-            <el-select
-              v-model="goodsInfo.goodsUnit"
-              placeholder="请选择"
-              size='small'>
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+            <el-input size='small' v-model='goodsInfo.unit'></el-input>
             <label for=""><span>*</span>备注:</label>
             <el-input
               v-model="goodsInfo.comment"
@@ -141,49 +131,52 @@
 <script>
 import MessageBox from '@/components/MessageBox'
 export default {
-  props: ['type'],
+  props: ['type',"Editor"],
   data () {
     return {
       btns: {
         comfirm: '确定',
         cancel: '取消'
       },
+      allgoods:[],
+      allgood:[],
+      options:[],
       goodsInfo: {
-        // name: '',
-        // type: '',
-        // model: '',
-        // code: '',
-        // address: '',
-        // company: '',
-        // GoodsNumWarning: 0,
-        // currentGoodsNum: 0,
-        // price: '',
-        category: '医用物资',
-        name: '阿莫西林',
-        unit:'',
-        location:'',
-        stock_quantity:'',
-        waring_quantity_min:'',
-        waring_quantity_max:'',
-        estimated_price:'',
-        comment:'',
-        // buyTime: '',
-        // productionTime: '',
-        // fullTime: '',
-        // expireTime: '',
-        // expireTimeWarning: '',
-        // lastOutTime: ''
-      }
+        category:"",
+        name:"",
+        unit:"",
+        location:"",
+        stock_quantity:"",
+        waring_quantity_min:"",
+        waring_quantity_max:"",
+        estimated_price:"",
+        comment:"",
+      },
     }
   },
   components: {
     MessageBox
   },
+  created(){
+     this.goodsInfo=this.Editor;
+      this.Commodity();
+     this.storage();
+  },
   methods: {
-      storage(){
+    //商品类型
+    Commodity(){
+         this.$http.post(`${config.httpBaseUrl}/medicine/get_category/`,{
+          // goods:goods,
+        }).then(res=>{
+        this.allgoods=res.content;
+      })
+    },
+    //所在货位
+    storage(){
        let _this=this;
-      this.$http.post('${config.httpBaseUrl}/storage/get_repertory/').then(res=>{
-        this.options=res.data.allgoods;
+      this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res=>{
+        console.log(res)
+        this.options=res.content;
       })
     },
     hideGoodsEditor (bol) {
@@ -198,12 +191,29 @@ export default {
             return
           }
         }
-        this.$http.post('${config.httpBaseUrl}/medicine/upd_medicine/',{
-          goodsInfo:this.goodsInfo,
-        }).then(res=>{
-        this.options=res.data.allgoods;
+         this.$http.post(`${config.httpBaseUrl}/medicine/upd_medicine/`,this.goodsInfo).then(res=>{
+          if(res.status==1){
+              this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
+                 repertory:"",
+                 goods:""
+              }).then(res=>{
+              if(res.status==1){
+                this.allgood=res.content;
+                this.$emit('goodsEditor', this.allgood)
+              }else{
+                return
+              }
+            
+            })
+          }else{
+            this.$message({
+              message: '信息不能为空',
+              type: 'warning'
+            })
+            return
+          }
         })
-        this.$emit('goodsEditor', this.goodsInfo)
+        this.$emit('goodsEditor')
       } else {
         this.$emit("goodsEditor")
       }

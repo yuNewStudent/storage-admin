@@ -78,21 +78,21 @@ export default {
 
       },
       tableData3: [
-        {
-          id: '001',
-          name: 'A区',
-          starge_rack: 'A区1-1'
-        },
-        {
-          id: '002',
-          name: 'A区',
-          starge_rack: 'A区1-1'
-        },
-        {
-          id: '003',
-          name: 'A区',
-          starge_rack: 'A区1-1'
-        },
+        // {
+        //   id: '001',
+        //   name: 'A区',
+        //   starge_rack: 'A区1-1'
+        // },
+        // {
+        //   id: '002',
+        //   name: 'A区',
+        //   starge_rack: 'A区1-1'
+        // },
+        // {
+        //   id: '003',
+        //   name: 'A区',
+        //   starge_rack: 'A区1-1'
+        // },
       ],
       messageBoxType: {
         add: '仓库管理>新增',
@@ -108,7 +108,22 @@ export default {
     DelStorage,
     ChangeStorage
   },
+  mounted(){
+    this.Warehouse();
+  },
   methods: {
+    //仓库管理
+    Warehouse(){
+    this.$http
+        .post(`${config.httpBaseUrl}/storage/get_repertory/`)
+        .then(res => {
+          if (res.status == 1) {
+            this.tableData3 = res.content;
+          } else {
+            return;
+          }
+        });
+    },
     delStorage () {
       this.isShowDelStorage = false
     },

@@ -31,11 +31,11 @@ export default {
      buttondel(bol){
          if(bol){
            if(this.Deltor){
-            this.$http.post('${config.httpBaseUrl}/storage/del_repertory/',{
+            this.$http.post(`${config.httpBaseUrl}/storage/del_repertory/`,{
               starge_rack:this.starge_rack
 
             }).then(res=>{
-            this.$http.post('${config.httpBaseUrl}/storage/get_repertory/').then(res=>{
+            this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res=>{
               var tableData3=res.tableData3;
              this.$emit('hideDelStorage', tableData3)
             // this.options=res.data.allgoods;

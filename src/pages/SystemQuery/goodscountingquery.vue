@@ -34,17 +34,17 @@
       <el-table size='mini' :data="tableData" border style="width: 100%" :cell-style='warningStyle'>
         <el-table-column type='selection'>
         </el-table-column>
-        <el-table-column prop='goodsCategory' label="条形码">
+        <el-table-column prop='barcode' label="条形码">
         </el-table-column>
-        <el-table-column prop='goodsCategory' label="商品类别">
+        <el-table-column prop='category' label="商品类别">
         </el-table-column>
-        <el-table-column prop='goodsName' label="商品名称">
+        <el-table-column prop='name' label="商品名称">
         </el-table-column>
         <el-table-column prop='goodsCode' label="商品编码">
         </el-table-column>
-        <el-table-column prop='goodsModel' label="规格型号">
+        <el-table-column prop='specification' label="规格型号">
         </el-table-column>
-        <el-table-column prop='goodsUnit' label="单位">
+        <el-table-column prop='unit' label="单位">
         </el-table-column>
         <el-table-column prop='goodsStorage' label="所在货位">
         </el-table-column>
@@ -52,12 +52,12 @@
         </el-table-column>
          <el-table-column prop="address" label="盘点库存">
          </el-table-column>
-        <el-table-column prop='price' label="采购单价">
+        <el-table-column prop='supplier' label="采购单价">
         </el-table-column>
         <el-table-column prop="address" label="购入时间"></el-table-column>
-        <el-table-column prop="address" label="生产日期"></el-table-column>
-        <el-table-column prop="address" label="保质期"></el-table-column>
-        <el-table-column prop="address" label="到期时间"></el-table-column>
+        <el-table-column prop="date_manufacture" label="生产日期"></el-table-column>
+        <el-table-column prop="shelf_life" label="保质期"></el-table-column>
+        <el-table-column prop="expired_time" label="到期时间"></el-table-column>
         <!-- <el-table-column prop="address" label="预警时间"></el-table-column> -->
         <el-table-column prop="address" label="上次入库时间"></el-table-column>
         <!-- <el-table-column prop="address" label="库管员"></el-table-column>
@@ -92,34 +92,34 @@ export default {
       input10: "",
       currentPage:4,
       tableData: [
+        // // {
+        // //   goodsCategory: '医用物资',
+        // //   goodsName: '阿莫西林',
+        // //   goodsCode: '123',
+        // //   goodsModel: '1/23/4',
+        // //   goodsUnit: '箱',
+        // //   goodsStorage: 'a区101',
+        // //   currentNum: 12,
+        // //   goodsMinNum: 20,
+        // //   goodsMaxNum: 100,
+        // //   price: 23,
+        // //   remark: '',
+        // //   // status: '',
+        // //   // orderCode: '',
+        // //   // writeDate: '',
+        // //   // operatorUser: '',
+        // //   // purpose: '',
+        // // }
         // {
-        //   goodsCategory: '医用物资',
-        //   goodsName: '阿莫西林',
-        //   goodsCode: '123',
-        //   goodsModel: '1/23/4',
-        //   goodsUnit: '箱',
-        //   goodsStorage: 'a区101',
-        //   currentNum: 12,
-        //   goodsMinNum: 20,
-        //   goodsMaxNum: 100,
-        //   price: 23,
-        //   remark: '',
-        //   // status: '',
-        //   // orderCode: '',
-        //   // writeDate: '',
-        //   // operatorUser: '',
-        //   // purpose: '',
+        //   date: "哈哈哈",
+        //   name: "王小虎",
+        //   address: "1518 弄"
+        // },
+        // {
+        //   date: "话啊哈哈哈",
+        //   name: "王小虎",
+        //   address: "1517 弄"
         // }
-        {
-          date: "哈哈哈",
-          name: "王小虎",
-          address: "1518 弄"
-        },
-        {
-          date: "话啊哈哈哈",
-          name: "王小虎",
-          address: "1517 弄"
-        }
       ],
       formInline: {
         user: "",
@@ -163,7 +163,26 @@ export default {
     };
   },
   components: {},
+  created(){
+    this.warehouse();
+  },
   methods: {
+    warehouse(){
+      const data = {
+        all: 1,
+        repertory: "",
+        goods_name:-1,
+        status:-1
+      };
+      console.log(data)
+      this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`,data).then(res => {
+             if(res.status==1){
+               this.tableData=res.content;
+             }else{
+               return
+             }
+        })
+    },
     buttonModifythe: function() {
       if (this.show == false) {
         this.show = true;

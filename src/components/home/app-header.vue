@@ -5,9 +5,9 @@
     </div>
     <div class="header_right">
       <img @click="information" src="@/assets/img/userImg.png" alt="">
-      <span class="user_name">hahah</span>
+      <span class="user_name">{{user.name||'无'}}</span>
       <span class="dividing_line"></span>
-      <span class="user_role">系统管理员</span>
+      <span class="user_role">{{user.department||'无'}}</span>
       <span class="exit" @click="buttonexit">退出</span>
     </div>
   </div>
@@ -16,8 +16,13 @@
 export default {
   data () {
     return {
-      show:false
+      show:false,
+      user:{},
     }
+  },
+  created(){
+    var user=JSON.parse(this.$cookie.get('user')||'{}');
+    this.user=user;
   },
   methods: {
     buttonexit(){

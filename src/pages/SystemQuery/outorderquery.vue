@@ -36,24 +36,24 @@
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         
-        <el-table-column prop="date" label="收货单位">
+        <el-table-column prop="client" label="收货单位">
         </el-table-column>
-        <el-table-column prop="name" label="订单编号"></el-table-column>
-        <el-table-column prop="date" label="商品类别"></el-table-column>
-        <el-table-column prop="name" label="商品名称"></el-table-column>
-        <el-table-column prop="name" label="商品规格"></el-table-column>
-        <el-table-column prop="address" label="单位"></el-table-column>
-        <el-table-column prop="address" label="所在仓库"></el-table-column>
-        <el-table-column prop="address" label="出库数量"></el-table-column>
-        <el-table-column prop="address" label="商品单价"></el-table-column>
-        <el-table-column prop="address" label="商品总价"></el-table-column>
-        <el-table-column prop="address" label="申请人"></el-table-column>
-        <el-table-column prop="address" label="收货地址"></el-table-column>
-        <el-table-column prop="address" label="收货人"></el-table-column>
-        <el-table-column prop="address" label="联系方式"></el-table-column>
-        <el-table-column prop="address" label="出库用途"></el-table-column>
-        <el-table-column prop="address" label="出库日期"></el-table-column>
-        <el-table-column prop="address" label="备注"></el-table-column>
+        <el-table-column prop="receipt_no" label="订单编号"></el-table-column>
+        <el-table-column prop="category" label="商品类别"></el-table-column>
+        <el-table-column prop="goods_name" label="商品名称"></el-table-column>
+        <el-table-column prop="specification" label="商品规格"></el-table-column>
+        <el-table-column prop="unit" label="单位"></el-table-column>
+        <el-table-column prop="location" label="所在仓库"></el-table-column>
+        <el-table-column prop="out_number" label="出库数量"></el-table-column>
+        <el-table-column prop="price" label="商品单价"></el-table-column>
+        <el-table-column prop="money" label="商品总价"></el-table-column>
+        <el-table-column prop="applicant" label="申请人"></el-table-column>
+        <el-table-column prop="client_address" label="收货地址"></el-table-column>
+        <el-table-column prop="client_contact" label="收货人"></el-table-column>
+        <el-table-column prop="client_phone" label="联系方式"></el-table-column>
+        <el-table-column prop="purpose" label="出库用途"></el-table-column>
+        <el-table-column prop="out_storage_time" label="出库日期"></el-table-column>
+        <el-table-column prop="apply_comment" label="备注"></el-table-column>
       </el-table>
       <div class="block">
         <span class="demonstration"></span>
@@ -140,65 +140,66 @@ export default {
       input10: "",
       currentPage: 4,
       tableData: [
-        {
-          category: "医药",
-          commodity: "阿莫西林",
-          specifications: "1/23/25",
-          number: "2",
-          number1: "1",
-          unit: "箱",
-          phone: "15828658729",
-          warehouse: "A区",
-          contact: "李女士",
-          Barcode: "12123343344",
-          agent: "李先生",
-          outboundthedata: "2019/03/28",
-          putthedata: "2019/03/30",
-          procurement: "治疗",
-          note: "希望尽快发货"
-        },
-        {
-          category: "医药",
-          commodity: "阿莫西林",
-          number: "2",
-          unit: "箱",
-          warehouse: "A区",
-          Barcode: "12123343344",
-          agent: "李先生",
-          thedata: "2019/03/28",
-          procurement: "治疗",
-          note: "希望尽快发货"
-        },
-        {
-          category: "医药",
-          commodity: "阿莫西林",
-          number: "2",
-          unit: "箱",
-          address: "四川省成都是武侯区",
-          warehouse: "A区",
-          Barcode: "12123343344",
-          agent: "李先生",
-          thedata: "2019/03/28",
-          procurement: "治疗",
-          note: "希望尽快发货"
-        },
-        {
-          category: "医药",
-          commodity: "阿莫西林",
-          number: "2",
-          unit: "箱",
-          warehouse: "A区",
-          Barcode: "12123343344",
-          agent: "李先生",
-          thedata: "2019/03/28",
-          procurement: "治疗",
-          note: "希望尽快发货"
-        }
+        // {
+        //   category: "医药",
+        //   commodity: "阿莫西林",
+        //   specifications: "1/23/25",
+        //   number: "2",
+        //   number1: "1",
+        //   unit: "箱",
+        //   phone: "15828658729",
+        //   warehouse: "A区",
+        //   contact: "李女士",
+        //   Barcode: "12123343344",
+        //   agent: "李先生",
+        //   outboundthedata: "2019/03/28",
+        //   putthedata: "2019/03/30",
+        //   procurement: "治疗",
+        //   note: "希望尽快发货"
+        // },
+        // {
+        //   category: "医药",
+        //   commodity: "阿莫西林",
+        //   number: "2",
+        //   unit: "箱",
+        //   warehouse: "A区",
+        //   Barcode: "12123343344",
+        //   agent: "李先生",
+        //   thedata: "2019/03/28",
+        //   procurement: "治疗",
+        //   note: "希望尽快发货"
+        // },
+        // {
+        //   category: "医药",
+        //   commodity: "阿莫西林",
+        //   number: "2",
+        //   unit: "箱",
+        //   address: "四川省成都是武侯区",
+        //   warehouse: "A区",
+        //   Barcode: "12123343344",
+        //   agent: "李先生",
+        //   thedata: "2019/03/28",
+        //   procurement: "治疗",
+        //   note: "希望尽快发货"
+        // },
+        // {
+        //   category: "医药",
+        //   commodity: "阿莫西林",
+        //   number: "2",
+        //   unit: "箱",
+        //   warehouse: "A区",
+        //   Barcode: "12123343344",
+        //   agent: "李先生",
+        //   thedata: "2019/03/28",
+        //   procurement: "治疗",
+        //   note: "希望尽快发货"
+        // }
       ],
       formInline: {
         user: "",
         region: ""
       },
+      value6:"",
       options: [
         {
           value: "选项1",
@@ -226,7 +227,26 @@ export default {
     };
   },
   components: {},
+  mounted(){
+   this.listquery();
+  },
   methods: {
+    listquery(){
+      const data = {
+        all: 1,
+        receipt_no:"",
+        applicant:"",
+        apply_datetime_start:"",
+        apply_datetime_end:""
+      };
+      this.$http.post(`${config.httpBaseUrl}/medicine/query_out_storage/`,data).then(res => {
+             if(res.status==1){
+               this.tableData=res.content;
+             }else{
+               return
+             }
+        })
+    },
     buttonModifythe: function() {
       if (this.show == false) {
         this.show = true;

@@ -80,57 +80,6 @@ export default {
       input10: "",
        currentPage: 4,
       tableData: [
-        {
-          category: "医药",
-          commodity: "阿莫西林",
-          specifications: "1/23/25",
-          number: "2",
-          number1: "1",
-          unit: "箱",
-          warehouse: "A区",
-          Barcode: "12123343344",
-          agent: "李先生",
-          outboundthedata: "2019/03/28",
-          putthedata: "2019/03/30",
-          procurement: "治疗",
-          note: "希望尽快发货"
-        },
-        {
-          category: "医药",
-          commodity: "阿莫西林",
-          number: "2",
-          unit: "箱",
-          warehouse: "A区",
-          Barcode: "12123343344",
-          agent: "李先生",
-          thedata: "2019/03/28",
-          procurement: "治疗",
-          note: "希望尽快发货"
-        },
-        {
-          category: "医药",
-          commodity: "阿莫西林",
-          number: "2",
-          unit: "箱",
-          warehouse: "A区",
-          Barcode: "12123343344",
-          agent: "李先生",
-          thedata: "2019/03/28",
-          procurement: "治疗",
-          note: "希望尽快发货"
-        },
-        {
-          category: "医药",
-          commodity: "阿莫西林",
-          number: "2",
-          unit: "箱",
-          warehouse: "A区",
-          Barcode: "12123343344",
-          agent: "李先生",
-          thedata: "2019/03/28",
-          procurement: "治疗",
-          note: "希望尽快发货"
-        }
       ],
       formInline: {
         user: "",
@@ -163,7 +112,27 @@ export default {
     };
   },
   components: {},
+  // mounted(){
+  //   this.querylist();
+  // },
   methods: {
+      // querylist(){
+      // const data = {
+      //   all: 0,
+      //   receipt_no: this.filter.receipt_no,
+      //   applicant: this.filter.applicant,
+      //   apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
+      //   apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
+      // };
+      // console.log(data)
+      // this.$http.post(`${config.httpBaseUrl}/medicine/query_out_storage/`,data).then(res => {
+      //        if(res.status==1){
+      //          this.purchaseOrders=res.content;
+      //        }else{
+      //          return
+      //        }
+      //   })
+    // },
     buttonModifythe: function() {
       if (this.show == false) {
         this.show = true;

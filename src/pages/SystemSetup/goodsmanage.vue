@@ -3,12 +3,12 @@
   	<el-header>
       <div class="selectStore">
         仓库名称:
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="value" placeholder="请选择" @change="storage" >
           <el-option
             v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            :key="item.name"
+            :label="item.name"
+            :value="item.name">
           </el-option>
         </el-select>
       </div>
@@ -21,7 +21,7 @@
         <el-button type="primary" @click='isShowAddGoods=true'>新增</el-button>
         <!-- <el-button type="primary" @click='isShowSetMeasurement=true'>计量单位</el-button> -->
         <el-button type="primary" @click='handleGoodsCategory'>商品类别</el-button>
-        <el-button class="del" @click='handleDelGoods'>删除</el-button>
+        <!-- <el-button class="del" @click='handleDelGoods'>删除</el-button> -->
         <el-button class="output" @click='handleOutput'>导出</el-button>
       </div>
     </el-header>
@@ -66,7 +66,7 @@
             <span @click="handleEditorGoods(scope.row)">
               <img src="@/assets/icon/系统管理-商品管理/修改IC.png">
             </span>
-            <span @click='handleDelGoods'>
+            <span @click='handleDelGoods(scope.row)'>
               <img src="@/assets/icon/系统管理-人员管理/删除IC.png">
             </span>
           </template>
@@ -93,17 +93,17 @@
     <del-goods
       :type='messageBoxType.del'
       v-if='isShowDelGoods'
-      @hideDelGoods='isShowDelGoods=!isShowDelGoods'>
+      @hideDelGoods='isShowDelGoods=!isShowDelGoods' :delgood="delgood">
     </del-goods>
-    <del-goods
+    <!-- <del-goods
       :type='messageBoxType.del'
       v-if='isShowDelGoods'
       @hideDelGoods='isShowDelGoods=!isShowDelGoods'>
-    </del-goods>
+    </del-goods> -->
     <editor-goods
       :type='messageBoxType.editor'
       v-if='isShowEditorGoods'
-      @goodsEditor='goodsEditor'></editor-goods>
+      @goodsEditor='goodsEditor' :Editor="Editor"></editor-goods>
     <goods-category
       :type='messageBoxType.goodsClass'
       v-if='isShowGoodsCategory'
@@ -112,7 +112,7 @@
     <add-goods
       :type='messageBoxType.add'
       v-if='isShowAddGoods'
-      @hideGoodsCategory='isShowAddGoods=!isShowAddGoods'></add-goods>
+      @hideGoodsCategoryadd='isShowAddGoods=!isShowAddGoods'></add-goods>
   </div>
 </template>
 
@@ -132,6 +132,7 @@ export default {
         index: '',
         allgoods: []
       },
+      Editor:{},
       messageBoxType: {
         add: '商品管理>新增',
         measurement: '商品管理>计量单位设置',
@@ -163,27 +164,29 @@ export default {
         }
       ],
       value: '',
+      delgood:{},
       allgoods: [
-        {
-          category: '医用物资',
-          name: '阿莫西林',
-          unit: '箱',
-          // location: '1/23/4',
-          // goodsUnit: '箱',
-          location: 'a区101',
-          stock_quantity: 12,
-          waring_quantity_min: 20,
-          waring_quantity_max: 100,
-          estimated_price: 23,
-          comment: '',
-          // status: '',
-          // orderCode: '',
-          // writeDate: '',
-          // operatorUser: '',
-          // purpose: '',
-        }
+        // {
+        //   category: '医用物资',
+        //   name: '阿莫西林',
+        //   unit: '箱',
+        //   // location: '1/23/4',
+        //   // goodsUnit: '箱',
+        //   location: 'a区101',
+        //   stock_quantity: 12,
+        //   waring_quantity_min: 20,
+        //   waring_quantity_max: 100,
+        //   estimated_price: 23,
+        //   comment: '',
+        //   // status: '',
+        //   // orderCode: '',
+        //   // writeDate: '',
+        //   // operatorUser: '',
+        //   // purpose: '',
+        // }
       ],
-      multipleSelection: []
+      multipleSelection: [],
+      tableData4:[],
     }
   },
   components: {
@@ -193,41 +196,66 @@ export default {
     AddGoods,
     EditorGoods
   },
+  created(){
+   this.medicine();
+   this.warehouse();
+  },
   methods: {
+    //  Accessgoods(){
+    //   console.log(1221);
+    //    this.$http.post(`${config.httpBaseUrl}/medicine/get_category/`, {
+    //     }).then(res => {
+    //         this.tableData4=res.content;
+    //     })
+    // },
     //查询所有的商品
     medicine(){
       let _this=this;
-      this.$http.post('${config.httpBaseUrl}/medicine/query_medicine/',{
+      this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
          "repertory":"",
          "goods":"",
       }).then(res=>{
-        this.allgoods=res.data.allgoods;
+        this.allgoods=res.content;
       })
     },
     //查询仓库名称
-    storage(){
-       let _this=this;
-      this.$http.post('${config.httpBaseUrl}/storage/get_repertory/').then(res=>{
-        this.options=res.data.allgoods;
-      })
+   warehouse(){
+      this.$http.post(`${config.httpBaseUrl}/storage/get_all_repertory/`).then(res=>{
+          if(res.status==1){
+            console.log(res)
+            this.options=res.content;
+            console.log(this.options)
+          }else{
+            return
+          }
+        })
     },
+    storage(){
+       this.findinventory();
+    },
+    findinventory(){
+     this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
+          repertory:this.value,
+          goods:this.goods,
+        }).then(res=>{
+          if(res.status==1){
+            this.allgoods=res.content;
+          }else{
+            return
+          }
+        })
+   },
     //根据商品名称搜索
     Commodity(){
-      let goods=this.goods;
-      this.allgoods=[];
-        this.$http.post('${config.httpBaseUrl}/storage/get_repertory/',{
-          goods:goods,
-        }).then(res=>{
-        this.allgoods=res.data.allgoods;
-      })
-      
+       this.findinventory();
     },
     // 展示修改商品页面
     handleEditorGoods (row) {
-      console.log(row)
+      this.Editor=row;
       this.isShowEditorGoods = true
     },
     goodsEditor (bol) {
+      // this.allgoods=this.allgood;
       this.isShowEditorGoods = false
     },
     handleSelectionChange () {
@@ -239,10 +267,19 @@ export default {
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
       },
-    handleDelGoods () {
+    handleDelGoods (row) {
+      this.delgood=row;
       this.isShowDelGoods = true
+      this.allgoods=this.allgood;
     },
+    // hideDelGoodsss(allgoods){
+    //    this.allgoods=this.allgood;
+    // },
     handleGoodsCategory () {
+      this.isShowGoodsCategory = true
+    },
+    hideGoodsCategoryadd(allgood){
+      this.allgoods=this.allgood;
       this.isShowGoodsCategory = true
     },
     //导出表格

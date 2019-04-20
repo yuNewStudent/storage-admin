@@ -47,7 +47,7 @@
         </el-table-column>
         <el-table-column
           label="供货单位"
-          prop='purchaser'>
+          prop='supplier'>
         </el-table-column>
         <el-table-column
           prop="address"
@@ -134,18 +134,18 @@ export default {
       isShowEditorSupplier: false,
       supplier:"",
       tableData3: [
-        {
-          purchaser: '四川某某有限公司',
-          address: '四川省成都市锦江区XXX',
-          contact: '方先生',
-          phone: '1820801777',
-        },
-        {
-          purchaser: '四川某某有限公司',
-          address: '四川省成都市锦江区XXX',
-          contact: '方先生',
-          phone: '1820801777',
-        }
+        // {
+        //   purchaser: '四川某某有限公司',
+        //   address: '四川省成都市锦江区XXX',
+        //   contact: '方先生',
+        //   phone: '1820801777',
+        // },
+        // {
+        //   purchaser: '四川某某有限公司',
+        //   address: '四川省成都市锦江区XXX',
+        //   contact: '方先生',
+        //   phone: '1820801777',
+        // }
       ],
     }
   },
@@ -153,7 +153,24 @@ export default {
     ChangeSupplier,
     DelSupplier
   },
+  mounted(){
+    this.Warehouse();
+  },
   methods: {
+     Warehouse(){
+    this.$http
+        .post(`${config.httpBaseUrl}/man/get_supplier/`,{
+          supplier:"",
+         address:"",
+        })
+        .then(res => {
+          if (res.status == 1) {
+            this.tableData3 = res.content;
+          } else {
+            return;
+          }
+        });
+    },
     searchbutton(supplier){
        this.$htttp.post(`${config.httpBaseUrl}/man/get_supplier/`, {
                   supplier: supplier,
