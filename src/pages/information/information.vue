@@ -138,7 +138,7 @@ export default {
   }
 };
 </script>
-<style>
+<style lang='scss' scoped>
 .information {
   padding: 40px 40px;
 }
