@@ -22,6 +22,7 @@ export default {
     return {
       isShowMenuGroup: false,
       menus: [],
+      
     }
   },
   created () {
@@ -41,6 +42,7 @@ export default {
   background: #f3f3f3;
   position: fixed;
   top: 60px;
+  bottom: 0;
   .el-menu {
     width: 200px;
   }

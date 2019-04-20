@@ -3,7 +3,7 @@
     @closeMessageBox='delPerson'
     :type='type'
     :btns='btns'>
-    <p class="content">你确定要删除张三的相关信息吗?<br/>删除后系统不能回复</p>
+    <p class="content">你确定要删除{{selectUser.userInfo.name}}的相关信息吗?<br/>删除后系统不能恢复</p>
   </message-box>
 </template>
 
@@ -16,8 +16,7 @@ export default {
       btns: {
         cancel: '取消', 
         comfirm: '确定'
-      },
-      radio: ''
+      }
     }
   },
   methods: {

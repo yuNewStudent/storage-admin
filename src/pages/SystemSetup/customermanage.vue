@@ -2,31 +2,22 @@
   <div class="customermanage">
   	<el-header>
       <div class="selectAddress">
-        收货地址:
-        <el-select v-model="value" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </div>
-      <div class="search">
         收货单位:
-        <el-input size='medium' placeholder="请输入收货单位"></el-input>
-        <el-button size='medium' type="primary">搜索</el-button>
+        <el-input
+          v-model="client"
+          placeholder="请输入收货单位"
+          @change='filterClients'>
+        </el-input>
       </div>
       <div class="buttons">
         <el-button size='medium' type="primary" @click='isShowAddCustom=!isShowAddCustom'>新增</el-button>
-        <el-button size='medium' class="del" @click='handleDelCustom'>删除</el-button>
         <el-button size='medium' class="output" @click='handleOutput'>导出</el-button>
       </div>
     </el-header>
     <el-main>
       <el-table
         ref="multipleTable"
-        :data="tableData3"
+        :data="filterClients"
         tooltip-effect="dark"
         style="width: 100%"
         border
@@ -38,7 +29,7 @@
         </el-table-column>
         <el-table-column
           label="收货单位"
-          prop="company">
+          prop="purchaser">
         </el-table-column>
         <el-table-column
           prop="address"
@@ -46,11 +37,11 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="userName"
+          prop="contact"
           label="姓名">
         </el-table-column>
         <el-table-column
-          prop="fox"
+          prop="phone"
           label="电话"
           width="120">
         </el-table-column>
@@ -62,10 +53,10 @@
           label="操作"
           align='center'>
           <template slot-scope="scope">
-            <span @click="handleEditorCustom">
+            <span @click='handleEditorCustom(scope.row, scope.$index)'>
               <img src="@/assets/icon/系统管理-商品管理/修改IC.png">
             </span>
-            <span>
+            <span @click='handleDelCustom(scope.row, scope.$index)'>
               <img src="@/assets/icon/系统管理-人员管理/删除IC.png">
             </span>
           </template>
@@ -87,15 +78,17 @@
     <change-custom
       v-if='isShowAddCustom'
       :type='messageBoxType.add'
-      @hideChangeCustom='addCustom'></change-custom>
+      @hideChangeCustom='changeCustom'></change-custom>
     <change-custom
       v-if='isShowEditorCustom'
       :type='messageBoxType.editor'
-      @hideChangeCustom='editorCustom'></change-custom>
+      :selectClient='selectClient'
+      @hideChangeCustom='changeCustom'></change-custom>
     <del-custom
       v-if='isShowDelCustom'
       :type='messageBoxType.del'
-      @hideDelCustom='delCustom'></del-custom>
+      @hideDelCustom='delCustom'
+      :selectClient='selectClient'></del-custom>
   </div>
 </template>
 
@@ -106,54 +99,92 @@ import outputTable from '@/assets/js/outputTable'
 export default {
   data () {
   	return {
-       currentPage:4,
+      currentPage:4,
       messageBoxType: {
         add: '客户管理>新增',
         del: '客户管理>删除',
         editor: '客户管理>修改'
       },
-      tableData3: [
+      client: '',
+      clients: [
         {
           address: '四川',
-          company: '有限公司',
-          fox: '099-223-2',
-          userName: '于先生',
+          purchaser: '成都有限公司',
+          contact: '于先生',
           phone: '1229383744',
           email: '7899@hh.com'
         },
         {
           address: '四川',
-          company: '有限公司',
-          fox: '099-223-2',
-          userName: '于先生',
+          purchaser: '四川有限公司',
+          contact: '于先生',
           phone: '1229383744',
           email: '7899@hh.com'
         }
       ],
+      selectClient: {
+        index: '',
+        client: {}
+      },
       isShowDelCustom: false,
       isShowEditorCustom: false,
       isShowAddCustom: false
     }
+  },
+  computed: {
+    //筛选客户
+    filterClients () {
+      return this.clients.filter(item => {
+        return item.purchaser.indexOf(this.client) > -1
+      })
+    },
   },
   components: {
     ChangeCustom,
     DelCustom
   },
   methods: {
-    delCustom () {
-      this.isShowDelCustom = false
-    },
-    addCustom () {
-      this.isShowAddCustom = false
-    },
-    handleDelCustom () {
+    // 打开删除客户弹窗
+    handleDelCustom (row, index) {
+      this.selectClient.index = index
+      this.selectClient.client = row
       this.isShowDelCustom = true
     },
-    handleEditorCustom () {
+    // 删除客户
+    delCustom (bol) {
+      console.log(bol)
+      this.isShowDelCustom = false
+      if (bol) {
+        // this.$http.post(`${config.httpBaseUrl}/man/del_client/`, {
+        // this.selectClient.client
+        // }).then(res => {
+        //   console.log(res)
+        //   this.clients = res.data.content
+        // })
+        // 本地删除
+        this.clients.splice(this.selectClient.index, 1)
+      }
+    },
+    // 打开修改客户弹窗
+    handleEditorCustom (row, index) {
+      this.selectClient.index = index
+      this.selectClient.client = row
       this.isShowEditorCustom = true
     },
-    editorCustom () {
+    // 修改或增加客户
+    changeCustom (client, type) {
       this.isShowEditorCustom = false
+      this.isShowAddCustom = false
+      if (client) {
+        // 修改客户
+        if (type === 'editor') {
+          // 修改客户-本地
+          this.clients.splice(this.selectClient.index, 1, client)
+        } else if (type === 'add') {
+          // 新增客户
+          this.clients.push(client)
+        }
+      }
     },
     handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
@@ -164,7 +195,21 @@ export default {
     // 导出表格
     handleOutput () {
       outputTable(this.tableData3)
+    },
+    // 获取客户
+    getClient (purchaser, address) {
+    // this.$http.post(`${config.httpBaseUrl}/man/get_client/`, {
+    // purchaser
+    // address
+    // }).then(res => {
+    //   console.log(res)
+    //   this.clients = res.data.content
+    // })
     }
+  },
+  created () {
+    // 获取所有客户
+    this.getClient()
   }
 }
 </script>
@@ -175,15 +220,8 @@ export default {
   > div {
     display: inline-block;
   }
-  .selectStore {
-    width: 250px;
-    .el-select {
-      width: 150px;
-    }
-  }
-  .search {
-    margin-left: 40px;
-    width: 400px;
+  .selectAddress {
+    width: 300px;
     .el-input {
       width: 200px;
     }

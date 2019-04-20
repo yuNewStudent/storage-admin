@@ -1,13 +1,14 @@
 <template>
   <message-box
     @closeMessageBox='changePerson'
+    @reset='resetInput'
     :type='type'
     :btns='btns'>
     <div class="user_name">
       <label>姓名:</label>
       <el-input
         size='small'
-        v-model="userInfo.username"></el-input>
+        v-model="userInfo.name"></el-input>
       <label>所属部门:</label>
       <el-select
         v-model="userInfo.department"
@@ -21,21 +22,17 @@
         </el-option>
       </el-select>
       <label><span style='color: red'>*</span>邮箱:</label>
-      <!-- <el-input
-        size='small'
-        v-model="userInfo.loginName"></el-input>
-      <label><span style='color: red'>*</span>登录账户:</label> -->
       <el-input
         size='small'
-        v-model="userInfo.loginName"></el-input>
+        v-model="userInfo.email"></el-input>
       <label>联系电话:</label>
       <el-input
         size='small'
         v-model="userInfo.phone"></el-input>
       <p class="radio_wrapper">
         <span>是否为部门负责人:</span>
-        <el-radio v-model="userInfo.isLeader" label="true">是</el-radio>
-        <el-radio v-model="userInfo.isLeader" label="false">否</el-radio>
+        <el-radio v-model="userInfo.is_leader" label="1">是</el-radio>
+        <el-radio v-model="userInfo.is_leader" label="0">否</el-radio>
       </p>
     </div>
   </message-box>
@@ -65,11 +62,11 @@ export default {
         cancel: '取消'
       },
       userInfo: {
-        username: '',
+        name: '',
         department: '',
         phone: '',
-        loginName: '',
-        isLeader: '',
+        email: '',
+        is_leader: ''
       }
     }
   },
@@ -78,12 +75,43 @@ export default {
   },
   methods: {
     changePerson (bol) {
+      console.log(bol, this.userInfo)
       if (bol) {
-        this.$emit("hideChangePerson", this.userInfo)
+        // 信息不能为空
+        for (var k in this.userInfo) {
+          if (!this.userInfo[k]) {
+            this.$message({
+              message: '信息不能为空',
+              type: 'warning'
+            })
+            return
+          }
+        }
+        
+        this.$emit('hideChangePerson', this.userInfo)
       } else {
         this.$emit("hideChangePerson")
       }
+    },
+    // 重置输入框
+    resetInput () {
+      this.userInfo = {
+        name: '',
+        department: '',
+        phone: '',
+        email: '',
+        is_leader: ''
+      }
     }
+  },
+  created () {
+    console.log(this.selectUser)
+    this.userInfo = this.selectUser.userInfo
+    // 获取部门列表
+    // this.$http.post(`${config.httpBaseUrl}/man/get_department/`).then(res => {
+    //   console.log(res)
+    //   this.departmentData = res.data
+    // })
   }
 }
 </script>

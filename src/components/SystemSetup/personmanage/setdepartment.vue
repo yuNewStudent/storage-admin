@@ -1,39 +1,41 @@
 <template>
-  <message-box
-    @closeMessageBox='$emit("hideSetDepartment")'
-    :type='type'
-    :btns='btns'>
-    <div
-      class="setDepartment_wrapper">
-      <el-table
-        size='mini'
-        :data="departmentData"
-        border>
-        <el-table-column
-          align='center' 
-          prop="部门编号"
-          label="部门编号">
-        </el-table-column>
-        <el-table-column
-          align='center' 
-          prop="部门名称"
-          label="部门名称">
-        </el-table-column>
-        <el-table-column
-          align='center'
-          label='操作'>
-          <template slot-scope="scope">
-            <span>
-              <img src="@/assets/icon/系统管理-人员管理/插入行.png">
-            </span>
-            <span>
-              <img src="@/assets/icon/系统管理-人员管理/删除IC.png">
-            </span>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-  </message-box>
+  <div>
+    <message-box
+      @closeMessageBox='hideSetDepartment'
+      :type='type'
+      :btns='btns'>
+      <div
+        class="setDepartment_wrapper">
+        <el-table
+          size='mini'
+          :data="departmentData"
+          border>
+          <el-table-column
+            align='center' 
+            prop="id"
+            label="部门编号">
+          </el-table-column>
+          <el-table-column
+            align='center' 
+            prop="name"
+            label="部门名称">
+          </el-table-column>
+          <el-table-column
+            align='center'
+            label='操作'>
+            <template slot-scope="scope">
+              <span @click='addPartment'>
+                <img src="@/assets/icon/系统管理-人员管理/插入行.png">
+              </span>
+              <span @click='delPartment(scope)'>
+                <img src="@/assets/icon/系统管理-人员管理/删除IC.png">
+              </span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </message-box>
+  </div>
 </template>
 
 <script>
@@ -44,24 +46,94 @@ export default {
     return {
       departmentData: [
         {
-          部门编号: 1,
-          部门名称: '行政部'
+          id: 1,
+          name: '行政部'
         },{
-          部门编号: 2,
-          部门名称: '财务部'
+          id: 2,
+          name: '财务部'
         },{
-          部门编号: 3,
-          部门名称: '设计部'
+          id: 3,
+          name: '设计部'
         }
       ],
       btns: {
         cancel: '取消', 
         comfirm: '确定'
       },
+      messageBoxType: [
+        { del: '人员管理>部门设置>删除' },
+        { add: '人员管理>部门设置>新增' }
+      ],
+      isShowAddDepartement: false
     }
   },
   components: {
     MessageBox
+  },
+  methods: {
+    // 删除当前部门
+    delPartment (scop) {
+      this.$confirm(`此操作将删除${scop.row.name}, 是否继续?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 删除本地部门
+          this.departmentData.splice(scop.$index, 1)
+          // 向后台发送删除部门
+          // this.$http.get(`${config.httpBaseUrl}/man/del_department/`, {
+          //   name: scop.name
+          // }).then(res => {
+          //   console.log(res)
+          // })
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })      
+        })
+    },
+    // 新增部门
+    addPartment () {
+      this.$prompt('请输入部门名称', '新增部门', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        // inputErrorMessage: '邮箱格式不正确'
+      }).then(({value}) => {
+        if (!value) {return}
+        // 向后台发送新增部门
+        // this.$http.post(`${config.httpBaseUrl}/man/add_department/`, {
+        //   name: value
+        // }).then(res => {
+        //   console.log(res)
+        // })
+        this.$message({
+          type: 'success',
+          message: '部门新增成功'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消新增部门'
+        })
+      })
+    },
+    // 关闭部门设置窗口
+    hideSetDepartment (bol) {
+      this.$emit('hideSetDepartment')
+    }
+  },
+  created () {
+    // 获取部门列表
+    // this.$http.get(`${config.httpBaseUrl}/man/get_department/`).then(res => {
+    //   console.log(res)
+    //   this.departmentData = res.data
+    // })
   }
 }
 </script>

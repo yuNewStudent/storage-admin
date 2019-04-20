@@ -7,18 +7,9 @@
     <div class="repertoryenvironment_list">
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="date" label="仓库名称"></el-table-column>
-        <el-table-column prop="name" label="仓库面积"></el-table-column>
-        <el-table-column prop="address" label="仓库类型"></el-table-column>
         <el-table-column prop="address" label="仓库温度"></el-table-column>
         <el-table-column prop="address" label="仓库湿度"></el-table-column>
-        <el-table-column prop="address" label="货架数量"></el-table-column>
-        <el-table-column prop="address" label="负责人"></el-table-column>
-        <el-table-column label="操作" width="200px">
-          <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
+        <el-table-column prop="address" label="仓库员"></el-table-column>
       </el-table>
       <div class="block">
         <span class="demonstration"></span>
@@ -33,56 +24,6 @@
         ></el-pagination>
       </div>
     </div>
-    <!-- <div class="repertoryenvironment_list" v-else>
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="date" label="商品类别">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="name" label="商品名称">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="申请采购数量">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="单位">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="所在仓库">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-table-column>
-        <el-table-column prop="address" label="经办人">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="用途">
-          <el-input></el-input>
-        </el-table-column>
-        <el-table-column prop="address" label="备注">
-          <el-input></el-input>
-        </el-table-column>
-      </el-table>
-    </div> -->
   </div>
 </template>
 <script>
@@ -171,6 +112,7 @@ export default {
   margin: 10px 30px;
   .el-header {
     line-height: 60px;
+    padding: 0;
     .el-button {
       float: right;
       margin-top: 13px;

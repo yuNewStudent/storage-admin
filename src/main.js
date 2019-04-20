@@ -5,12 +5,15 @@ import router from './router'
 import Axios from 'axios'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import Moment from 'moment'
 import store from './store'
-
 import App from './App'
+var VueCookie = require('vue-cookie');
+// Tell Vue to use the plugin
+Vue.use(VueCookie);
 Vue.config.productionTip = false
+Vue.prototype.moment=Moment;
 Vue.prototype.$http = Axios
-
 // 路由拦截
 const routers = ['login', 'register']
 router.beforeEach((to, from, next) => {
@@ -40,7 +43,7 @@ Axios.interceptors.response.use(
       // router.push({ name: 'login' })
       return Promise.reject(new Error('身份过期'))
     } else {
-      return res
+      return res.data
     }
   }
 )

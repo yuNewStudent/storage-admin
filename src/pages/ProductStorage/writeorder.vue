@@ -9,7 +9,7 @@
     <el-main class="writeorder_list">
       <div class="write_order_wrapper">
         <el-table
-          :data="tableData"
+          :data="orders"
           border
           size='small'
           style="width: 100%">
@@ -19,33 +19,33 @@
           </el-table-column>
           <el-table-column label='供应商'>
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
+              <el-select v-model="orders[scope.$index].supplier" filterable placeholder="请选择">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in suppliers"
                   :key="item.value"
-                  :label="item.label"
-                  :value="item.label">
+                  :label="item.supplier"
+                  :value="item.supplier">
                 </el-option>
               </el-select>
             </template>
           </el-table-column>
           <el-table-column label="商品类别">
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
+              <el-select v-model="orders[scope.$index].category" filterable placeholder="请选择">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in categories"
                   :key="item.value"
-                  :label="item.label"
-                  :value="item.label">
+                  :label="item.category"
+                  :value="item.category">
                 </el-option>
               </el-select>
             </template>
           </el-table-column>
           <el-table-column label="商品名称">
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].goodsCategory" placeholder="请选择">
+              <el-select v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in goodses"
                   :key="item.value"
                   :label="item.label"
                   :value="item.label">
@@ -55,40 +55,28 @@
           </el-table-column>
           <el-table-column label="申请采购数量">
             <template slot-scope="scope">
-              <el-input v-model="orders[scope.$index].goodsNum"></el-input>
+              <el-input v-model="orders[scope.$index].apply_number"></el-input>
             </template>
           </el-table-column>
           <el-table-column label="单位">
             
             <template slot-scope="scope">
-              <el-input v-model="orders[scope.$index].goodsNum"></el-input>
+              <el-input v-model="orders[scope.$index].unit"></el-input>
             </template>
           </el-table-column>
           <el-table-column label="商品预估单价">
             <template slot-scope="scope">
-              <el-input v-model="orders[scope.$index].goodsPrice"></el-input>
+              <el-input v-model="orders[scope.$index].estimated_price"></el-input>
             </template>
           </el-table-column>
           <el-table-column label="商品预估总价">
             <template slot-scope="scope">
-              <el-input v-model="orders[scope.$index].goodsTotal"></el-input>
+              <el-input v-model="orders[scope.$index].estimated_money"></el-input>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="所在仓库">
-            <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].goodsStorage" placeholder="请选择">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.label">
-                </el-option>
-              </el-select>
-            </template>
-          </el-table-column> -->
           <el-table-column label="申请人">
             <template slot-scope="scope">
-              <el-input v-model="orders[scope.$index].operatorUser"></el-input>
+              <el-input v-model="orders[scope.$index].applicant"></el-input>
             </template>
           </el-table-column>
           <el-table-column label="用途">
@@ -98,17 +86,16 @@
           </el-table-column>
           <el-table-column label="备注">
             <template slot-scope="scope">
-              <el-input v-model="orders[scope.$index].remark"></el-input>
+              <el-input v-model="orders[scope.$index].apply_comment"></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="回退理由">
+          <el-table-column label="回退理由" v-if='isEditor' prop='reason_return'>
           </el-table-column>
         </el-table>
         <el-row class='add_row'>
           <el-button type='primary' @click='addRow'>新增行</el-button>
         </el-row>
       </div>
-      
     </el-main>
   </div>
 </template>
@@ -118,8 +105,34 @@ import outputTable from '@/assets/js/outputTable'
 export default {
   data() {
     return {
-      tableData: [{}],
-      options: [
+      // 供应商
+      suppliers: [
+        {
+          address: "供货商地址",
+          supplier: "四川省经济贸易公司"
+        },
+        {
+          address: "供货商地址",
+          supplier: "四川棋照科技有限公司"
+        }
+      ],
+      // 商品类别
+      categories: [
+        {
+          id: "001",
+          category: "商品类别"
+        },
+        {
+          id: "002",
+          category: "商品类别"
+        },
+        {
+          id: "003",
+          category: "商品类别"
+        }
+      ],
+      // 商品名称
+      goodses: [
         {
           value: "选项1",
           label: "四川省经济贸易公司"
@@ -131,44 +144,25 @@ export default {
         {
           value: "选项3",
           label: "攀枝花攀钢公司"
-        },
-        {
-          value: "选项4",
-          label: "阿里巴巴有限公司"
-        },
-        {
-          value: "选项5",
-          label: "北京经贸技校公司"
         }
       ],
       writeDate: '',
-      SupplyCompany: '',
       orders: [
         {
-          goodsCategory: '',
-          goodsName: '',
-          goodsNum: '',
-          goodsPrice: '',
-          goodsTotal: '',
-          goodsUnit: '',
-          goodsStorage: '',
-          operatorUser: '',
+          supplier: '',
+          category: '',
+          goods_name: '',
+          apply_number: '',
+          unit: '',
+          estimated_price: '',
+          estimated_money: '',
+          applicant: '',
           purpose: '',
-          remark: ''
+          apply_comment: '',
+          reason_return: '',
         }
       ],
-      allOrders: [
-        {
-          date: "哈哈哈",
-          name: "王小虎",
-          address: "1518 弄"
-        },
-        {
-          date: "话啊哈哈哈",
-          name: "王小虎",
-          address: "1517 弄"
-        }
-      ]
+      isEditor: false
     };
   },
   components: {},
@@ -179,21 +173,18 @@ export default {
     handleOut () {
       outputTable(tableData)
     },
-    handleCheck () {
-
-    },
     addRow () {
-      this.tableData.push({})
       this.orders.push(
         {
-          goodsCategory: '',
-          goodsName: '',
-          goodsNum: '',
-          goodsPart: '',
-          goodsStorage: '',
-          operatorUser: '',
+          supplier: '',
+          category: '',
+          apply_numberapply_number: '',
+          unit: '',
+          estimated_price: '',
+          estimated_money: '',
+          applicant: '',
           purpose: '',
-          remark: ''
+          apply_comment: ''
         }
       )
     },
@@ -203,6 +194,14 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        let apply_datetime = this.moment(new Date()).format('YYYY-MM-DD')
+        this.orders.map(item => {
+          item.apply_datetime = apply_datetime
+        })
+        //  this.$http.post('${config.httpBaseUrl}/medicine/add_in_storage_receipt/',{
+        //    this.orders
+        //  }).then(res=>{
+        //   })
         this.$message({
           type: 'success',
           message: '提交成功!'
@@ -214,6 +213,31 @@ export default {
         })         
       })
     }
+  },
+  created () {
+    // 如果是修改订单
+    // if (this.$route.params.receipt_no) {
+    //   const receipt_no = this.$route.params.receipt_no
+    //   this.isEditor = true
+    //   this.$http.post('${config.httpBaseUrl}/medicine/get_abnormalInReceipt/',{
+    //     receipt_no
+    //   }).then(res=>{
+    //     this.orders = res.data.content
+    //   })
+    // }
+    // 获取所有的商品类别
+    // this.$http.post(`${config.httpBaseUrl}/medicine/get_category/`).then(res => {
+    //   console.log(res)
+    //   this.categories = res.data.content
+    // })
+    // 获取所有供应商
+    // this.$http.post(`${config.httpBaseUrl}/man/get_supplier/`, {
+    // supplier: '',
+    // address: ''
+    // }).then(res => {
+    //   console.log(res)
+    //   this.suppliers = res.data.content
+    // })
   }
 };
 </script>

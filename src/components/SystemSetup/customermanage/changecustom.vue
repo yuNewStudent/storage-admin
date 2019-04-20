@@ -1,35 +1,24 @@
 <template>
   <message-box
-    @closeMessageBox='$emit("hideChangeCustom")'
+    @closeMessageBox='changeCustom'
     :type='type'
     :btns='btns'>
     <div class="content">
       <label><span>*</span>供货单位:</label>
-      <el-input size='small' v-model='supplierInfo.company'></el-input>
+      <el-input size='small' v-model='supplierInfo.purchaser'></el-input>
       <label for=""><span>*</span>供货地选择:</label>
-      <el-select
+      <el-input
         v-model='supplierInfo.address'
-        placeholder="请选择"
         size='small'>
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
+      </el-input>
       <label for=""><span>*</span>联系人:</label>
       <el-input
         size='small'
-        v-model='supplierInfo.username'></el-input>
+        v-model='supplierInfo.contact'></el-input>
       <label for=""><span>*</span>联系电话:</label>
       <el-input
         size='small'
-          v-model='supplierInfo.phone'></el-input>
-      <!-- <label for="">传真:</label>
-      <el-input
-        v-model="supplierInfo.fox"
-        size='small'></el-input> -->
+        v-model='supplierInfo.phone'></el-input>
       <label for="">邮箱:</label>
       <el-input
         v-model="supplierInfo.email"
@@ -41,7 +30,7 @@
 <script>
 import MessageBox from '@/components/MessageBox'
 export default {
-  props: ['type'],
+  props: ['type', 'selectClient'],
   data () {
     return {
       btns: {
@@ -50,9 +39,8 @@ export default {
       },
       supplierInfo: {
         address: '',
-        company: '',
-        fox: '',
-        username: '',
+        purchaser: '',
+        contact: '',
         phone: '',
         email: ''
       }
@@ -60,6 +48,45 @@ export default {
   },
   components: {
     MessageBox
+  },
+  methods: {
+    changeCustom (bol) {
+      if (bol) {
+        // 输入框不能为空
+        for (let key in this.supplierInfo) {
+          if (!this.supplierInfo[key]) {
+            return this.$message({
+              showClose: true,
+              message: '警告! 客户信息不能有空,请完善信息提交',
+              type: 'warning'
+            })
+          }
+        }
+        if (!comfim) { return }
+        if (this.selectClient) {
+          this.$emit("hideChangeCustom", this.supplierInfo, 'editor')
+          // 修改服务器数据
+          // this.$http.post(`${config.httpBaseUrl}/man/upd_client/`, client).then(res => {
+          //   console.log(res)
+          // })
+        } else {
+          this.$emit("hideChangeCustom", this.supplierInfo, 'add')
+          // 服务器上新增客户
+          // this.$http.post(`${config.httpBaseUrl}/man/add_client/`, client).then(res => {
+          //   console.log(res)
+          // })
+        }
+      } else {
+        this.$emit("hideChangeCustom")
+      }
+    }
+  },
+  created () {
+    // 如果是修改客户
+    if (this.selectClient) {
+      console.log(1)
+      this.supplierInfo = this.selectClient.client
+    }
   }
 }
 </script>

@@ -1,6 +1,7 @@
 <template>
   <message-box
-    @closeMessageBox='$emit("hideGoodsCategory")'
+    @closeMessageBox='add'
+
     :type='type'
     :btns='btns'>
     <div class="content">
@@ -11,14 +12,14 @@
             <el-input size='small' v-model='goodsInfo.name'></el-input>
             <label for=""><span>*</span>商品类型:</label>
             <el-select
-              v-model='goodsInfo.type'
+              v-model='goodsInfo.category'
               placeholder="请选择"
               size='small'>
               <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="item in allgoods"
+                :key="item.category"
+                :label="item.category"
+                :value="item.category">
               </el-option>
             </el-select>
             <!-- <label for=""><span>*</span>规格型号:</label>
@@ -31,31 +32,21 @@
                v-model='goodsInfo.code'></el-input> -->
             <label for=""><span>*</span>所在货位:</label>
             <el-select
-              v-model="goodsInfo.address"
+              v-model="goodsInfo.location"
               placeholder="请选择"
               size='small'>
               <el-option
                 v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                :key="item.starge_rack"
+                :label="item.starge_rack"
+                :value="item.starge_rack">
               </el-option>
             </el-select>
             <label for=""><span>*</span>单位:</label>
-            <el-select
-              v-model="goodsInfo.company"
-              placeholder="请选择"
-              size='small'>
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+            <el-input size='small' v-model='goodsInfo.unit'></el-input>
             
             <label>备注:</label>
-            <el-input size='small' v-model='goodsInfo.name'></el-input>
+            <el-input size='small' v-model='goodsInfo.comment'></el-input>
           </div>
         </el-tab-pane>
         <el-tab-pane label="商品设置">
@@ -63,21 +54,21 @@
             <label for=""><span>*</span>商品预警数</label>
             <label for="">最大值:</label>
             <el-input
-              v-model="goodsInfo.GoodsNumWarning"
+              v-model="goodsInfo.waring_quantity_min"
               size='small'></el-input>
             <label for="">最小值:</label>
             <el-input
-              v-model="goodsInfo.GoodsNumWarning"
+              v-model="goodsInfo.waring_quantity_max"
               size='small'></el-input>
               
             <hr/>
             <label for="">当前库存:</label>
             <el-input
-              v-model="goodsInfo.currentGoodsNum"
+              v-model="goodsInfo.stock_quantity"
               size='small'></el-input>
             <label for="">预估单价:</label>
             <el-input
-              v-model="goodsInfo.currentGoodsNum"
+              v-model="goodsInfo.estimated_price"
               size='small'></el-input>
           </div>
         </el-tab-pane>
@@ -138,26 +129,94 @@ export default {
         comfirm: '确定',
         cancel: '取消'
       },
+      allgoods:[],
+      allgood:[],
+      options:[],
       goodsInfo: {
-        name: '',
-        type: '',
-        model: '',
-        code: '',
-        address: '',
-        company: '',
-        GoodsNumWarning: 0,
-        currentGoodsNum: 0,
-        buyTime: '',
-        productionTime: '',
-        fullTime: '',
-        expireTime: '',
-        expireTimeWarning: '',
-        lastOutTime: ''
+        category:"",
+        name:"",
+        unit:"",
+        location:"",
+        stock_quantity:"",
+        waring_quantity_min:"",
+        waring_quantity_max:"",
+        estimated_price:"",
+        comment:"",
       }
     }
   },
   components: {
-    MessageBox
+    MessageBox,
+  },
+  mounted(){
+     this.Commodity();
+     this.storage();
+  },
+  methods:{
+    //商品类型
+    Commodity(){
+         this.$http.post(`${config.httpBaseUrl}/medicine/get_category/`,{
+          // goods:goods,
+        }).then(res=>{
+        this.allgoods=res.content;
+      })
+    },
+    //所在货位
+    storage(){
+       let _this=this;
+      this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res=>{
+        this.options=res.content;
+      })
+    },
+    add(blo){
+       if (blo) {
+        // 信息不能为空
+        for (var k in this.goodsInfo) {
+          if (!this.goodsInfo[k]) {
+            this.$message({
+              message: '信息不能为空',
+              type: 'warning'
+            })
+            return
+          }
+        }
+        this.$http.post(`${config.httpBaseUrl}/medicine/add_medicine/`,this.goodsInfo).then(res=>{
+          if(res.status==1){
+              this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
+                 repertory:"",
+                 goods:""
+              }).then(res=>{
+              if(res.status==1){
+                this.allgood=res.content;
+                this.$emit('hideGoodsCategoryadd', this.allgood)
+              }else{
+                return
+              }
+            
+            })
+          }else{
+            this.$message({
+              message: '信息不能为空',
+              type: 'warning'
+            })
+            return
+          }
+        
+        })
+        this.$emit('hideGoodsCategoryadd', this.allgood)
+      } else {
+        this.$emit("hideGoodsCategoryadd",)
+      }
+    },
+    created () {
+    console.log(this.selectUsers)
+    // this.userInfo = this.selectUsers.userInfo
+    // 获取部门列表
+    // this.$http.post(`${config.httpBaseUrl}/man/get_department/`).then(res => {
+    //   console.log(res)
+    //   this.departmentData = res.data
+    // })
+    }
   }
 }
 </script>

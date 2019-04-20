@@ -18,24 +18,23 @@
             label-width="100px"
             class="demo-ruleForm"
           >
-            <el-form-item prop="account">
+            <el-form-item prop="username">
               <el-input
                 class="userName"
-                :maxlength="11"
-                v-model="ruleForm2.account"
-                type="text"
-                size="middle"
+                v-model="ruleForm2.username"
+                type=""
+                size="email"
                 auto-complete="off"
-                placeholder="输入手机号码"
+                placeholder="请输入邮箱"
               ><template slot="prepend">
                   <img src="@/assets/img/icon_user.png" alt>
                 </template></el-input>
             </el-form-item>
-            <el-form-item prop="password">
+            <el-form-item prop="passwd">
               <el-input
                 class="password"
                 :maxlength="20"
-                v-model="ruleForm2.password"
+                v-model="ruleForm2.passwd"
                 type="password"
                 placeholder="输入密码"
               > <template slot="prepend">
@@ -117,9 +116,8 @@ export default {
     };
     return {
       ruleForm2: {
-        pass: "",
-        checkPass: "",
-        age: ""
+        username: "",
+        passwd: "",
       },
       logining: false,
       rules2: {
@@ -132,15 +130,28 @@ export default {
   methods: {
     submitForm(formName) {
     var _this=this;
-     _this.$router.push('/systemsetup/personmanage');
-      // this.$refs[formName].validate(valid => {
-      //   if (valid) {
-      //     	_this.$router.push('/register');
-      //   } else {
-      //     console.log("error submit!!");
-      //     return false;
-      //   }
-      // });
+     this.$http.post(`${config.httpBaseUrl}/man/login/`,{
+          username:this.ruleForm2.username,
+          passwd:this.ruleForm2.passwd,
+        }).then(res=>{
+          if(res.status==1){
+             _this.$router.push('/systemsetup/personmanage');
+             this.$message({
+              showClose: true,
+              message:"恭喜你登陆成功",
+              type: 'success'
+            });
+            this.$cookie.set('user',JSON.stringify(res.content));
+          }else{
+             this.$message({
+              showClose: true,
+              message: res.content,
+              type: 'error'
+            });
+             return
+
+          }
+        })
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();

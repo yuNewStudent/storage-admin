@@ -1,15 +1,15 @@
 <template>
   <message-box
-    @closeMessageBox='$emit("hideChangeStorage")'
+    @closeMessageBox='library'
     :type='type'
     :btns='btns'>
     <div class="content">
       <!-- <label>仓库编号:</label>
       <el-input size='large'></el-input> -->
       <label>仓库名称:</label>
-      <el-input size='large'></el-input>
+      <el-input v-model="datalist.name"></el-input>
       <label>仓库货位:</label>
-      <el-input size='large'></el-input>
+      <el-input v-model="datalist.starge_rack"></el-input>
     </div>
   </message-box>
 </template>
@@ -17,18 +17,80 @@
 <script>
 import MessageBox from '@/components/MessageBox'
 export default {
-  props: ['type'],
+  props: ['type','editor'],
   data () {
     return {
       btns: {
         cancel: '取消', 
         comfirm: '确定'
+      },
+      datalist:{
+         name:"",
+         starge_rack:"",
       }
     }
   },
   components: {
     MessageBox
-  }
+  },
+  created(){
+    // if(this.editor.name){
+    //   this.datalist=this.editor;
+    // }
+  },
+  methods:{
+    library(blo){
+          if (blo) {
+            if(this.editor.name){
+              for (var k in this.datalist) {
+                if (!this.datalist[k]) {
+                  this.$message({
+                    message: '信息不能为空',
+                    type: 'warning'
+                  })
+                  return
+                }
+              }
+              this.$http.post('${config.httpBaseUrl}/storage/upd_repertory/',{
+                name:this.datalist.name,
+                starge_rack:this.datalist.starge_rack
+
+              }).then(res=>{
+              this.$http.post('${config.httpBaseUrl}/storage/get_repertory/').then(res=>{
+                var tableData3=res.tableData3;
+              this.$emit('hideChangeStorage', tableData3)
+              // this.options=res.data.allgoods;
+              })
+              })
+            }else{
+              // 信息不能为空
+            for (var k in this.datalist) {
+              if (!this.datalist[k]) {
+                this.$message({
+                  message: '信息不能为空',
+                  type: 'warning'
+                })
+                return
+              }
+            }
+            this.$http.post('${config.httpBaseUrl}/storage/add_repertory/',{
+              name:this.datalist.name,
+              starge_rack:this.datalist.starge_rack
+
+            }).then(res=>{
+            this.$http.post('${config.httpBaseUrl}/storage/get_repertory/').then(res=>{
+              var tableData3=res.tableData3;
+             this.$emit('hideChangeStorage', tableData3)
+            // this.options=res.data.allgoods;
+            })
+            })
+            }
+             this.$emit('hideChangeStorage')
+          } else {
+            this.$emit("hideChangeStorage")
+          }
+      },
+    }
 }
 </script>
 

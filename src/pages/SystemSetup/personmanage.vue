@@ -20,12 +20,34 @@
         width='100%'
         border>
         <el-table-column
-          v-for='(value, key) in usersFilter[0]'
-          :key='key'
           align='center' 
-          :prop="key"
-          :label="key"
-          width="140">
+          prop="name"
+          label="姓名"
+          width='120'>
+        </el-table-column>
+        <el-table-column
+          align='center' 
+          prop="department"
+          label="所属部门"
+          width='120'>
+        </el-table-column>
+        <el-table-column
+          align='center' 
+          prop="email"
+          label="邮箱"
+          width='150'>
+        </el-table-column>
+        <el-table-column
+          align='center' 
+          prop="phone"
+          label="联系电话"
+          width='150'>
+        </el-table-column>
+        <el-table-column
+          align='center' 
+          prop="is_leader"
+          label="是否为部门负责人"
+          width='150'>
         </el-table-column>
         <el-table-column label="操作"
           align='center'>
@@ -33,7 +55,7 @@
             <el-button
               size="mini"
               type="primary"
-              @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+              @click="handleEditPerson(scope.$index, scope.row)">修改</el-button>
             <el-button
               size="mini"
               type="primary"
@@ -41,7 +63,7 @@
             <el-button
               size="mini"
               type="primary"
-              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              @click="handleDeletePerson(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -72,7 +94,7 @@
     <set-department
       :type='messageBoxType.setDepartment'
       v-if='isShowSetDepartment'
-      @hideSetDepartment='isShowSetDepartment=!isShowSetDepartment'>
+      @hideSetDepartment='setDepartment'>
     </set-department>
     <del-user
       :type='messageBoxType.del'
@@ -101,33 +123,29 @@ export default {
       currentPage:4,
       users: [
         {
-          序号: '1',
-          姓名: '苏轼',
-          所属部门: '设计部',
-          联系电话: '188882999',
-          邮箱: '896666@sss.com',
-          是否为负责人: '是'
+          name: '苏轼',
+          department: '设计部',
+          phone: '188882999',
+          email: '896666@sss.com',
+          is_leader: '1'
         }, {
-          序号: '1',
-          姓名: '李贺',
-          所属部门: '设计部',
-          联系电话: '188882999',
-          邮箱: '896666@sss.com',
-          是否为负责人: '是'
+          name: '李贺',
+          department: '设计部',
+          phone: '188882999',
+          email: '896666@sss.com',
+          is_leader: '是'
         }, {
-          序号: '1',
-          姓名: '李白',
-          所属部门: '设计部',
-          联系电话: '188882999',
-          邮箱: '896666@sss.com',
-          是否为负责人: '是'
+          name: '李白',
+          department: '设计部',
+          phone: '188882999',
+          email: '896666@sss.com',
+          is_leader: '是'
         }, {
-          序号: '1',
-          姓名: '杜甫',
-          所属部门: '设计部',
-          联系电话: '188882999',
-          邮箱: '896666@sss.com',
-          是否为负责人: '是'
+          name: '杜甫',
+          department: '设计部',
+          phone: '188882999',
+          email: '896666@sss.com',
+          is_leader: '是'
         },
       ],
       userQuery: '',
@@ -161,11 +179,12 @@ export default {
     // 按照搜索框内容进行筛选
     usersFilter () {
       return this.users.filter(item => {
-        return item['姓名'].indexOf(this.userQuery) > -1
+        return item.name.indexOf(this.userQuery) > -1
       })
     }
   },
   methods: {
+    // 新增人员
     handleAdd () {
       this.isShowAdd = true
     },
@@ -175,41 +194,73 @@ export default {
       if (userInfo) {
       }
     },
-     handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
-    handleEdit (index, row) {
-      console.log(index, row)
+
+    //翻页操作
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+
+    // 展示修改人缘页面
+    handleEditPerson (index, row) {
       this.selectUser.index = index
       this.selectUser.userInfo = row
       this.isShowEditor = true
     },
+    // 修改人员信息
     editorPerson (userInfo) {
       this.isShowEditor = false
       // 确定修改
       if (userInfo) {
+        // this.$http.post(`${config.httpBaseUrl}/man/upd_employee/`, userInfo).then(res => {
+        //   console.log(res)
+        // })
       }
     },
+
+    // 部门设置
     handleSetDepartment () {
       this.isShowSetDepartment = true
     },
-    handleDelete (index, row) {
+    setDepartment () {
+      this.isShowSetDepartment = false
+    },
+
+    // 展示删除人员页面
+    handleDeletePerson (index, row) {
       this.selectUser.index = index
       this.selectUser.userInfo = row
       this.isShowDelUser = true
     },
+    // 删除人员
     delUser (bol) {
       this.isShowDelUser= false
       // 确定删除
-      if (bol) {}
+      if (bol) {
+        // 本地删除
+        this.users.splice(this.selectUser.index, 1)
+        // 服务器删除
+        this.$http.post(`${config.httpBaseUrl}/man/del_employee/`, {
+          name: this.selectUser.userInfo.name,
+          email: this.selectUser.userInfo.email
+        }).then(res => {
+          console.log(res)
+        })
+      }
     },
+
+    // 权限操作
     handlePermission () {
-      console.log(1)
       this.isShowSettingPermission = true
     },
+  },
+  created () {
+    // 获取人员列表
+    this.$http.post(`${config.httpBaseUrl}/man/get_employee/`).then(res => {
+      this.users = res.content
+    })
   }
 }
 </script>

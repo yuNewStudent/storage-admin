@@ -21,6 +21,7 @@
             <el-form-item prop="account">
               <el-input
                 class="userName"
+                style="cursor:pointer"
                 :maxlength="11"
                 v-model="ruleForm2.account"
                 type="text"
@@ -30,9 +31,9 @@
               ><template slot="prepend">
                   <img src="@/assets/img/icon_user.png" alt>
                 </template>
-                <template slot="append">
-                     <el-button type="primary">验证码</el-button>
-                </template>
+                <template style="cursor:pointer" slot="append">
+                    <span>发送邮箱</span>
+                 </template> 
                 </el-input>
             </el-form-item>
              <el-form-item prop="password">
@@ -41,8 +42,9 @@
                 :maxlength="20"
                 v-model="ruleForm2.password"
                 type="password"
-                placeholder="输入密码"
-              ></el-input>
+                placeholder="请输入验证码"
+              >
+              </el-input>
             </el-form-item>
               <el-form-item>
               <el-input 
@@ -74,6 +76,9 @@
               > 确认</el-button>
             </el-form-item>
           </el-form>
+        </div>
+        <div class="reg" @click="login">
+          <span>直接登陆</span>
         </div>
       </div>
     </div>
@@ -151,9 +156,9 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    reg(){
-      	var _this = this;
-					_this.$router.push('/register');
+    login() {
+      var _this = this;
+      _this.$router.push("/login");
     }
   }
 };

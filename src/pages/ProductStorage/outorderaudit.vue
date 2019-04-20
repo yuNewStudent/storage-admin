@@ -39,7 +39,7 @@
         </el-date-picker>
       </div>
       <div class="buttons">
-        <el-button type='primary' size='medium'>提交</el-button>
+        <el-button type='primary' size='medium' @click="goodsubmit">提交</el-button>
         <el-button type='primary' size='medium' @click='handleOutput'>导出</el-button>
       </div>
     </el-header>
@@ -48,6 +48,7 @@
         :data="orders"
         border
         size='small'
+        highlight-current-row
         style="width: 100%">
         <el-table-column
           type="selection"
@@ -57,19 +58,21 @@
           type="index"
           width="55">
         </el-table-column>
-        <el-table-column label="订单号" prop='goodsCategory'>
+        <el-table-column label="订单号" prop='receipt_no'>
         </el-table-column>
-        <el-table-column label="供应商" prop='goodsCategory'>
+        <el-table-column label="供应商" prop='supplier'>
         </el-table-column>
-        <el-table-column label="申请人" prop='goodsCategory'>
+        <el-table-column label="申请人" prop='applicant'>
         </el-table-column>
-        <el-table-column label="申请时间" prop='goodsCategory'>
+        <el-table-column label="申请时间" prop='apply_datetime'>
         </el-table-column>
-        <el-table-column label="状态" prop='goodsCategory'>
+        <el-table-column label="状态" prop='status'>
         </el-table-column>
-        <el-table-column label="操作" prop='goodsCategory'>
-          <el-button>详情</el-button>
-          <el-button>回退</el-button>
+        <el-table-column label="操作" >
+          <template slot-scope="scope">
+               <el-button @click="outordetails(scope.$index, scope.row)">详情</el-button>
+          <el-button @click="outorfallback(scope.$index, scope.row)">回退</el-button>
+          </template>
         </el-table-column>
         <!-- <el-table-column label="单位" prop='goodsCategory'>
         </el-table-column>
@@ -97,7 +100,7 @@
       
       <h5>订单详情：</h5>
       <el-table
-        :data="orders"
+        :data="data"
         border
         size='small'
         style="width: 100%">
@@ -109,24 +112,24 @@
           type="index"
           width="55">
         </el-table-column>
-        <el-table-column label="商品类型" prop='goodsCategory'>
+        <el-table-column label="商品类型" prop='category'>
         </el-table-column>
-        <el-table-column label='商品名称' prop='goodsCategory'>
+        <el-table-column label='商品名称' prop='goods_name'>
         </el-table-column>
-        <el-table-column label="单位" prop='goodsCategory'>
+        <el-table-column label="单位" prop='unit'>
         </el-table-column>
-        <el-table-column label="申请数量" prop='goodsCategory'>
+        <el-table-column label="申请数量" prop='apply_number'>
         </el-table-column>
-        <el-table-column label="预估单价" prop='goodsCategory'>
+        <el-table-column label="预估单价" prop='estimated_price'>
         </el-table-column>
-        <el-table-column label="预估总价" prop='goodsCategory'>
+        <el-table-column label="预估总价" prop='estimated_money'>
         </el-table-column>
-        <el-table-column label="用途" prop='goodsCategory'>
+        <el-table-column label="用途" prop='purpose'>
         </el-table-column>
-        <el-table-column label="申请人备注" prop='goodsCategory'>
+        <el-table-column label="申请人备注" prop='apply_comment'>
         </el-table-column>
-        <el-table-column label="回退理由" prop='goodsCategory'>
-          <el-input></el-input>
+        <el-table-column label="回退理由">
+          <el-input v-model="reason_return"></el-input>
         </el-table-column>
       </el-table>
     </el-main>
@@ -139,6 +142,8 @@ export default {
     return {
       currentPage:4,
       date: '',
+      data:[],
+      reason_return:"",
       options: [
         {
           value: "选项1",
@@ -161,19 +166,19 @@ export default {
           label: "北京经贸技校公司"
         }
       ],
-      value1:"",
+      receipt_no:"",
+      value:"",
       orders: [
         {
-          goodsCategory: '哈德',
-          goodsName: '哈德',
-          goodsNum: '哈德',
-          goodsUnit: '哈德',
-          goodsStorage: '哈德',
-          operatorUser: '哈德',
-          purpose: '哈德',
-          remark: '哈德'
+          receipt_no: '哈德',
+          supplier: '哈德',
+          applicant: '哈德',
+          apply_datetime: '哈德',
+          status: '哈德',
         }
       ],
+      starttime:"",
+      endtime:"",
       ordersStatus: [
         {
           label: '已审核',
@@ -188,14 +193,67 @@ export default {
     }
   },
   methods:{
+    //查询所有的订单
+      allaudit(){
+        this.$http.post('${config.httpBaseUrl}/medicine/get_inStorageReceipt/',{
+            all: 1,
+          }).then(res=>{
+          this.orders=res.data.allgoods;
+        })
+      },
+      //详情
+      outordetails(index, row){
+        console.log(index)
+      this.receipt_no=row.receipt_no;
+       this.$http.post('${config.httpBaseUrl}/medicine/get_inStorageReceipt/',{
+            receipt_no: this.receipt_no,
+          }).then(res=>{
+          this.data=res.data.allgoods;
+        })
+      },
+      //提交审核
+      goodsubmit(){
+        this.$http.post('${config.httpBaseUrl}/medicine/get_goods/',{
+            receipt_no: this.receipt_no,
+          }).then(res=>{
+          this.data=res.data.allgoods;
+        })
+      },
+      //回退
+      outorfallback(index, row){
+        var receipt_no=receipt_no;
+        var goods_name=goods_name;
+        var reason_return=this.reason_return;
+        var auditor=auditor;
+        var date=new Date();
+         let times=this.moment(date[0]).format("YYYY-MM-DD HH:mm:ss");
+        // this.$http.post('${config.httpBaseUrl}/medicine/get_inStorageReceipt/',{
+        //     receipt_no: receipt_no,
+        //     goods_name:goods_name,
+        //     reason_return:reason_return,
+        //     auditor:auditor,
+        //     audited_datetime:date,
+        //   }).then(res=>{
+        //   this.data=res.data.allgoods;
+        // })
+      },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
       },
+      //日期查询
       pickDate (date) {
-        console.log(this.date)
+        let time=date;
+        let starttime=this.moment(time[0]).format("YYYY-MM-DD HH:mm:ss");
+        let endtime=this.moment(time[1]).format("YYYY-MM-DD HH:mm:ss");
+        this.starttime=starttime;
+        this.endtime=endtime;
+  
+      },
+      handleOutput(){
+        
       }
   }
 }
@@ -215,9 +273,6 @@ export default {
       .el-select {
         width: 150px;
       }
-    }
-    .select_date {
-      margin-left: 20px;
     }
     .buttons {
       float: right;

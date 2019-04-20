@@ -8,51 +8,45 @@
         <el-tab-pane label="基础设置">
           <div class="content_wrapper">
             <label><span>*</span>商品名称:</label>
-            <el-input size='small' v-model='goodsInfo.goodsName'></el-input>
+            <el-input size='small' :disabled="true" v-model='goodsInfo.name'></el-input>
             <label for=""><span>*</span>商品类型:</label>
             <el-select
-              v-model='goodsInfo.goodsCategory'
+              v-model='goodsInfo.category'
               placeholder="请选择"
               size='small'>
               <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="item in allgoods"
+                :key="item.category"
+                :label="item.category"
+                :value="item.category">
               </el-option>
             </el-select>
-            <label for=""><span>*</span>规格型号:</label>
+            <!-- <label for=""><span>*</span>规格型号:</label>
             <el-input
               size='small'
-              v-model='goodsInfo.goodsModel'></el-input>
-            <label for=""><span>*</span>商品编码:</label>
+              v-model='goodsInfo.unit'></el-input> -->
+            <!-- <label for=""><span>*</span>商品编码:</label>
             <el-input
               size='small'
-               v-model='goodsInfo.goodsCode'></el-input>
+               v-model='goodsInfo.goodsCode'></el-input> -->
             <label for=""><span>*</span>所在货位:</label>
             <el-select
-              v-model="goodsInfo.goodsStorage"
+              v-model="goodsInfo.location"
               placeholder="请选择"
               size='small'>
               <el-option
                 v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                :key="item.starge_rack"
+                :label="item.starge_rack"
+                :value="item.starge_rack">
               </el-option>
             </el-select>
             <label for=""><span>*</span>单位:</label>
-            <el-select
-              v-model="goodsInfo.goodsUnit"
-              placeholder="请选择"
-              size='small'>
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+            <el-input size='small' v-model='goodsInfo.unit'></el-input>
+            <label for=""><span>*</span>备注:</label>
+            <el-input
+              v-model="goodsInfo.comment"
+              size='small'></el-input>
           </div>
         </el-tab-pane>
         
@@ -62,16 +56,16 @@
               <label for=""><span>*</span>商品预警数:</label>
               <label for="">最高库存预警:</label>
               <el-input
-                v-model="goodsInfo.goodsMaxNum"
+                v-model="goodsInfo.waring_quantity_min"
                 size='small'></el-input>
               <label for="">最低库存预警:</label>
               <el-input
-                v-model="goodsInfo.goodsMinNum"
+                v-model="goodsInfo.waring_quantity_max"
                 size='small'></el-input>
             </div>
             <label for="">采购单价:</label>
             <el-input
-              v-model="goodsInfo.price"
+              v-model="goodsInfo.estimated_price"
               size='small'></el-input>
           </div>
         </el-tab-pane>
@@ -137,52 +131,92 @@
 <script>
 import MessageBox from '@/components/MessageBox'
 export default {
-  props: ['type'],
+  props: ['type',"Editor"],
   data () {
     return {
       btns: {
         comfirm: '确定',
         cancel: '取消'
       },
+      allgoods:[],
+      allgood:[],
+      options:[],
       goodsInfo: {
-        // name: '',
-        // type: '',
-        // model: '',
-        // code: '',
-        // address: '',
-        // company: '',
-        // GoodsNumWarning: 0,
-        // currentGoodsNum: 0,
-        // price: '',
-        goodsCategory: '医用物资',
-        goodsName: '阿莫西林',
-        goodsCode: '123',
-        goodsModel: '1/23/4',
-        goodsUnit: '箱',
-        goodsStorage: 'a区101',
-        currentNum: 12,
-        goodsMinNum: 20,
-        goodsMaxNum: 100,
-        price: 23,
-        remark: '',
-        // buyTime: '',
-        // productionTime: '',
-        // fullTime: '',
-        // expireTime: '',
-        // expireTimeWarning: '',
-        // lastOutTime: ''
-      }
+        category:"",
+        name:"",
+        unit:"",
+        location:"",
+        stock_quantity:"",
+        waring_quantity_min:"",
+        waring_quantity_max:"",
+        estimated_price:"",
+        comment:"",
+      },
     }
   },
   components: {
     MessageBox
   },
+  created(){
+     this.goodsInfo=this.Editor;
+      this.Commodity();
+     this.storage();
+  },
   methods: {
+    //商品类型
+    Commodity(){
+         this.$http.post(`${config.httpBaseUrl}/medicine/get_category/`,{
+          // goods:goods,
+        }).then(res=>{
+        this.allgoods=res.content;
+      })
+    },
+    //所在货位
+    storage(){
+       let _this=this;
+      this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res=>{
+        console.log(res)
+        this.options=res.content;
+      })
+    },
     hideGoodsEditor (bol) {
       // 确认修改
       if (bol) {
+          for (var k in this.goodsInfo) {
+          if (!this.goodsInfo[k]) {
+            this.$message({
+              message: '信息不能为空',
+              type: 'warning'
+            })
+            return
+          }
+        }
+         this.$http.post(`${config.httpBaseUrl}/medicine/upd_medicine/`,this.goodsInfo).then(res=>{
+          if(res.status==1){
+              this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
+                 repertory:"",
+                 goods:""
+              }).then(res=>{
+              if(res.status==1){
+                this.allgood=res.content;
+                this.$emit('goodsEditor', this.allgood)
+              }else{
+                return
+              }
+            
+            })
+          }else{
+            this.$message({
+              message: '信息不能为空',
+              type: 'warning'
+            })
+            return
+          }
+        })
+        this.$emit('goodsEditor')
+      } else {
+        this.$emit("goodsEditor")
       }
-      this.$emit("goodsEditor")
     }
   }
 }

@@ -2,7 +2,7 @@
   <div class="returnquery">
     <el-header>
       <div class="selectStore">
-        仓库选择:
+        订单号:
         <el-select v-model="value" placeholder="请输入仓库名称">
           <el-option
             v-for="item in options"
@@ -13,15 +13,18 @@
         </el-select>
       </div>
       <div class="search">
-        商品名称:
-        <el-input placeholder="请输入商品名称"></el-input>
+        申请人:
+        <el-input placeholder="请输入申请人"></el-input>
         <el-button type="primary">搜索</el-button>
       </div>
       <div class="select_date">
         日期选择:
         <el-date-picker
-          v-model="value1"
-          type="date">
+          v-model="value6"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期">
         </el-date-picker>
       </div>
       <div class="out_put">
@@ -35,20 +38,25 @@
           width="45">
         </el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="category" label="商品类别"></el-table-column>
-        <el-table-column prop="commodity" label="商品名称"></el-table-column>
-        <el-table-column prop="specifications" label="商品规格"></el-table-column>
-        <el-table-column prop="number" label="出库数量"></el-table-column>
-        <el-table-column prop="number1" label="入库数量"></el-table-column>
-        <el-table-column prop="unit" label="单位"></el-table-column>
-        <el-table-column prop="warehouse" label="所在仓库"></el-table-column>
-        <el-table-column prop="Barcode" label="条形码"></el-table-column>
-        <el-table-column prop="agent" label="经办人"></el-table-column>
-        <el-table-column prop="procurement" label="采购用途"></el-table-column>
-        <el-table-column prop="outboundthedata" label="出库日期"></el-table-column>
-        <el-table-column prop="putthedata" label="再次入库日期"></el-table-column>
-        <el-table-column prop="note" label="备注"></el-table-column>
+        <el-table-column prop="name" label="出库订单号"></el-table-column>
+        <el-table-column prop="date" label="收货商"></el-table-column>
+        <el-table-column prop="date" label="商品类别"></el-table-column>
+        <el-table-column prop="name" label="商品名称"></el-table-column>
+        <el-table-column prop="name" label="商品规格"></el-table-column>
+        <el-table-column prop="address" label="单位"></el-table-column>
+        <el-table-column prop="address" label="所在库位"></el-table-column>
+        <el-table-column prop="name" label="条形码"></el-table-column>
+        <el-table-column prop="address" label="申请出库数量"></el-table-column>
+        <el-table-column prop="address" label="归还入库数">
+        </el-table-column>
+        <el-table-column label="商品单价">
+        </el-table-column>
+        <el-table-column prop="name" label="生产日期"></el-table-column>
+        <el-table-column prop="name" label="保质期"></el-table-column>
+        <el-table-column prop="name" label="到期时间"></el-table-column>
+        <el-table-column prop="name" label="到期时间预警"></el-table-column>
+        <el-table-column label="归还理由">
+        </el-table-column>
       </el-table>
       <div class="block">
         <span class="demonstration"></span>
@@ -72,57 +80,6 @@ export default {
       input10: "",
        currentPage: 4,
       tableData: [
-        {
-          category: "医药",
-          commodity: "阿莫西林",
-          specifications: "1/23/25",
-          number: "2",
-          number1: "1",
-          unit: "箱",
-          warehouse: "A区",
-          Barcode: "12123343344",
-          agent: "李先生",
-          outboundthedata: "2019/03/28",
-          putthedata: "2019/03/30",
-          procurement: "治疗",
-          note: "希望尽快发货"
-        },
-        {
-          category: "医药",
-          commodity: "阿莫西林",
-          number: "2",
-          unit: "箱",
-          warehouse: "A区",
-          Barcode: "12123343344",
-          agent: "李先生",
-          thedata: "2019/03/28",
-          procurement: "治疗",
-          note: "希望尽快发货"
-        },
-        {
-          category: "医药",
-          commodity: "阿莫西林",
-          number: "2",
-          unit: "箱",
-          warehouse: "A区",
-          Barcode: "12123343344",
-          agent: "李先生",
-          thedata: "2019/03/28",
-          procurement: "治疗",
-          note: "希望尽快发货"
-        },
-        {
-          category: "医药",
-          commodity: "阿莫西林",
-          number: "2",
-          unit: "箱",
-          warehouse: "A区",
-          Barcode: "12123343344",
-          agent: "李先生",
-          thedata: "2019/03/28",
-          procurement: "治疗",
-          note: "希望尽快发货"
-        }
       ],
       formInline: {
         user: "",
@@ -155,7 +112,27 @@ export default {
     };
   },
   components: {},
+  // mounted(){
+  //   this.querylist();
+  // },
   methods: {
+      // querylist(){
+      // const data = {
+      //   all: 0,
+      //   receipt_no: this.filter.receipt_no,
+      //   applicant: this.filter.applicant,
+      //   apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
+      //   apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
+      // };
+      // console.log(data)
+      // this.$http.post(`${config.httpBaseUrl}/medicine/query_out_storage/`,data).then(res => {
+      //        if(res.status==1){
+      //          this.purchaseOrders=res.content;
+      //        }else{
+      //          return
+      //        }
+      //   })
+    // },
     buttonModifythe: function() {
       if (this.show == false) {
         this.show = true;
@@ -186,22 +163,23 @@ export default {
       display: inline-block;
     }
     .selectStore {
-      width: 250px;
+      width: 200px;
       .el-select {
-        width: 150px;
+        width: 130px;
       }
     }
     .select_date {
-      margin-left: 100px;
+      margin-left: 20px;
     }
     .search {
-      width: 380px;
+      margin-left: 20px;
+      width: 350px;
       .el-input {
         width: 200px;
       }
     }
     .out_put {
-      margin-left: 30px;
+      float: right;
     }
   }
   .el-main {

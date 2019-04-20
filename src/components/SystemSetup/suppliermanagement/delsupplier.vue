@@ -1,26 +1,44 @@
 <template>
   <message-box
-    @closeMessageBox='$emit("hideDelSupplier")'
+    @closeMessageBox='Delsupplier'
     :type='type'
     :btns='btns'>
-    <p class="content">你确定要删除**公司的信息和相关资料吗?<br/>删除后系统不能回复</p>
+    <p class="content">你确定要删除{{this.multipleSelection.purchaser}}公司的信息和相关资料吗?<br/>删除后系统不能回复</p>
   </message-box>
 </template>
 
 <script>
 import MessageBox from '@/components/MessageBox'
 export default {
-  props: ['type'],
+  props: ['type',"multipleSelection"],
   data () {
     return {
       btns: {
         cancel: '取消', 
         comfirm: '确定'
-      }
+      },
+      purchaser:"",
     }
   },
   components: {
     MessageBox
+  },
+  created(){
+    this.purchaser=this.multipleSelection.suplierPar;
+    console.log(this.purchaser)
+  },
+  methods:{
+    Delsupplier(bol){
+       if (bol) {
+        this.$http.post('${config.httpBaseUrl}/man/del_client/',{
+          multipleSelection:this.multipleSelection,
+        }).then(res=>{
+        })
+        this.$emit('hideDelSupplier',)
+      } else {
+        this.$emit("hideDelSupplier")
+      }
+    }
   }
 }
 </script>

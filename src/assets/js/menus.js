@@ -4,6 +4,7 @@ const menus = [
     name: 'systemsetup',
     icon: '@/assets/icon/系统管理ic.png',
     group: [
+      { label: '操作日志', name: 'operatelog'},
       { label: '人员管理', name: 'personmanage'},
       { label: '商品管理', name: 'goodsmanage'},
       { label: '仓库管理', name: 'storemanage'},
@@ -50,11 +51,12 @@ const menus = [
     name: 'systemquery',
     icon: '@/assets/icon/系统查询ic.png',
     group: [
-      { label: '采购单查询', name: 'purchaseordersquery'},
+      { label: '入库单查询', name: 'purchaseordersquery'},
       { label: '归还入库查询', name: 'returnquery'},
       { label: '出库单查询', name: 'outorderquery'},
       { label: '库存查询', name: 'stockquery'},
-      { label: '移库查询', name: 'goodsmovequery'}
+      { label: '移库查询', name: 'goodsmovequery'},
+      { label: '盘点查询', name: 'goodscountingquery'}
     ]
   }
 ]
