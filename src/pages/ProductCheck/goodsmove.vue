@@ -87,6 +87,9 @@ export default {
     };
   },
   components: {},
+  created(){
+
+  },
   methods: {
     buttonModifythe: function() {
       if (this.show == false) {
