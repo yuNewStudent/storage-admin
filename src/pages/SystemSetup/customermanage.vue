@@ -78,12 +78,12 @@
     <change-custom
       v-if='isShowAddCustom'
       :type='messageBoxType.add'
-      @hideChangeCustom='changeCustom'></change-custom>
+      @hideChangeCustom='addCustom'></change-custom>
     <change-custom
       v-if='isShowEditorCustom'
       :type='messageBoxType.editor'
       :selectClient='selectClient'
-      @hideChangeCustom='changeCustom'></change-custom>
+      @hideChangeCustom='editorCustom'></change-custom>
     <del-custom
       v-if='isShowDelCustom'
       :type='messageBoxType.del'
@@ -107,20 +107,20 @@ export default {
       },
       client: '',
       clients: [
-        {
-          address: '四川',
-          purchaser: '成都有限公司',
-          contact: '于先生',
-          phone: '1229383744',
-          email: '7899@hh.com'
-        },
-        {
-          address: '四川',
-          purchaser: '四川有限公司',
-          contact: '于先生',
-          phone: '1229383744',
-          email: '7899@hh.com'
-        }
+        // {
+        //   address: '四川',
+        //   purchaser: '成都有限公司',
+        //   contact: '于先生',
+        //   phone: '1229383744',
+        //   email: '7899@hh.com'
+        // },
+        // {
+        //   address: '四川',
+        //   purchaser: '四川有限公司',
+        //   contact: '于先生',
+        //   phone: '1229383744',
+        //   email: '7899@hh.com'
+        // }
       ],
       selectClient: {
         index: '',
@@ -134,6 +134,9 @@ export default {
   computed: {
     //筛选客户
     filterClients () {
+      if (!this.clients) {
+        return
+      }
       return this.clients.filter(item => {
         return item.purchaser.indexOf(this.client) > -1
       })
@@ -155,12 +158,18 @@ export default {
       console.log(bol)
       this.isShowDelCustom = false
       if (bol) {
-        // this.$http.post(`${config.httpBaseUrl}/man/del_client/`, {
-        // this.selectClient.client
-        // }).then(res => {
-        //   console.log(res)
-        //   this.clients = res.data.content
-        // })
+        const data = []
+        data.push(this.selectClient.client)
+        this.$http.post(`${config.httpBaseUrl}/man/del_client/`, 
+          data
+        ).then(res => {
+          if (res.status === 1) {
+            this.$message({
+              message: '成功删除客户',
+              type: 'success'
+            })
+          }
+        })
         // 本地删除
         this.clients.splice(this.selectClient.index, 1)
       }
@@ -171,20 +180,21 @@ export default {
       this.selectClient.client = row
       this.isShowEditorCustom = true
     },
-    // 修改或增加客户
-    changeCustom (client, type) {
-      this.isShowEditorCustom = false
-      this.isShowAddCustom = false
+    // 增加客户
+    addCustom (client) {
       if (client) {
-        // 修改客户
-        if (type === 'editor') {
-          // 修改客户-本地
-          this.clients.splice(this.selectClient.index, 1, client)
-        } else if (type === 'add') {
-          // 新增客户
-          this.clients.push(client)
-        }
+        // 增加客户-本地
+        this.clients.unshift(client)
       }
+      this.isShowAddCustom = false
+    },
+    // 修改客户
+    editorCustom (client) {
+      if (client) {
+        // 修改客户-本地
+        this.clients.splice(this.selectClient.index, 1, client)
+      }
+      this.isShowEditorCustom = false
     },
     handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
@@ -198,14 +208,16 @@ export default {
     },
     // 获取客户
     getClient (purchaser, address) {
-    // this.$http.post(`${config.httpBaseUrl}/man/get_client/`, {
-    // purchaser
-    // address
-    // }).then(res => {
-    //   console.log(res)
-    //   this.clients = res.data.content
-    // })
-    }
+    this.$http.post(`${config.httpBaseUrl}/man/get_client/`, {
+      purchaser,
+      address
+    }).then(res => {
+      console.log(res)
+      this.clients = res.content
+    })
+    },
+    // 选中项改变
+    handleSelectionChange () {}
   },
   created () {
     // 获取所有客户

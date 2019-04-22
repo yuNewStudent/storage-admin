@@ -70,8 +70,8 @@
         </el-table-column>
         <el-table-column label="操作" prop='goodsCategory'>
           <template slot-scope="scope">
-              <el-button @click="exitordetails(scope.$index, scope.row)">详情</el-button>
-              <el-button @click="Outbound(scope.$index, scope.row)">回退</el-button>
+            <el-button size='mini' @click="exitordetails(scope.$index, scope.row)">详情</el-button>
+            <el-button size='mini' @click="Outbound(scope.$index, scope.row)">回退</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -125,21 +125,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- <el-table :data="tableData3" border size="small" style="width: 100%">
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column type="index" width="55"></el-table-column>
-        <el-table-column label="商品类别" prop="goodsCategory"></el-table-column>
-        <el-table-column label="商品名称" prop="goodsCategory"></el-table-column>
-        <el-table-column label="申请采购数量" prop="goodsCategory"></el-table-column>
-        <el-table-column label="单位" prop="goodsCategory"></el-table-column>
-        <el-table-column label="所在仓库" prop="goodsCategory"></el-table-column>
-        <el-table-column label="申请时间" prop="goodsCategory"></el-table-column>
-        <el-table-column label="订单号" prop="goodsCategory"></el-table-column>
-        <el-table-column label="经办人" prop="goodsCategory"></el-table-column>
-        <el-table-column label="用途" prop="goodsCategory"></el-table-column>
-        <el-table-column label="备注" prop="goodsCategory"></el-table-column>
-        <el-table-column label="状态" prop="goodsCategory"></el-table-column>
-      </el-table> -->
     </el-main>
   </div>
 </template>
@@ -165,59 +150,8 @@ export default {
       ],
       options:[],
       tableData3:[
-        {
-       goods_name:"商品名称",
-        category: "商品类别",
-        unit: "单位",
-        location: "所在位置",
-        out_number: 10,
-        price: 1.2, 
-        money: 12, 
-        client_address: "收货地址",
-        client_contact: "收货联系人",
-        client_phone: "收货联系电话",
-        purpose: "用途",
-        apply_comment: "",
-        reason_return:"",
-        },
-         {
-       goods_name:"商品名称",
-        category: "商品类别",
-        unit: "单位",
-        location: "所在位置",
-        out_number: 10,
-        price: 1.2, 
-        money: 12, 
-        client_address: "收货地址",
-        client_contact: "收货联系人",
-        client_phone: "收货联系电话",
-        purpose: "用途",
-        apply_comment: "",
-        reason_return:"",
-        },
       ],
       orders: [
-        {
-          receipt_no: "哈德",
-          client: "哈德",
-          client_address: "哈德",
-          applicant: "哈德",
-          apply_datetime: "哈德",
-          status: "哈德",
-          client_contact: "哈德",
-          client_phone: "哈德"
-        },
-        
-         {
-          receipt_no: "哈德",
-          client: "哈德",
-          client_address: "哈德",
-          applicant: "哈德",
-          apply_datetime: "哈德",
-          status: "哈德",
-          client_contact: "哈德",
-          client_phone: "哈德"
-        },
       ],
       multipleSelection:[],
       value8:"",
@@ -229,24 +163,24 @@ export default {
     };
   },
   mounted(){
-    // this.exitorder();
+    this.exitorder()
   },
    methods: {
      getDivisdon(){
          this.conditions();
      },
       //申请人
-     applicant(){
-          this.$http.post('${config.httpBaseUrl}/man/get_all_client/',{
-              all:0,
-              applicant:"",
-              status:this.valuees,
-              apply_datetime_start:this.starttime,
-              apply_datetime_end:this.endtime,
-            }).then(res=>{
-              this.options=res.tableData3;
-            });
-     },
+    //  applicant(){
+    //       this.$http.post(`${config.httpBaseUrl}/man/get_all_client/`,{
+    //           all:0,
+    //           applicant:"",
+    //           status:this.valuees,
+    //           apply_datetime_start:this.starttime,
+    //           apply_datetime_end:this.endtime,
+    //         }).then(res=>{
+    //           this.options=res.tableData3;
+    //         });
+    //  },
      //审核
        getDivision() {
         this.conditions();
@@ -290,32 +224,38 @@ export default {
      handleSelectionChange(val){
          this.multipleSelection = val;
      },
-     //请求所有的
-    //  exitorder(){
-    //         this.$http.post('${config.httpBaseUrl}/medicine/get_outStorageReceipt/',{
-    //            "all": 1,
-    //         }).then(res=>{
-    //           this.orders=res.tableData3;
-    //         });
-    //     },
-    //     //详情
-    //     exitordetails(index,row){
-    //         this.$http.post('${config.httpBaseUrl}/medicine/detail_outStorageReceipt/',{
-    //            receipt_no:row.receipt_no,
-    //         }).then(res=>{
-    //           this.tableData3=res.tableData3;
-    //         }); 
-    //     },
-        //回退
-        // Outbound(index,row){
-        //     this.$http.post('${config.httpBaseUrl}/medicine/return_outStorageReceipt/',{
-        //        receipt_no:row.receipt_no,
-        //        tabledata3:this.tableData3,
-        //        auditor:"",
-        //     }).then(res=>{
-        //       this.tableData3=res.tableData3;
-        //     }); 
-        // },
+      //请求所有的
+      exitorder(){
+        this.$http.post(`${config.httpBaseUrl}/medicine/get_outStorageReceipt/`,{
+          all: 1,
+        }).then(res=>{
+          if (res.status === 1) {
+            console.log(res)
+            this.orders= res.content
+          }
+        })
+      },
+      //详情
+      exitordetails(index, row){
+        this.$http.post(`${config.httpBaseUrl}/medicine/detail_outStorageReceipt/`,{
+          receipt_no: row.receipt_no,
+        }).then(res => {
+          if (res.status === 1) {
+            console.log(res)
+            this.tableData3 = res.content
+          }
+        })
+      },
+      //回退
+      // Outbound(index,row){
+      //   this.$http.post(`${config.httpBaseUrl}/medicine/return_outStorageReceipt/`,{
+      //       receipt_no:row.receipt_no,
+      //       goods_name:this.tableData3,
+      //       reason_return:"",
+      //   }).then(res=>{
+      //     this.tableData3=res.tableData3
+      //   })
+      // },
         handleOutput(){
          console.log(121);
         },

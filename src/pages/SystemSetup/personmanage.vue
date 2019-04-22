@@ -3,7 +3,9 @@
   	<div class="header">
       <div class="search">
         <input type="text" placeholder="请输入姓名" v-model='userQuery'>
-        <span class="serch_btn">
+        <span
+          class="serch_btn"
+          @click='handleFilterUsers'>
           <img src="@/assets/icon/搜索ic.png" alt="">
         </span>
       </div>
@@ -15,7 +17,7 @@
     </div>
     <div class="content">
       <el-table
-        :data="usersFilter"
+        :data="users"
         size='small'
         width='100%'
         border>
@@ -122,36 +124,36 @@ export default {
   	return {
       currentPage:4,
       users: [
-        {
-          name: '苏轼',
-          department: '设计部',
-          phone: '188882999',
-          email: '896666@sss.com',
-          is_leader: '1'
-        }, {
-          name: '李贺',
-          department: '设计部',
-          phone: '188882999',
-          email: '896666@sss.com',
-          is_leader: '是'
-        }, {
-          name: '李白',
-          department: '设计部',
-          phone: '188882999',
-          email: '896666@sss.com',
-          is_leader: '是'
-        }, {
-          name: '杜甫',
-          department: '设计部',
-          phone: '188882999',
-          email: '896666@sss.com',
-          is_leader: '是'
-        },
+        // {
+        //   name: '苏轼',
+        //   department: '设计部',
+        //   phone: '188882999',
+        //   email: '896666@sss.com',
+        //   is_leader: '1'
+        // }, {
+        //   name: '李贺',
+        //   department: '设计部',
+        //   phone: '188882999',
+        //   email: '896666@sss.com',
+        //   is_leader: '是'
+        // }, {
+        //   name: '李白',
+        //   department: '设计部',
+        //   phone: '188882999',
+        //   email: '896666@sss.com',
+        //   is_leader: '是'
+        // }, {
+        //   name: '杜甫',
+        //   department: '设计部',
+        //   phone: '188882999',
+        //   email: '896666@sss.com',
+        //   is_leader: '是'
+        // },
       ],
       userQuery: '',
       selectUser: {
         index: '',
-        userInfo: []
+        userInfo: ''
       },
       isShowAdd: false,
       isShowEditor: false,
@@ -176,14 +178,14 @@ export default {
     SettingPermission
   },
   computed: {
-    // 按照搜索框内容进行筛选
-    usersFilter () {
-      return this.users.filter(item => {
-        return item.name.indexOf(this.userQuery) > -1
-      })
-    }
   },
   methods: {
+    // 筛选
+    handleFilterUsers () {
+      this.users = this.users.filter(item => {
+        return item.name.indexOf(this.userQuery) > -1
+      })
+    },
     // 新增人员
     handleAdd () {
       this.isShowAdd = true
@@ -191,7 +193,9 @@ export default {
     addPerson (userInfo) {
       this.isShowAdd = false
       // 确定添加
+      console.log(userInfo)
       if (userInfo) {
+        this.users.push(userInfo)
       }
     },
 
@@ -203,8 +207,26 @@ export default {
       console.log(`当前页: ${val}`);
     },
 
+    // 展示删除人员页面
+    handleDeletePerson (index, row) {
+      this.selectUser.index = index
+      this.selectUser.userInfo = this.users[index]
+      this.isShowDelUser = true
+    },
+    // 删除人员
+    delUser (bol) {
+      this.isShowDelUser= false
+      // 确定删除
+      if (bol) {
+        // 本地删除
+        this.users.splice(this.selectUser.index, 1)
+      }
+    },
+
     // 展示修改人缘页面
     handleEditPerson (index, row) {
+      console.log(row)
+      delete row.function
       this.selectUser.index = index
       this.selectUser.userInfo = row
       this.isShowEditor = true
@@ -214,9 +236,7 @@ export default {
       this.isShowEditor = false
       // 确定修改
       if (userInfo) {
-        // this.$http.post(`${config.httpBaseUrl}/man/upd_employee/`, userInfo).then(res => {
-        //   console.log(res)
-        // })
+        this.users[this.selectUser.index] = userInfo
       }
     },
 
@@ -228,29 +248,6 @@ export default {
       this.isShowSetDepartment = false
     },
 
-    // 展示删除人员页面
-    handleDeletePerson (index, row) {
-      this.selectUser.index = index
-      this.selectUser.userInfo = row
-      this.isShowDelUser = true
-    },
-    // 删除人员
-    delUser (bol) {
-      this.isShowDelUser= false
-      // 确定删除
-      if (bol) {
-        // 本地删除
-        this.users.splice(this.selectUser.index, 1)
-        // 服务器删除
-        this.$http.post(`${config.httpBaseUrl}/man/del_employee/`, {
-          name: this.selectUser.userInfo.name,
-          email: this.selectUser.userInfo.email
-        }).then(res => {
-          console.log(res)
-        })
-      }
-    },
-
     // 权限操作
     handlePermission () {
       this.isShowSettingPermission = true
@@ -260,6 +257,7 @@ export default {
     // 获取人员列表
     this.$http.post(`${config.httpBaseUrl}/man/get_employee/`).then(res => {
       this.users = res.content
+      console.log(this.users)
     })
   }
 }

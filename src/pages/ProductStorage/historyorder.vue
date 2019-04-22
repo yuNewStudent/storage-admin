@@ -9,7 +9,7 @@
               placeholder="请选择">
             <el-option
               v-for="item in suppliers"
-              :key="item.value"
+              :key="item.supplier"
               :label="item.supplier"
               :value="item.supplier">
             </el-option>
@@ -79,6 +79,7 @@
               @click='handleOrderInfo(scope.row)'>详情</el-button>
             <el-button
               size='mini'
+              :disabled='scope.row.status!==2'
               @click='handleOrderEditor(scope.row)'>修改</el-button>
           </template>
         </el-table-column>
@@ -157,73 +158,30 @@ export default {
         }
       ],
       suppliers: [
-        {
-          address: "供货商地址",
-          supplier: "四川省经济贸易公司"
-        },
-        {
-          address: "供货商地址",
-          supplier: "四川棋照科技有限公司"
-        },
-        {
-          address: "供货商地址",
-          supplier: "攀枝花攀钢公司"
-        },
-        {
-          address: "供货商地址",
-          supplier: "阿里巴巴有限公司"
-        },
-        {
-          address: "供货商地址",
-          supplier: "北京经贸技校公司"
-        }
+        // "四川省经济贸易公司",
+        // "四川棋照科技有限公司"
       ],
       orderInfo: [
-        {
-          category: '商品类别',
-          goods_name: '商品名称',
-          unit: '个',
-          apply_number: 10,
-          estimated_price: 2.3,
-          estimated_money: 23,
-          purpose: '用于治疗感冒',
-          apply_comment: '申请人备注',
-          reason_return: '审核不通过原因'
-        },
-        {
-          category: '商品类别',
-          goods_name: '商品名称',
-          unit: '个',
-          apply_number: 10,
-          estimated_price: 2.3,
-          estimated_money: 23,
-          purpose: '用于治疗感冒',
-          apply_comment: '申请人备注',
-          reason_return: '审核不通过原因'
-        }
+        // {
+        //   category: '商品类别',
+        //   goods_name: '商品名称',
+        //   unit: '个',
+        //   apply_number: 10,
+        //   estimated_price: 2.3,
+        //   estimated_money: 23,
+        //   purpose: '用于治疗感冒',
+        //   apply_comment: '申请人备注',
+        //   reason_return: '审核不通过原因'
+        // }
       ],
       orders: [
-        {
-          "receipt_no": "123",
-          "supplier": "四川省经济贸易公司",
-          "applicant": "申请人",
-          "apply_datetime": "2019-4-16",
-          "status": "待审核"
-        },
-        {
-          "receipt_no": "456",
-          "supplier": "北京经贸技校公司",
-          "applicant": "申请人",
-          "apply_datetime": "2019-4-16",
-          "status": "已审核"
-        },
-        {
-          "receipt_no": "456",
-          "supplier": "北京经贸技校公司",
-          "applicant": "申请人",
-          "apply_datetime": "2019-4-16",
-          "status": "待审核"
-        }
+        // {
+        //   "receipt_no": "123",
+        //   "supplier": "四川省经济贸易公司",
+        //   "applicant": "申请人",
+        //   "apply_datetime": "2019-4-16",
+        //   "status": "待审核"
+        // }
       ]
     }
   },
@@ -245,21 +203,21 @@ export default {
     // 获取订单详情
     handleOrderInfo (row) {
       console.log(row.receipt_no)
-      // this.$http.post(`${config.httpBaseUrl}/medicine/detail_inStorageReceipt/`, {
-      //   receipt_no: row.receipt_no
-      // }).then(res => {
-      // console.log(res)
-      // this.orderInfo = res.data
-      // })
+      this.$http.post(`${config.httpBaseUrl}/medicine/detail_inStorageReceipt/`, {
+        receipt_no: row.receipt_no
+      }).then(res => {
+        this.orderInfo = res.content
+      })
     },
     // 获取所有订单列表
     getOders () {
-      // this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, {
-      //   all: True
-      // }).then(res => {
-      // console.log(res)
-      // this.orders = res.data
-      // })
+      this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, {
+        all: 1
+      }).then(res => {
+        if (res.status === 1) {
+          this.orders = res.content
+        }
+      })
     },
     // 修改错误订单
     handleOrderEditor (row) {
@@ -273,29 +231,29 @@ export default {
     
     // 按照搜索框内容进行筛选
     filterOrder () {
-      console.log(this.filter)
-      // this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, {
-      //   all: False,
-      //   applicant: '',
-      //   status: this.filter.status >= 0 ? this.filter.status : -1,
-      //   apply_datetime_start: this.apply_datetime.length ? this.moment(this.apply_datetime[0]).format("YYYY-MM-DD") : '',
-      //   apply_datetime_end: this.apply_datetime.length ? this.moment(this.apply_datetime[1]).format("YYYY-MM-DD") : ''
-      // }).then(res => {
-      //   console.log(res)
-      //   this.orders = res.data
-      // })
+      const data = {
+        all: 0,
+        supplier: this.filter.supplier,
+        status: this.filter.status === '' ? -1 : this.filter.status,
+        apply_datetime_start: this.apply_datetime.length ? this.moment(this.apply_datetime[0]).format("YYYY-MM-DD") : '',
+        apply_datetime_end: this.apply_datetime.length ? this.moment(this.apply_datetime[1]).format("YYYY-MM-DD") : ''
+      }
+      console.log(data)
+      this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, data).then(res => {
+        console.log(res)
+        this.orders = res.content
+      })
     }
   },
   created () {
     this.getOders()
     // 获取所有供应商
-    // this.$http.post(`${config.httpBaseUrl}/man/get_supplier/`, {
-    // supplier: '',
-    // address: ''
-    // }).then(res => {
-    //   console.log(res)
-    //   this.suppliers = res.data.content
-    // })
+    this.$http.post(`${config.httpBaseUrl}/man/get_all_supplier/`).then(res => {
+      console.log(res)
+      if (res.status === 1) {
+        this.suppliers = res.content
+      }
+    })
   }
 }
 </script>

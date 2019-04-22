@@ -5,23 +5,23 @@
     :btns='btns'>
     <div class="content">
       <label><span>*</span>供货单位:</label>
-      <el-input size='small' v-model='supplierInfo.purchaser'></el-input>
+      <el-input size='small' v-model='client.purchaser'></el-input>
       <label for=""><span>*</span>供货地选择:</label>
       <el-input
-        v-model='supplierInfo.address'
+        v-model='client.address'
         size='small'>
       </el-input>
       <label for=""><span>*</span>联系人:</label>
       <el-input
         size='small'
-        v-model='supplierInfo.contact'></el-input>
+        v-model='client.contact'></el-input>
       <label for=""><span>*</span>联系电话:</label>
       <el-input
         size='small'
-        v-model='supplierInfo.phone'></el-input>
+        v-model='client.phone'></el-input>
       <label for="">邮箱:</label>
       <el-input
-        v-model="supplierInfo.email"
+        v-model="client.email"
         size='small'></el-input>
     </div>
   </message-box>
@@ -37,7 +37,7 @@ export default {
         comfirm: '确定',
         cancel: '取消'
       },
-      supplierInfo: {
+      client: {
         address: '',
         purchaser: '',
         contact: '',
@@ -53,8 +53,8 @@ export default {
     changeCustom (bol) {
       if (bol) {
         // 输入框不能为空
-        for (let key in this.supplierInfo) {
-          if (!this.supplierInfo[key]) {
+        for (let key in this.client) {
+          if (!this.client[key]) {
             return this.$message({
               showClose: true,
               message: '警告! 客户信息不能有空,请完善信息提交',
@@ -62,19 +62,31 @@ export default {
             })
           }
         }
-        if (!comfim) { return }
         if (this.selectClient) {
-          this.$emit("hideChangeCustom", this.supplierInfo, 'editor')
+          console.log(this.client)
+          this.$emit("hideChangeCustom", this.client)
           // 修改服务器数据
-          // this.$http.post(`${config.httpBaseUrl}/man/upd_client/`, client).then(res => {
-          //   console.log(res)
-          // })
+          this.$http.post(`${config.httpBaseUrl}/man/upd_client/`, this.client).then(res => {
+            if (res.status === 1) {
+              this.$message({
+                showClose: true,
+                message: '客户新增成功',
+                type: 'success'
+              })
+            }
+          })
         } else {
-          this.$emit("hideChangeCustom", this.supplierInfo, 'add')
+          this.$emit("hideChangeCustom", this.client)
           // 服务器上新增客户
-          // this.$http.post(`${config.httpBaseUrl}/man/add_client/`, client).then(res => {
-          //   console.log(res)
-          // })
+          this.$http.post(`${config.httpBaseUrl}/man/add_client/`, this.client).then(res => {
+            if (res.status === 1) {
+              this.$message({
+                showClose: true,
+                message: '客户信息更新成功',
+                type: 'success'
+              })
+            }
+          })
         }
       } else {
         this.$emit("hideChangeCustom")
@@ -85,7 +97,7 @@ export default {
     // 如果是修改客户
     if (this.selectClient) {
       console.log(1)
-      this.supplierInfo = this.selectClient.client
+      this.client = this.selectClient.client
     }
   }
 }
