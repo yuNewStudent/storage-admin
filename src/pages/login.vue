@@ -168,7 +168,7 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style lang='scss' scoped>
 .login {
   width: 100%;
   height: 100%;
@@ -182,6 +182,9 @@ export default {
 
   /* 让背景图基于容器大小伸缩 */
   background-size: cover;
+  .el-input {
+    margin-left: -50px;
+  }
 }
 .logonl {
   width: 400px;
@@ -215,9 +218,6 @@ export default {
   text-align: center;
   font-size: 22px;
   color: #4499f2;
-}
-.el-input {
-  margin-left: -50px;
 }
 .el-button {
   margin-left: 40px;

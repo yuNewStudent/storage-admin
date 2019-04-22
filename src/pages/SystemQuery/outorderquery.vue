@@ -3,14 +3,8 @@
     <el-header>
       <div class="selectStore">
         订单号:
-        <el-select v-model="value" placeholder="请输入仓库名称">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+        <el-input v-model="filter.receipt_no" placeholder="请输入订单号">
+        </el-input>
       </div>
       <div class="select_date">
         日期选择:
@@ -25,8 +19,8 @@
       <div class="search">
         申请人:
         <el-input placeholder="请输入申请人"></el-input>
-        <el-button type="primary">搜索</el-button>
       </div>
+      <el-button type="primary" @click='handleFilter'>搜索</el-button>
       <div class="out_put">
         <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
       </div>
@@ -199,6 +193,11 @@ export default {
         user: "",
         region: ""
       },
+      filter: {
+        receipt_no: '',
+        applicant: '',
+        apply_datetime: []
+      },
       value6:"",
       options: [
         {
@@ -228,10 +227,29 @@ export default {
   },
   components: {},
   mounted(){
-   this.listquery();
+   this.getOutorders();
   },
   methods: {
-    listquery(){
+    // 条件筛选
+    handleFilter () {
+      const data = {
+        all: 0,
+        receipt_no: this.filter.receipt_no,
+        applicant: this.filter.applicant,
+        apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
+        apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
+      }
+      this.$http.post(`${config.httpBaseUrl}/medicine/query_out_storage/`, data).then(res=>{
+        console.log(res)
+        if (res.status === 1) {
+          this.purchaseOrders = res.content
+        } else {
+          return
+        }
+      })
+    },
+    // 获取所有出库单
+    getOutorders(){
       const data = {
         all: 1,
         receipt_no:"",
@@ -240,11 +258,11 @@ export default {
         apply_datetime_end:""
       };
       this.$http.post(`${config.httpBaseUrl}/medicine/query_out_storage/`,data).then(res => {
-             if(res.status==1){
-               this.tableData=res.content;
-             }else{
-               return
-             }
+          if(res.status==1){
+            this.tableData=res.content;
+          }else{
+          return
+          }
         })
     },
     buttonModifythe: function() {
@@ -280,7 +298,7 @@ export default {
     }
     .selectStore {
       width: 200px;
-      .el-select {
+      .el-input {
         width: 130px;
       }
     }

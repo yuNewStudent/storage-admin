@@ -163,7 +163,7 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style lang='scss' scoped>
 .forget {
   width: 100%;
   height: 100%;
@@ -177,6 +177,10 @@ export default {
 
   /* 让背景图基于容器大小伸缩 */
   background-size: cover;
+  
+  .el-input {
+    margin-left: -50px;
+  }
 }
 .forgetl {
   width: 400px;
@@ -184,43 +188,41 @@ export default {
   float: right;
   margin-right: 113px;
   margin-top: 150px;
-}
-.forget_w {
-  width: 400px;
-  height: 30px;
-  background: url("../assets/img/logot.png") no-repeat;
-  background-size: 100% 100%;
-  position: absolute;
-}
-.forget_h {
-  width: 100%;
-  height: 450px;
-  margin-top: 30px;
-  background-color: #ffffff;
-  border-radius: 0px 0px 4px 4px;
-}
-.forget_w p {
-  font-size: 20px;
-  color: #4499f2;
-  margin-top: 15px;
-  margin-left: 40px;
-}
-.forget_hl {
-  padding-top: 50px;
-  text-align: center;
-  font-size: 22px;
-  color: #4499f2;
-}
-.el-input {
-  margin-left: -50px;
-}
-.el-button {
-  margin-left: 40px;
-}
-.forget_hd {
-  width: 400px;
-  margin: 0 auto;
-  margin-top: 10px;
+  .forget_w {
+    width: 400px;
+    height: 30px;
+    background: url("../assets/img/logot.png") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    .forget_w p {
+      font-size: 20px;
+      color: #4499f2;
+      margin-top: 15px;
+      margin-left: 40px;
+    }
+  }
+  .forget_h {
+    width: 100%;
+    height: 450px;
+    margin-top: 30px;
+    background-color: #ffffff;
+    border-radius: 0px 0px 4px 4px;
+    .forget_hl {
+      padding-top: 50px;
+      text-align: center;
+      font-size: 22px;
+      color: #4499f2;
+    }
+    .forget_hd {
+      width: 400px;
+      margin: 0 auto;
+      margin-top: 10px;
+      .el-button {
+        margin-left: 40px;
+      }
+    }
+
+  }
 }
 .el-input__inner {
   width: 100%;

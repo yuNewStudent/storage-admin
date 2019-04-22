@@ -4,6 +4,7 @@ const menus = [
     name: 'systemsetup',
     icon: '@/assets/icon/系统管理ic.png',
     group: [
+      { label: '操作日志', name: 'operatelog'},
       { label: '人员管理', name: 'personmanage'},
       { label: '商品管理', name: 'goodsmanage'},
       { label: '仓库管理', name: 'storemanage'},

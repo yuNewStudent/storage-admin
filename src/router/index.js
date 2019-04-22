@@ -33,6 +33,11 @@ export default new Router({
           component: SystemSetup('index'),
           children: [
             {
+              path: '/systemsetup/operatelog',
+              name: 'operatelog',
+              component: SystemSetup('operatelog')
+            },
+            {
               path: '/systemsetup/personmanage',
               name: 'personmanage',
               component: SystemSetup('personmanage')

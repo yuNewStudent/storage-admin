@@ -3,31 +3,31 @@
     <el-header>
       <div class="selectStore">
         仓库名称:
-        <el-select size='medium' v-model="value" placeholder="请选择">
+        <el-select size='medium' v-model="filter.repertory" placeholder="请选择">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in allStorage"
+            :key="item"
+            :label="item"
+            :value="item">
           </el-option>
         </el-select>
       </div>
       <div class="search">
         商品名称:
-        <el-input placeholder="请输入商品名称"></el-input>
+        <el-input v-model="filter.goods_name" placeholder="请输入商品名称"></el-input>
       </div>
       <div class="search">
         商品状态:
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="filter.status" placeholder="请选择">
           <el-option
             v-for="item in ordersStatus"
-            :key="item.value"
+            :key="item.id"
             :label="item.label"
-            :value="item.value">
+            :value="item.id">
           </el-option>
         </el-select>
       </div>
-      <el-button type="primary">搜索</el-button>
+      <el-button type="primary" @click="handleFilter">搜索</el-button>
       <el-button type="primary" size="medium" @click="buttonaudit" class="output">导出</el-button>
     </el-header>
     <el-main>
@@ -88,8 +88,6 @@
 export default {
   data() {
     return {
-      show: false,
-      input10: "",
       currentPage:4,
       tableData: [
         // // {
@@ -121,58 +119,51 @@ export default {
         //   address: "1517 弄"
         // }
       ],
-      formInline: {
-        user: "",
-        region: ""
-      },
       ordersStatus: [
         {
           label: '正常',
+          id: 0
         },
         {
           label: '已过期',
+          id: 1
         },
         {
           label: '预警状态',
+          id: 2
         }
       ],
-      options: [
-        {
-          value: "选项1",
-          label: "A区"
-        },
-        {
-          value: "选项2",
-          label: "B区"
-        },
-        {
-          value: "选项3",
-          label: "C区"
-        },
-        {
-          value: "选项4",
-          label: "D区"
-        },
-        {
-          value: "选项5",
-          label: "F区"
-        }
-      ],
-      value: "",
-      value1: ""
+      filter: {
+        repertory: '',
+        goods_name: '',
+        status: ''
+      },
+      // 仓库
+      allStorage: [
+        "仓库1",
+        "仓库2"
+      ]
     };
   },
   components: {},
   created(){
-    this.warehouse();
+    this.warehouse()
+    // 获取所有仓库
+    this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res => {
+      console.log(res)
+      if (res.status === 1) {
+        this.allStorage = res.content
+      }
+    })
   },
   methods: {
+    // 获取所有盘点订单
     warehouse(){
       const data = {
         all: 1,
         repertory: "",
-        goods_name:-1,
-        status:-1
+        goods_name: '',
+        status: -1
       };
       console.log(data)
       this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`,data).then(res => {
@@ -182,6 +173,21 @@ export default {
                return
              }
         })
+    },
+    // 筛选
+    handleFilter () {
+      const data = {
+        all: 0,
+        repertory: this.filter.repertory,
+        goods_name: this.filter.goods_name,
+        status: this.filter.status ? this.filter.status : -1
+      }
+      this.$http.post(`${config.httpBaseUrl}/medicine/query_inventory/`, data).then(res=>{
+        console.log(res)
+        if (res.status === 1) {
+          this.tableData = res.content
+        }
+      })
     },
     buttonModifythe: function() {
       if (this.show == false) {

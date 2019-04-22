@@ -3,22 +3,13 @@
     <el-header>
       <div class="selectStore">
         订单号:
-        <el-select v-model="filter.receipt_no" filterable placeholder="请输入仓库名称">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+        <el-input v-model="filter.receipt_no" placeholder="请输入订单号">
+        </el-input>
       </div>
       <div class="search">
         申请人:
         <el-input placeholder="请输入申请人" v-model="filter.applicant"></el-input>
       </div>
-       <el-button
-        @click='handleFilter'
-        type="primary">搜索</el-button>
       <div class="select_date">
         日期选择:
         <el-date-picker
@@ -29,6 +20,9 @@
           end-placeholder="结束日期">
         </el-date-picker>
       </div>
+      <el-button
+        @click='handleFilter'
+        type="primary">搜索</el-button>
       <div class="out_put">
         <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
       </div>
@@ -87,8 +81,6 @@
 export default {
   data() {
     return {
-      show: false,
-      input10: "",
       currentPage:4,
       filter: {
         receipt_no: '',
@@ -116,31 +108,7 @@ export default {
         //   applicant: '李先生',
         //   purpose: 'ddd'
         // }
-      ],
-      options: [
-        {
-          value: "选项1",
-          label: "A区"
-        },
-        {
-          value: "选项2",
-          label: "B区"
-        },
-        {
-          value: "选项3",
-          label: "C区"
-        },
-        {
-          value: "选项4",
-          label: "D区"
-        },
-        {
-          value: "选项5",
-          label: "F区"
-        }
-      ],
-      value: "",
-      value1: ""
+      ]
     };
   },
   components: {
@@ -160,12 +128,12 @@ export default {
       };
       console.log(data)
       this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`,data).then(res => {
-             if(res.status==1){
-               this.purchaseOrders=res.content;
-             }else{
-               return
-             }
-        })
+        if(res.status==1){
+          this.purchaseOrders=res.content;
+        }else{
+          return
+        }
+      })
     },
     // 筛选
     handleFilter () {
@@ -177,8 +145,10 @@ export default {
         apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
       }
       this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, data).then(res=>{
-        console.log(res)      
-        this.purchaseOrders=res.content;
+        console.log(res)
+        if (res.status === 1) {
+          this.purchaseOrders = res.content
+        }
       })
     },
     onSubmit() {
@@ -194,12 +164,15 @@ export default {
     buttonaudit: function() {}
   },
   created () {
-    // this.$http.post('${config.httpBaseUrl}/medicine/query_in_storage/',{
-    //   all: 1
-    // }).then(res=>{
-    //   console.log(res)      
-    //   this.purchaseOrders=res.purchaseOrders;
-    // })
+    // 获取所有入库单
+    this.$http.post('${config.httpBaseUrl}/medicine/query_in_storage/',{
+      all: 1
+    }).then(res=>{
+      console.log(res)      
+      if (res.status === 1) {
+        this.purchaseOrders = res.content
+      }
+    })
   }
 }
 </script>
@@ -215,7 +188,7 @@ export default {
   }
   .selectStore {
     width: 200px;
-    .el-select {
+    .el-input {
       width: 130px;
     }
   }
