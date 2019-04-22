@@ -6,9 +6,9 @@
         <el-select v-model="filter.repertory" placeholder="请输入仓库名称">
           <el-option
             v-for="item in allStorage"
-            :key="item"
-            :label="item"
-            :value="item"
+            :key="item.name"
+            :label="item.name"
+            :value="item.name"
           ></el-option>
         </el-select>
       </div>
@@ -27,7 +27,7 @@
           ></el-option>
         </el-select>
       </div>
-        <el-button type="primary" @click="handleFilter">搜索</el-button>
+      <el-button type="primary" @click="handleFilter">搜索</el-button>
       <div class="out_put">
         <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
       </div>
@@ -55,6 +55,7 @@
       <h5>商品详情：</h5>-->
       <el-table size="mini" :data="tableData" border style="width: 100%">
         <el-table-column type="selection"></el-table-column>
+        <el-table-column label='序号' type="index"></el-table-column>
         <el-table-column prop="barcode" label="条形码"></el-table-column>
         <el-table-column prop="category" label="商品类别"></el-table-column>
         <el-table-column prop="name" label="商品名称"></el-table-column>
@@ -129,42 +130,6 @@ export default {
         //   putthedata: "2019/03/30",
         //   procurement: "治疗",
         //   note: "希望尽快发货"
-        // },
-        // {
-        //   category: "医药",
-        //   commodity: "阿莫西林",
-        //   number: "2",
-        //   unit: "箱",
-        //   warehouse: "A区",
-        //   Barcode: "12123343344",
-        //   agent: "李先生",
-        //   thedata: "2019/03/28",
-        //   procurement: "治疗",
-        //   note: "希望尽快发货"
-        // },
-        // {
-        //   category: "医药",
-        //   commodity: "阿莫西林",
-        //   number: "2",
-        //   unit: "箱",
-        //   warehouse: "A区",
-        //   Barcode: "12123343344",
-        //   agent: "李先生",
-        //   thedata: "2019/03/28",
-        //   procurement: "治疗",
-        //   note: "希望尽快发货"
-        // },
-        // {
-        //   category: "医药",
-        //   commodity: "阿莫西林",
-        //   number: "2",
-        //   unit: "箱",
-        //   warehouse: "A区",
-        //   Barcode: "12123343344",
-        //   agent: "李先生",
-        //   thedata: "2019/03/28",
-        //   procurement: "治疗",
-        //   note: "希望尽快发货"
         // }
       ],
       filter: {
@@ -183,8 +148,7 @@ export default {
   mounted() {
     this.inventorylist()
     // 获取所有仓库
-    this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res => {
-      console.log(res)
+    this.$http.post(`${config.httpBaseUrl}/storage/get_all_repertory/`).then(res => {
       if (res.status === 1) {
         this.allStorage = res.content
       }
@@ -202,7 +166,7 @@ export default {
       this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, data).then(res=>{
         console.log(res)
         if (res.status === 1) {
-          this.purchaseOrders = res.content
+          this.tableData = res.content
         }
       })
     },
@@ -265,13 +229,13 @@ export default {
     margin-left: 100px;
   }
   .search {
-    width: 380px;
+    width: 300px;
     .el-input {
       width: 200px;
     }
   }
   .out_put {
-    margin-left: 30px;
+    float: right;
   }
 }
 .goodsmovequery {

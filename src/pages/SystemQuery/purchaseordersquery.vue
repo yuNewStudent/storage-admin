@@ -50,6 +50,7 @@
         <el-table-column prop="unit" label="单位"></el-table-column>
         <el-table-column prop="location" label="所在仓库"></el-table-column>
         <el-table-column prop="barcode" label="条形码"></el-table-column>
+        <el-table-column prop="in_number" label="入库时间"></el-table-column>
         <el-table-column prop="in_number" label="入库数量"></el-table-column>
         <el-table-column prop="date_manufacture" label="生产日期"></el-table-column>
         <el-table-column prop="shelf_life" label="保质期"></el-table-column>

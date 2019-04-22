@@ -16,9 +16,9 @@
         size='small'>
         <el-option
           v-for="item in departmentData"
-          :key="item.部门编号"
-          :label="item.部门名称"
-          :value="item.部门编号">
+          :key="item.id"
+          :label="item.name"
+          :value="item.name">
         </el-option>
       </el-select>
       <label><span style='color: red'>*</span>邮箱:</label>
@@ -31,8 +31,8 @@
         v-model="userInfo.phone"></el-input>
       <p class="radio_wrapper">
         <span>是否为部门负责人:</span>
-        <el-radio v-model="userInfo.is_leader" label="1">是</el-radio>
-        <el-radio v-model="userInfo.is_leader" label="0">否</el-radio>
+        <el-radio v-model="userInfo.is_leader" label=1>是</el-radio>
+        <el-radio v-model="userInfo.is_leader" label=0>否</el-radio>
       </p>
     </div>
   </message-box>
@@ -46,14 +46,14 @@ export default {
     return {
       departmentData: [
         {
-          部门编号: 1,
-          部门名称: '行政部'
+          id: 1,
+          name: '行政部'
         },{
-          部门编号: 2,
-          部门名称: '财务部'
+          id: 2,
+          name: '财务部'
         },{
-          部门编号: 3,
-          部门名称: '设计部'
+          id: 3,
+          name: '设计部'
         }
       ],
       btns: {
@@ -66,7 +66,7 @@ export default {
         department: '',
         phone: '',
         email: '',
-        is_leader: ''
+        is_leader: 0
       }
     }
   },
@@ -78,8 +78,9 @@ export default {
       console.log(bol, this.userInfo)
       if (bol) {
         // 信息不能为空
+        console.log(this.userInfo)
         for (var k in this.userInfo) {
-          if (!this.userInfo[k]) {
+          if (!(this.userInfo[k] + '')) {
             this.$message({
               message: '信息不能为空',
               type: 'warning'
@@ -87,8 +88,35 @@ export default {
             return
           }
         }
-        
-        this.$emit('hideChangePerson', this.userInfo)
+        // 修改人员
+        if (this.selectUser) {
+          // 修改人员
+          // 服务器修改
+          console.log(this.userInfo)
+          this.$http.post(`${config.httpBaseUrl}/man/upd_employee/`, this.userInfo).then(res => {
+            if (res.status === 1) {
+              this.$message({
+                message: '人员信息修改成功',
+                type: 'success'
+              })
+            }
+          })
+          this.$emit('hideChangePerson', this.userInfo, 'editor')
+        } else {
+          // 新增人员
+          // 服务器新增
+          this.$http.post(`${config.httpBaseUrl}/man/add_employee/`, this.userInfo).then(res => {
+            console.log(res)
+            if (res.content === "员工添加成功") {
+              this.$message({
+                message: '人员新增成功',
+                type: 'success'
+              })
+            }
+          })
+          console.log(this.userInfo)
+          this.$emit('hideChangePerson', this.userInfo)
+        }
       } else {
         this.$emit("hideChangePerson")
       }
@@ -105,13 +133,17 @@ export default {
     }
   },
   created () {
-    console.log(this.selectUser)
-    this.userInfo = this.selectUser.userInfo
+    // 如果是修改人员
+    if (this.selectUser) {
+      console.log(this.selectUser.userInfo)
+      this.userInfo = this.selectUser.userInfo
+    }
     // 获取部门列表
-    // this.$http.post(`${config.httpBaseUrl}/man/get_department/`).then(res => {
-    //   console.log(res)
-    //   this.departmentData = res.data
-    // })
+    this.$http.post(`${config.httpBaseUrl}/man/get_department/`).then(res => {
+      if (res.status === 1) {
+        this.departmentData = res.content
+      }
+    })
   }
 }
 </script>

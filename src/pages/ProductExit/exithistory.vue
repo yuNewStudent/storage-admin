@@ -80,7 +80,10 @@
         <el-table-column label="操作" width='160' prop='goodsCategory'>
           <template slot-scope="scope">
             <el-button size='mini' @click='handleOrderInfo(scope.row)'>详情</el-button>
-            <el-button size='mini' @click='handleOrderEditor(scope.row)'>修改</el-button>
+            <el-button
+              size='mini'
+              :disabled='scope.row.status!==2'
+              @click='handleOrderEditor(scope.row)'>修改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -139,29 +142,10 @@ export default {
        apply_datetime: []
       },
       currentPage:4,
-      supplyCompany: '',
-      writeDate: '',
       clients: [
-        {
-          address: "天府四街1",
-          purchaser: "四川省经济贸易公司"
-        },
-        {
-          address: "天府四街1",
-          purchaser: "四川棋照科技有限公司"
-        },
-        {
-          address: "天府四街1",
-          purchaser: "攀枝花攀钢公司"
-        },
-        {
-          address: "天府四街1",
-          purchaser: "阿里巴巴有限公司"
-        },
-        {
-          address: "天府四街1",
-          purchaser: "北京经贸技校公司"
-        }
+        // {
+        //   purchaser: "四川省经济贸易公司"
+        // }
       ],
       ordersStatus: [
         {
@@ -182,78 +166,69 @@ export default {
         }
       ],
       orders: [
-        {
-          receipt_no: '123',
-          client: '阿里巴巴有限公司',
-          client_address: '四川省成都市锦江',
-          applicant: '瑜伽',
-          apply_datetime: '2018-10-10',
-          status: '已审核',
-          client_contact: '云音乐',
-          client_phone: '111'
-        },
-        {
-          receipt_no: '123',
-          client: '阿里巴巴有限公司',
-          client_address: '四川省成都市锦江',
-          applicant: '瑜伽',
-          apply_datetime: '2018-10-10',
-          status: '已审核',
-          client_contact: '云音乐',
-          client_phone: '111'
-        }
+        // {
+        //   receipt_no: '123',
+        //   client: '阿里巴巴有限公司',
+        //   client_address: '四川省成都市锦江',
+        //   applicant: '瑜伽',
+        //   apply_datetime: '2018-10-10',
+        //   status: '已审核',
+        //   client_contact: '云音乐',
+        //   client_phone: '111'
+        // }
       ],
       orderInfo: [
-        {
-          goods_name: '商品名称',
-          category: '商品类别',
-          unit: '单位',
-          location: '所在位置',
-          out_number: 10,
-          price: 1.2,
-          money: 12,
-          client_address: '收货地址',
-          client_contact: '收货联系人',
-          client_phone: '收货联系电话',
-          purpose: '用途',
-          apply_comment: '申请理由',
-          apply_datetime: '2018-4-5',
-          reason_return: '回退理由'
-        }
+        // {
+        //   goods_name: '商品名称',
+        //   category: '商品类别',
+        //   unit: '单位',
+        //   location: '所在位置',
+        //   out_number: 10,
+        //   price: 1.2,
+        //   money: 12,
+        //   client_address: '收货地址',
+        //   client_contact: '收货联系人',
+        //   client_phone: '收货联系电话',
+        //   purpose: '用途',
+        //   apply_comment: '申请理由',
+        //   apply_datetime: '2018-4-5',
+        //   reason_return: '回退理由'
+        // }
       ]
     }
   },
   methods: {
     //获取出库单
     getOrders () {
-      // this.$http.post(`${config.httpBaseUrl}/medicine/history_outStorageReceipt/`, {
-      //   all: 1
-      // }).then(res => {
-      // console.log(res)
-      // this.orders = res.data
-      // })
+      this.$http.post(`${config.httpBaseUrl}/medicine/history_outStorageReceipt/`, {
+        all: 1
+      }).then(res => {
+        this.orders = res.content
+      })
     },
     // 获取订单详情
     handleOrderInfo (row) {
-      // this.$http.post(`${config.httpBaseUrl}/medicine/detail_outStorageReceipt/`, {
-      //   receipt_no: row.receipt_no
-      // }).then(res => {
-      // console.log(res)
-      // this.orderInfo = res.data
-      // })
+      this.$http.post(`${config.httpBaseUrl}/medicine/detail_outStorageReceipt/`, {
+        receipt_no: row.receipt_no
+      }).then(res => {
+        this.orderInfo = res.content
+      })
     },
     // 按照搜索框内容进行筛选
     filterOrder () {
-      // this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, {
-      //   all: False,
-      //   applicant: '',
-      //   status: this.filter.status >= 0 ? this.filter.status : -1,
-      //   apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
-      //   apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
-      // }).then(res => {
-      //   console.log(res)
-      //   this.orders = res.data
-      // })
+      console.log(this.filter)
+      const data = {
+        all: 0,
+        client: this.filter.client,
+        status: this.filter.ordersStatus !== '' ? this.filter.ordersStatus : -1,
+        apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
+        apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
+      }
+      console.log(data)
+      this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, data).then(res => {
+        console.log(res)
+        this.orders = res.content
+      })
     },
     handleOutput () {
       // outputTable (this.ordersTables)
@@ -278,13 +253,10 @@ export default {
     // 获取出库订单
     this.getOrders()
     // 获取所有客户
-    // this.$http.post(`${config.httpBaseUrl}/man/get_client/`, {
-    // 'purchaser': '',
-    // 'address': ''
-    // }).then(res => {
-    //   console.log(res)
-    //   this.clients = res.data.content
-    // })
+    this.$http.post(`${config.httpBaseUrl}/man/get_all_client/`).then(res => {
+      console.log(res)
+      this.clients = res.content
+    })
   }
 }
 </script>

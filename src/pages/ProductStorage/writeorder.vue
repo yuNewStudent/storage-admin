@@ -17,9 +17,9 @@
             type="selection"
             width="55">
           </el-table-column>
-          <el-table-column label='供应商'>
+          <el-table-column label='供应商' width='230'>
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].supplier" filterable placeholder="请选择">
+              <el-select v-model="orders[scope.$index].supplier" width='200' filterable placeholder="请选择">
                 <el-option
                   v-for="item in suppliers"
                   :key="item.value"
@@ -27,9 +27,10 @@
                   :value="item.supplier">
                 </el-option>
               </el-select>
+              <el-button @click='handleAddSupplier'>+</el-button>
             </template>
           </el-table-column>
-          <el-table-column label="商品类别">
+          <el-table-column label="商品类别" width='170'>
             <template slot-scope="scope">
               <el-select v-model="orders[scope.$index].category" filterable placeholder="请选择">
                 <el-option
@@ -41,7 +42,7 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="商品名称">
+          <el-table-column label="商品名称" width='170'>
             <template slot-scope="scope">
               <el-select v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
                 <el-option
@@ -91,45 +92,50 @@
           </el-table-column>
           <el-table-column label="回退理由" v-if='isEditor' prop='reason_return'>
           </el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="scope"> 
+              <el-button type='primary' @click='handleDel(scope.$index)'>删除</el-button>
+            </template>
+          </el-table-column>
         </el-table>
         <el-row class='add_row'>
           <el-button type='primary' @click='addRow'>新增行</el-button>
         </el-row>
       </div>
     </el-main>
+    <add-supplier
+      :type='type'
+      v-if='isShowAddSupplier'
+      @hideChangeSupplier='addSupplier'></add-supplier>
   </div>
 </template>
 
 <script>
 import outputTable from '@/assets/js/outputTable'
+import AddSupplier from '@/components/SystemSetup/suppliermanagement/changesupplier'
 export default {
   data() {
     return {
+      type: '供应商管理>新增',
       // 供应商
       suppliers: [
-        {
-          address: "供货商地址",
-          supplier: "四川省经济贸易公司"
-        },
-        {
-          address: "供货商地址",
-          supplier: "四川棋照科技有限公司"
-        }
+        // "四川省经济贸易公司",
+        // "四川棋照科技有限公司"
       ],
       // 商品类别
       categories: [
-        {
-          id: "001",
-          category: "商品类别"
-        },
-        {
-          id: "002",
-          category: "商品类别"
-        },
-        {
-          id: "003",
-          category: "商品类别"
-        }
+        // {
+        //   id: "001",
+        //   category: "商品类别"
+        // },
+        // {
+        //   id: "002",
+        //   category: "商品类别"
+        // },
+        // {
+        //   id: "003",
+        //   category: "商品类别"
+        // }
       ],
       // 商品名称
       goodses: [
@@ -159,19 +165,35 @@ export default {
           applicant: '',
           purpose: '',
           apply_comment: '',
-          reason_return: '',
         }
       ],
-      isEditor: false
+      isEditor: false,
+      isShowAddSupplier: false
     };
   },
-  components: {},
+  components: {
+    AddSupplier
+  },
   methods:{
     handleSave () {
       this.comfirm()
     },
     handleOut () {
       outputTable(tableData)
+    },
+    // 跳转至新增供应商页面
+    handleAddSupplier () {
+      this.isShowAddSupplier = true
+    },
+    // 删除填写信息
+    handleDel (index) {
+      this.orders.splice(index, 1)
+    },
+    addSupplier (supplier) {
+      // 本地新增
+      // 服务器新增
+      this.isShowAddSupplier = false
+      this.suppliers.unshift(supplier.purchaser)
     },
     addRow () {
       this.orders.push(
@@ -183,8 +205,7 @@ export default {
           estimated_price: '',
           estimated_money: '',
           applicant: '',
-          purpose: '',
-          apply_comment: ''
+          purpose: ''
         }
       )
     },
@@ -194,17 +215,26 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        // 信息不能有空
         let apply_datetime = this.moment(new Date()).format('YYYY-MM-DD')
         this.orders.map(item => {
           item.apply_datetime = apply_datetime
         })
-        //  this.$http.post('${config.httpBaseUrl}/medicine/add_in_storage_receipt/',{
-        //    this.orders
-        //  }).then(res=>{
-        //   })
-        this.$message({
-          type: 'success',
-          message: '提交成功!'
+        console.log(this.orders)
+        this.$http.post(`${config.httpBaseUrl}/medicine/add_inStorageReceipt/`,
+          this.orders
+        ).then(res=>{
+          if (res.status === 0) {
+            this.$message({
+              type: 'error',
+              message: '请检查数据格式!'
+            })
+          } else {
+            this.$message({
+              type: 'success',
+              message: '提交成功!'
+            })
+          }
         })
       }).catch(() => {
         this.$message({
@@ -216,28 +246,30 @@ export default {
   },
   created () {
     // 如果是修改订单
-    // if (this.$route.params.receipt_no) {
-    //   const receipt_no = this.$route.params.receipt_no
-    //   this.isEditor = true
-    //   this.$http.post('${config.httpBaseUrl}/medicine/get_abnormalInReceipt/',{
-    //     receipt_no
-    //   }).then(res=>{
-    //     this.orders = res.data.content
-    //   })
-    // }
+    if (this.$route.params.receipt_no) {
+      const receipt_no = this.$route.params.receipt_no
+      this.isEditor = true
+      console.log(receipt_no)
+      this.$http.post(`${config.httpBaseUrl}/medicine/get_abnormalInReceipt/`,{
+        receipt_no
+      }).then(res=>{
+        this.orders = res.content
+      })
+    }
     // 获取所有的商品类别
-    // this.$http.post(`${config.httpBaseUrl}/medicine/get_category/`).then(res => {
-    //   console.log(res)
-    //   this.categories = res.data.content
-    // })
+    this.$http.post(`${config.httpBaseUrl}/medicine/get_all_category/`).then(res => {
+      console.log(res)
+      if (res.status === 1) {
+        this.categories = res.content
+      }
+    })
     // 获取所有供应商
-    // this.$http.post(`${config.httpBaseUrl}/man/get_supplier/`, {
-    // supplier: '',
-    // address: ''
-    // }).then(res => {
-    //   console.log(res)
-    //   this.suppliers = res.data.content
-    // })
+    this.$http.post(`${config.httpBaseUrl}/man/get_all_supplier/`).then(res => {
+      console.log(res)
+      if (res.status === 1) {
+        this.suppliers = res.content
+      }
+    })
   }
 };
 </script>
@@ -269,6 +301,13 @@ export default {
 
 }
 .writeorder_list {
+  .write_order_wrapper {
+    .el-table {
+      .el-select {
+        width: 150px;
+      }
+    }
+  }
   .add_row {
     text-align: right;
     margin-top: 10px;

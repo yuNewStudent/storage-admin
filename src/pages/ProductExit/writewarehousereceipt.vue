@@ -18,6 +18,7 @@
         style="width: 100%">
         <el-table-column
           type="index"
+          label='序号'
           width="55">
         </el-table-column>
         <el-table-column label="收货单位" width='200'>
@@ -59,9 +60,9 @@
               @change='selectGoodsName(orders[scope.$index].goods_name)'>
               <el-option
                 v-for="item in goodses"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label">
+                :key="item.name"
+                :label="item.name"
+                :value="item.name">
               </el-option>
             </el-select>
           </template>
@@ -80,7 +81,7 @@
                 v-model="orders[scope.$index].location" placeholder="请选择">
               <el-option
                 v-for="item in allStorage"
-                :key="item.value"
+                :key="item.name"
                 :label="item.name"
                 :value="item.name">
               </el-option>
@@ -150,14 +151,14 @@
               v-model="orders[scope.$index].apply_comment"></el-input>
           </template>
         </el-table-column>
-        <!-- <el-table-column label="操作">
+        <el-table-column label="回退理由" v-if='isEditor'>
+        </el-table-column>
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button
               @click='handleDelOrder(scope.row, scope.$index)'
               size='mini'>删除</el-button>
           </template>
-        </el-table-column> -->
-        <el-table-column label="回退理由" v-if='isEditor'>
         </el-table-column>
       </el-table>
       <el-row class='add_row'>
@@ -198,8 +199,6 @@ import ChangeCustom from '@/components/SystemSetup/customermanage/changecustom'
 export default {
   data() {
     return {
-      writeDate: '',
-      SupplyCompany: '',
       isShowAddCustom: false,
       type: '客户管理>新增',
       orders: [
@@ -237,16 +236,8 @@ export default {
       ],
       // 仓库
       allStorage: [
-        {
-            id: "001",
-            name:"仓库名称",
-            starge_rack:"货位名称"
-        },
-        {
-            id: "002",
-            name:"仓库名称",
-            starge_rack:"货位名称"
-        }
+        {name: "仓库1"},
+        {name: "仓库2"}
       ],
       // 收货单位
       clients: [
@@ -264,31 +255,21 @@ export default {
         }
       ],
       goodses: [
-        {
-          value: "选项1",
-          label: "四川省经济贸易公司"
-        },
-        {
-          value: "选项2",
-          label: "四川棋照科技有限公司"
-        },
-        {
-          value: "选项3",
-          label: "攀枝花攀钢公司"
-        }
+        // {name: ''},
+        // {name: ''}
       ],
       allGoods: [
-        {
-          category:"商品类别",
-          name: "商品名称",
-          unit: "单位",
-          location: "所在货位",
-          stock_quantity: "库存",
-          waring_quantity_min: 10, // 库存预警最小值
-          waring_quantity_ma: 100, // 库存预警最大值
-          estimated_price: 2.3, // 预估价格
-          comment: "申请人备注"
-        }
+        // {
+        //   category:"商品类别",
+        //   name: "商品名称",
+        //   unit: "单位",
+        //   location: "所在货位",
+        //   stock_quantity: "库存",
+        //   waring_quantity_min: 10, // 库存预警最小值
+        //   waring_quantity_ma: 100, // 库存预警最大值
+        //   estimated_price: 2.3, // 预估价格
+        //   comment: "申请人备注"
+        // }
       ],
       isEditor: false
     }
@@ -341,12 +322,12 @@ export default {
     },
     //根据输入商品名字，返回对应商品信息
     selectGoodsName (name) {
-      // this.$http.post(`${config.httpBaseUrl}/medicine/query_goods/`, {
-      //   name
-      // }).then(res => {
-      // console.log(res)
-      // this.allGoods = res.data
-      // })
+      this.$http.post(`${config.httpBaseUrl}/medicine/query_goods/`, {
+        name: name
+      }).then(res => {
+        console.log(res)
+        this.allGoods = res.content
+      })
     },
     // 弹出确认框
     comfirm () {
@@ -355,12 +336,14 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        let apply_datetime = this.moment(new Date()).format('YYYY-MM-DD')
+        this.orders.map(item => {
+          item.apply_datetime = apply_datetime
+        })
+        // 信息不能为空
         // 向后台发送订单请求
-        // this.$http.post(`${config.httpBaseUrl}/medicine/add_outStorageReceipt/`, {
-        //   this.orders
-        // }).then(res => {
-        // console.log(res)
-        // })
+        this.$http.post(`${config.httpBaseUrl}/medicine/add_outStorageReceipt/`, this.orders).then(res => {
+        })
         this.$message({
           type: 'success',
           message: '提交成功!'
@@ -375,33 +358,39 @@ export default {
   },
   created () {
     // 如果是修改订单
-    // if (this.$route.params.receipt_no) {
-    //   const receipt_no = this.$route.params.receipt_no
-    //   this.isEditor = true
-    //   this.$http.post('${config.httpBaseUrl}/medicine/get_abnormalInReceipt/',{
-    //     receipt_no
-    //   }).then(res=>{
-    //     this.orders = res.data.content
-    //   })
-    // }
+    if (this.$route.params.receipt_no) {
+      const receipt_no = this.$route.params.receipt_no
+      this.isEditor = true
+      this.$http.post(`${config.httpBaseUrl}/medicine/get_abnormalOutReceipt/`,{
+        receipt_no
+      }).then(res=>{
+        console.log(res)
+        this.orders = res.content
+      })
+    }
     // 获取所有客户
-    // this.$http.post(`${config.httpBaseUrl}/man/get_client/`, {
-    // 'purchaser': '',
-    // 'address': ''
-    // }).then(res => {
-    //   console.log(res)
-    //   this.clients = res.data.content
-    // })
+    this.$http.post(`${config.httpBaseUrl}/man/get_all_client/`).then(res => {
+      if (res.status === 1) {
+        this.clients = res.content
+      }
+    })
     // 获取所有的商品类别
-    // this.$http.post(`${config.httpBaseUrl}/medicine/get_category/`).then(res => {
-    //   console.log(res)
-    //   this.categories = res.data.content
-    // })
+    this.$http.post(`${config.httpBaseUrl}/medicine/get_category/`).then(res => {
+      if (res.status === 1) {
+        this.categories = res.content
+      }
+    })
+    // 获取所有商品
+    this.$http.post(`${config.httpBaseUrl}/medicine/get_all_goods/`).then(res => {
+      console.log(res)
+      this.goodses = res.content
+    })
     // 获取所有仓库
-    // this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res => {
-    //   console.log(res)
-    //   this.allStorage = res.data.content
-    // })
+    this.$http.post(`${config.httpBaseUrl}/storage/get_all_repertory/`).then(res => {
+      if (res.status === 1) {
+        this.allStorage = res.content
+      }
+    })
   }
 };
 </script>
