@@ -100,7 +100,7 @@
       
       <h5>订单详情：</h5>
       <el-table
-        :data="data"
+        :data="datalist"
         border
         size='small'
         style="width: 100%">
@@ -129,7 +129,9 @@
         <el-table-column label="申请人备注" prop='apply_comment'>
         </el-table-column>
         <el-table-column label="回退理由">
-          <el-input v-model="reason_return"></el-input>
+        	  <template slot-scope="scope">
+              <el-input v-model="datalist[scope.$index].reason_return"></el-input>
+            </template>
         </el-table-column>
       </el-table>
     </el-main>
@@ -142,7 +144,7 @@ export default {
     return {
       currentPage:4,
       date: '',
-      data:[],
+      datalist:[],
       reason_return:"",
       options: [
         {
@@ -169,13 +171,13 @@ export default {
       receipt_no:"",
       value:"",
       orders: [
-        {
-          receipt_no: '哈德',
-          supplier: '哈德',
-          applicant: '哈德',
-          apply_datetime: '哈德',
-          status: '哈德',
-        }
+        // {
+        //   receipt_no: '哈德',
+        //   supplier: '哈德',
+        //   applicant: '哈德',
+        //   apply_datetime: '哈德',
+        //   status: '哈德',
+        // }
       ],
       starttime:"",
       endtime:"",
@@ -192,28 +194,37 @@ export default {
       ]
     }
   },
+  mounted(){
+    this.allaudit();
+  },
   methods:{
     //查询所有的订单
       allaudit(){
-        this.$http.post('${config.httpBaseUrl}/medicine/get_inStorageReceipt/',{
+        this.$http.post(`${config.httpBaseUrl}/medicine/get_inStorageReceipt/`,{
             all: 1,
           }).then(res=>{
-          this.orders=res.data.allgoods;
+            if(res.status==1){
+              this.orders=res.content;
+            }
         })
       },
       //详情
       outordetails(index, row){
         console.log(index)
       this.receipt_no=row.receipt_no;
-       this.$http.post('${config.httpBaseUrl}/medicine/get_inStorageReceipt/',{
+       this.$http.post(`${config.httpBaseUrl}/medicine/detail_inStorageReceipt/`,{
             receipt_no: this.receipt_no,
           }).then(res=>{
-          this.data=res.data.allgoods;
+          if(res.status==1){
+            this.datalist=res.content;
+          }else{
+            return
+          }
         })
       },
       //提交审核
       goodsubmit(){
-        this.$http.post('${config.httpBaseUrl}/medicine/get_goods/',{
+        this.$http.post(`${config.httpBaseUrl}/medicine/get_goods/`,{
             receipt_no: this.receipt_no,
           }).then(res=>{
           this.data=res.data.allgoods;
@@ -221,21 +232,19 @@ export default {
       },
       //回退
       outorfallback(index, row){
-        var receipt_no=receipt_no;
-        var goods_name=goods_name;
-        var reason_return=this.reason_return;
-        var auditor=auditor;
+        var receipt_no=row.receipt_no;
+        var datalist=this.datalist;
         var date=new Date();
          let times=this.moment(date[0]).format("YYYY-MM-DD HH:mm:ss");
-        // this.$http.post('${config.httpBaseUrl}/medicine/get_inStorageReceipt/',{
-        //     receipt_no: receipt_no,
-        //     goods_name:goods_name,
-        //     reason_return:reason_return,
-        //     auditor:auditor,
-        //     audited_datetime:date,
-        //   }).then(res=>{
-        //   this.data=res.data.allgoods;
-        // })
+        this.$http.post(`${config.httpBaseUrl}/medicine/get_inStorageReceipt/`,{
+            receipt_no: receipt_no,
+            goods_name:goods_name,
+            reason_return:reason_return,
+            auditor:auditor,
+            audited_datetime:times,
+          }).then(res=>{
+          this.data=res.data.allgoods;
+        })
       },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);

@@ -182,18 +182,22 @@ export default {
         }
         this.$http.post(`${config.httpBaseUrl}/medicine/add_medicine/`,this.goodsInfo).then(res=>{
           if(res.status==1){
-              this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
-                 repertory:"",
-                 goods:""
-              }).then(res=>{
+              // this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
+              //    repertory:"",
+              //    goods:""
+              // }).then(res=>{
               if(res.status==1){
-                this.allgood=res.content;
-                this.$emit('hideGoodsCategoryadd', this.allgood)
+                this.$message({
+                  message: res.content,
+                  type: 'success'
+                })
+                // this.allgood=res.content;
+                this.$emit('hideGoodsCategoryadd', this.goodsInfo)
               }else{
                 return
               }
             
-            })
+            // })
           }else{
             this.$message({
               message: '信息不能为空',

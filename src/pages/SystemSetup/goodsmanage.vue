@@ -66,7 +66,7 @@
             <span @click="handleEditorGoods(scope.row)">
               <img src="@/assets/icon/系统管理-商品管理/修改IC.png">
             </span>
-            <span @click='handleDelGoods(scope.row)'>
+            <span @click='handleDelGoods(scope.$index,scope.row)'>
               <img src="@/assets/icon/系统管理-人员管理/删除IC.png">
             </span>
           </template>
@@ -93,7 +93,7 @@
     <del-goods
       :type='messageBoxType.del'
       v-if='isShowDelGoods'
-      @hideDelGoods='isShowDelGoods=!isShowDelGoods' :delgood="delgood">
+      @hideDelGoods='hideDelGoods' :delgood="delgood">
     </del-goods>
     <!-- <del-goods
       :type='messageBoxType.del'
@@ -112,7 +112,7 @@
     <add-goods
       :type='messageBoxType.add'
       v-if='isShowAddGoods'
-      @hideGoodsCategoryadd='isShowAddGoods=!isShowAddGoods'></add-goods>
+      @hideGoodsCategoryadd='hideGoodsCategoryadd'></add-goods>
   </div>
 </template>
 
@@ -267,20 +267,27 @@ export default {
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
       },
-    handleDelGoods (row) {
-      this.delgood=row;
-      this.isShowDelGoods = true
-      this.allgoods=this.allgood;
+    handleDelGoods (index,row) {
+      this.delgood={
+        row:row,
+        index:index
+      }
+      this.isShowDelGoods = true;
+      // this.allgoods=this.allgood;
     },
-    // hideDelGoodsss(allgoods){
-    //    this.allgoods=this.allgood;
-    // },
+    hideDelGoods(delgood,bol){
+       this.allgoods.splice(delgood.index,1);
+       this.isShowDelGoods = false;
+       
+    },
     handleGoodsCategory () {
       this.isShowGoodsCategory = true
     },
-    hideGoodsCategoryadd(allgood){
-      this.allgoods=this.allgood;
-      this.isShowGoodsCategory = true
+    hideGoodsCategoryadd(allgood,bol){
+      console.log(allgood)
+      this.findinventory();
+      // this.allgoods=this.allgood;
+      this.isShowAddGoods = false;
     },
     //导出表格
     handleOutput () {

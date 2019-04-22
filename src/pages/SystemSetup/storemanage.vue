@@ -125,15 +125,16 @@ export default {
         });
     },
     delStorage () {
-      this.isShowDelStorage = false
+      this.isShowDelStorage = false;
+      this.Warehouse();
     },
     handleDelStorage (index,row) {
       this.Deltor=row;
       this.isShowDelStorage = true
     },
-    AddStorage (tableData3) {
-      this.tableData3=tableData3;
-      this.isShowAddStorage = false
+    AddStorage () {
+      this.isShowAddStorage = false;
+      this.Warehouse();
     },
     handleEditorStorage (index,row) {
       this.editor=row;

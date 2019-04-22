@@ -165,7 +165,7 @@ export default {
   },
   created () {
     // 获取所有入库单
-    this.$http.post('${config.httpBaseUrl}/medicine/query_in_storage/',{
+    this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`,{
       all: 1
     }).then(res=>{
       console.log(res)      

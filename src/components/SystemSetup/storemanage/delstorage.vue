@@ -35,11 +35,20 @@ export default {
               starge_rack:this.starge_rack
 
             }).then(res=>{
-            this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res=>{
-              var tableData3=res.tableData3;
-             this.$emit('hideDelStorage', tableData3)
-            // this.options=res.data.allgoods;
-            })
+            if(res.status==1){
+                      this.$message({
+                        message: res.content,
+                        type: 'success'
+                      })
+                    this.$emit("hideDelStorage");
+                }else{
+                   this.$message({
+                      message: res.content,
+                      type: 'warning'
+                    })
+                    this.$emit("hideDelStorage");
+                  return
+                }
             })
             }else{
               return

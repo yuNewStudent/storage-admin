@@ -3,14 +3,14 @@
     @closeMessageBox='Delsupplier'
     :type='type'
     :btns='btns'>
-    <p class="content">你确定要删除{{this.multipleSelection.purchaser}}公司的信息和相关资料吗?<br/>删除后系统不能回复</p>
+    <p class="content">你确定要删除{{this.multiple.supplier}}公司的信息和相关资料吗?<br/>删除后系统不能回复</p>
   </message-box>
 </template>
 
 <script>
 import MessageBox from '@/components/MessageBox'
 export default {
-  props: ['type',"multipleSelection"],
+  props: ['type',"multiple"],
   data () {
     return {
       btns: {
@@ -24,15 +24,26 @@ export default {
     MessageBox
   },
   created(){
-    this.purchaser=this.multipleSelection.suplierPar;
-    console.log(this.purchaser)
+    this.purchaser=this.multiple.suplierPar;
   },
   methods:{
     Delsupplier(bol){
        if (bol) {
-        this.$http.post('${config.httpBaseUrl}/man/del_client/',{
-          multipleSelection:this.multipleSelection,
-        }).then(res=>{
+        this.$http.post(`${config.httpBaseUrl}/man/del_supplier/`,[this.multiple]).then(res=>{
+          if(res.status==1){
+                      this.$message({
+                        message: res.content,
+                        type: 'success'
+                      })
+                    this.$emit('hideDelSupplier',)
+                }else{
+                   this.$message({
+                      message: res.content,
+                      type: 'warning'
+                    })
+                    this.$emit('hideDelSupplier',)
+                  return
+                }
         })
         this.$emit('hideDelSupplier',)
       } else {

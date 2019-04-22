@@ -182,8 +182,9 @@ export default {
     hideGoodsEditor (bol) {
       // 确认修改
       if (bol) {
+        console.log(this.goodsInfo)
           for (var k in this.goodsInfo) {
-          if (!this.goodsInfo[k]) {
+          if (!(this.goodsInfo[k]+'')) {
             this.$message({
               message: '信息不能为空',
               type: 'warning'
@@ -193,18 +194,21 @@ export default {
         }
          this.$http.post(`${config.httpBaseUrl}/medicine/upd_medicine/`,this.goodsInfo).then(res=>{
           if(res.status==1){
-              this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
-                 repertory:"",
-                 goods:""
-              }).then(res=>{
+              // this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
+              //    repertory:"",
+              //    goods:""
+              // }).then(res=>{
               if(res.status==1){
-                this.allgood=res.content;
-                this.$emit('goodsEditor', this.allgood)
+                this.$message({
+                  message: '修改成功',
+                  type: 'success'
+                })
+                this.$emit('goodsEditor', this.goodsInfo)
               }else{
                 return
               }
             
-            })
+            // })
           }else{
             this.$message({
               message: '信息不能为空',
