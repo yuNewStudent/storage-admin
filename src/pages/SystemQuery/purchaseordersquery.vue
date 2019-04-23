@@ -3,12 +3,18 @@
     <el-header>
       <div class="selectStore">
         订单号:
-        <el-input v-model="filter.receipt_no" placeholder="请输入订单号">
+        <el-input
+          @change='handleFilter'
+          v-model="filter.receipt_no"
+          placeholder="请输入订单号">
         </el-input>
       </div>
       <div class="search">
         申请人:
-        <el-input placeholder="请输入申请人" v-model="filter.applicant"></el-input>
+        <el-input
+          @change='handleFilter'
+          placeholder="请输入申请人"
+          v-model="filter.applicant"></el-input>
       </div>
       <div class="select_date">
         日期选择:
@@ -17,12 +23,13 @@
           type="daterange"
           range-separator="至"
           start-placeholder="开始日期"
-          end-placeholder="结束日期">
+          end-placeholder="结束日期"
+          @change='handleFilter'>
         </el-date-picker>
       </div>
-      <el-button
+      <!-- <el-button
         @click='handleFilter'
-        type="primary">搜索</el-button>
+        type="primary">搜索</el-button> -->
       <div class="out_put">
         <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
       </div>
@@ -50,7 +57,6 @@
         <el-table-column prop="unit" label="单位"></el-table-column>
         <el-table-column prop="location" label="所在仓库"></el-table-column>
         <el-table-column prop="barcode" label="条形码"></el-table-column>
-        <el-table-column prop="in_number" label="入库时间"></el-table-column>
         <el-table-column prop="in_number" label="入库数量"></el-table-column>
         <el-table-column prop="date_manufacture" label="生产日期"></el-table-column>
         <el-table-column prop="shelf_life" label="保质期"></el-table-column>
@@ -116,41 +122,39 @@ export default {
 
   },
   mounted(){ 
-    this.warehouselist();
+    this.getOrders();
   },
   methods: {
-     warehouselist(){
-      const data = {
-        all: 0,
-        receipt_no: this.filter.receipt_no,
-        applicant: this.filter.applicant,
-        apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
-        apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
-      };
-      console.log(data)
-      this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`,data).then(res => {
-        if(res.status==1){
-          this.purchaseOrders=res.content;
-        }else{
-          return
+     getOrders(){
+      this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, {
+        all: 1
+      }).then(res=>{
+        console.log(res)      
+        if (res.status === 1) {
+          this.purchaseOrders = res.content
         }
       })
     },
     // 筛选
     handleFilter () {
-      const data = {
-        all: 0,
-        receipt_no: this.filter.receipt_no,
-        applicant: this.filter.applicant,
-        apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
-        apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
-      }
-      this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, data).then(res=>{
-        console.log(res)
-        if (res.status === 1) {
-          this.purchaseOrders = res.content
+      const bol = this.filter.receipt_no || this.filter.apply_datetime ||  this.filter.applicant
+      if (!bol) {
+        this.getOrders()
+      } else {
+        const data = {
+          all: 0,
+          receipt_no: this.filter.receipt_no,
+          applicant: this.filter.applicant,
+          apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
+          apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
         }
-      })
+        this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, data).then(res=>{
+          console.log(res)
+          if (res.status === 1) {
+            this.purchaseOrders = res.content
+          }
+        })
+      }
     },
     onSubmit() {
       console.log("submit!");
@@ -163,17 +167,6 @@ export default {
     },
     buttonsave: function() {},
     buttonaudit: function() {}
-  },
-  created () {
-    // 获取所有入库单
-    this.$http.post('${config.httpBaseUrl}/medicine/query_in_storage/',{
-      all: 1
-    }).then(res=>{
-      console.log(res)      
-      if (res.status === 1) {
-        this.purchaseOrders = res.content
-      }
-    })
   }
 }
 </script>

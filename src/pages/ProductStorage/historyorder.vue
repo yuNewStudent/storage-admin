@@ -6,6 +6,8 @@
           <el-select size='medium' 
               @change='filterOrder'
               v-model="filter.supplier"
+              clearable
+              filterable
               placeholder="请选择">
             <el-option
               v-for="item in suppliers"
@@ -18,7 +20,7 @@
         <div class="select_date">
           日期选择:
           <el-date-picker
-            v-model="apply_datetime"
+            v-model="filter.apply_datetime"
             type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
@@ -32,7 +34,9 @@
               @change='filterOrder'
               size='medium'
               v-model="filter.status"
-              placeholder="请选择">
+              placeholder="请选择"
+              clearable
+              filterable>
             <el-option
               v-for="item in status"
               :key="item.value"
@@ -135,9 +139,9 @@ export default {
     return {
       filter: {
        supplier: '',
-       status: ''
+       status: '',
+       apply_datetime: ''
       },
-      apply_datetime: [],
       currentPage:4,
       status: [
         {
@@ -231,18 +235,22 @@ export default {
     
     // 按照搜索框内容进行筛选
     filterOrder () {
-      const data = {
-        all: 0,
-        supplier: this.filter.supplier,
-        status: this.filter.status === '' ? -1 : this.filter.status,
-        apply_datetime_start: this.apply_datetime.length ? this.moment(this.apply_datetime[0]).format("YYYY-MM-DD") : '',
-        apply_datetime_end: this.apply_datetime.length ? this.moment(this.apply_datetime[1]).format("YYYY-MM-DD") : ''
+      const bol = this.filter.supplier || (this.filter.status + '').length ||  this.filter.apply_datetime
+      if (!bol) {
+        this.getOders()
+      } else {
+        const data = {
+          all: 0,
+          supplier: this.filter.supplier,
+          status: this.filter.status === '' ? -1 : this.filter.status,
+          apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
+          apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
+        }
+        this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, data).then(res => {
+          console.log(res)
+          this.orders = res.content
+        })
       }
-      console.log(data)
-      this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, data).then(res => {
-        console.log(res)
-        this.orders = res.content
-      })
     }
   },
   created () {

@@ -325,7 +325,6 @@ export default {
       this.$http.post(`${config.httpBaseUrl}/medicine/query_goods/`, {
         name: name
       }).then(res => {
-        console.log(res)
         this.allGoods = res.content
       })
     },
@@ -364,7 +363,6 @@ export default {
       this.$http.post(`${config.httpBaseUrl}/medicine/get_abnormalOutReceipt/`,{
         receipt_no
       }).then(res=>{
-        console.log(res)
         this.orders = res.content
       })
     }

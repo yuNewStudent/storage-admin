@@ -134,22 +134,22 @@ export default {
           username:this.ruleForm2.username,
           passwd:this.ruleForm2.passwd,
         }).then(res=>{
-          if(res.status==1){
-             _this.$router.push('/systemsetup/personmanage');
+          console.log(res)
+          if(res.statuscode==1){
+             this.$router.push('/systemsetup/personmanage')
              this.$message({
               showClose: true,
               message:"恭喜你登陆成功",
               type: 'success'
-            });
-            this.$cookie.set('user',JSON.stringify(res.content));
+            })
+            this.$cookies.set('user', JSON.stringify(res.result))
           }else{
-             this.$message({
+            this.$message({
               showClose: true,
               message: res.content,
               type: 'error'
-            });
-             return
-
+            })
+            return
           }
         })
     },

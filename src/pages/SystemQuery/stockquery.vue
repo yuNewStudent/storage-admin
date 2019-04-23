@@ -3,7 +3,12 @@
     <el-header>
       <div class="selectStore">
         仓库选择:
-        <el-select v-model="filter.repertory" placeholder="请输入仓库名称">
+        <el-select
+          filterable
+          clearable
+          v-model="filter.repertory"
+          placeholder="请输入仓库名称"
+          @change="handleFilter">
           <el-option
             v-for="item in allStorage"
             :key="item.name"
@@ -14,11 +19,18 @@
       </div>
       <div class="search">
         商品名称:
-        <el-input v-model="filter.goods_name" placeholder="请输入商品名称"></el-input>
+        <el-input
+          v-model="filter.goods_name"
+          placeholder="请输入商品名称"
+          @change="handleFilter"></el-input>
       </div>
       <div class="search">
         商品状态:
-        <el-select v-model="filter.status" placeholder="请选择">
+        <el-select
+          filterable v-model="filter.status"
+          clearable
+          placeholder="请选择"
+          @change="handleFilter">
           <el-option
             v-for="item in ordersStatus"
             :key="item.value"
@@ -27,32 +39,12 @@
           ></el-option>
         </el-select>
       </div>
-      <el-button type="primary" @click="handleFilter">搜索</el-button>
+      <!-- <el-button type="primary" @click="handleFilter">搜索</el-button> -->
       <div class="out_put">
-        <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
+        <el-button type="primary" size="medium" @click="handleOutput">导出</el-button>
       </div>
     </el-header>
     <div class="stockquery_list">
-      <!-- <el-table :data="tableData" border style="width: 100%">
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column label="商品类别" prop='goodsCategory'>
-        </el-table-column>
-        <el-table-column label="商品名称" prop='goodsCategory'>
-        </el-table-column>
-        <el-table-column label="商品编码" prop='goodsCategory'>
-        </el-table-column>
-        <el-table-column label="仓库名称" prop='goodsCategory'>
-        </el-table-column>
-        <el-table-column label="商品总库存" prop='goodsCategory'>
-        </el-table-column>
-        <el-table-column label="商品状态" prop='goodsCategory'>
-        </el-table-column>
-        <el-table-column label="操作" prop='goodsCategory'>
-          <el-button>详情</el-button>
-        </el-table-column>
-      </el-table>
-
-      <h5>商品详情：</h5>-->
       <el-table size="mini" :data="tableData" border style="width: 100%">
         <el-table-column type="selection"></el-table-column>
         <el-table-column label='序号' type="index"></el-table-column>
@@ -156,20 +148,29 @@ export default {
   },
   methods: {
     // 筛选
+    // 筛选条件为空
     handleFilter () {
-      const data = {
-        all: 0,
-        repertory: this.filter.repertory,
-        goods_name: this.filter.goods_name,
-        status: this.filter.status ? this.filter.status : -1
-      }
-      this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, data).then(res=>{
-        console.log(res)
-        if (res.status === 1) {
-          this.tableData = res.content
+      const bol = this.filter.repertory || (this.filter.status + '').length || this.filter.goods_name
+      console.log(this.filter, bol)
+      if (!bol) {
+        this.inventorylist()
+      } else {
+        const data = {
+          all: 0,
+          repertory: this.filter.repertory,
+          goods_name: this.filter.goods_name,
+          status: this.filter.status
         }
-      })
+        console.log(data)
+        this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, data).then(res=>{
+          console.log(res)
+          if (res.status === 1) {
+            this.tableData = res.content
+          }
+        })
+      }
     },
+    // 获取库存商品
     inventorylist() {
       const data = {
         all: 1,
@@ -187,19 +188,8 @@ export default {
           }
         });
     },
-    buttonModifythe: function() {
-      if (this.show == false) {
-        this.show = true;
-      } else {
-        this.show = false;
-      }
-      console.log(this.show);
-    },
-    onSubmit() {
-      console.log("submit!");
-    },
-    buttonsave: function() {},
-    buttonaudit: function() {},
+    // 导出
+    handleOutput: function() {},
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },

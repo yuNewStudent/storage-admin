@@ -7,6 +7,8 @@
           size='medium'
           v-model="filter.client"
           placeholder="请选择"
+          clearable
+          filterable
           @change='filterOrder'>
           <el-option
             v-for="item in clients"
@@ -21,6 +23,8 @@
         申请状态:
         <el-select
           size='medium'
+          clearable
+          filterable
           v-model="filter.ordersStatus"
           placeholder="请选择"
           @change='filterOrder'>
@@ -139,7 +143,7 @@ export default {
       filter: {
        client: '',
        ordersStatus: '',
-       apply_datetime: []
+       apply_datetime: ''
       },
       currentPage:4,
       clients: [
@@ -216,19 +220,22 @@ export default {
     },
     // 按照搜索框内容进行筛选
     filterOrder () {
-      console.log(this.filter)
-      const data = {
-        all: 0,
-        client: this.filter.client,
-        status: this.filter.ordersStatus !== '' ? this.filter.ordersStatus : -1,
-        apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
-        apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
+      const bol = this.filter.client || (this.filter.ordersStatus + '').length ||  this.filter.apply_datetime
+      if (!bol) {
+        this.getOrders()
+      } else {
+        const data = {
+          all: 0,
+          client: this.filter.client,
+          status: this.filter.ordersStatus !== '' ? this.filter.ordersStatus : -1,
+          apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
+          apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
+        }
+        this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, data).then(res => {
+          console.log(res)
+          this.orders = res.content
+        })
       }
-      console.log(data)
-      this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, data).then(res => {
-        console.log(res)
-        this.orders = res.content
-      })
     },
     handleOutput () {
       // outputTable (this.ordersTables)

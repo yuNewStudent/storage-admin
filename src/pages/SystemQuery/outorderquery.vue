@@ -3,7 +3,10 @@
     <el-header>
       <div class="selectStore">
         订单号:
-        <el-input v-model="filter.receipt_no" placeholder="请输入订单号">
+        <el-input
+          @change='handleFilter'
+          v-model="filter.receipt_no"
+          placeholder="请输入订单号">
         </el-input>
       </div>
       <div class="select_date">
@@ -12,6 +15,7 @@
           v-model="filter.apply_datetime"
           type="daterange"
           range-separator="至"
+          @change='handleFilter'
           start-placeholder="开始日期"
           end-placeholder="结束日期">
         </el-date-picker>
@@ -20,9 +24,10 @@
         申请人:
         <el-input
           v-model="filter.applicant"
+          @change='handleFilter'
           placeholder="请输入申请人"></el-input>
       </div>
-      <el-button type="primary" @click='handleFilter'>搜索</el-button>
+      <!-- <el-button type="primary" @click='handleFilter'>搜索</el-button> -->
       <div class="out_put">
         <el-button type="primary"  @click="buttonaudit">导出</el-button>
       </div>
@@ -92,7 +97,7 @@ export default {
       filter: {
         receipt_no: '',
         applicant: '',
-        apply_datetime: []
+        apply_datetime: ''
       }
     };
   },
@@ -103,22 +108,26 @@ export default {
   methods: {
     // 条件筛选
     handleFilter () {
-      const data = {
-        all: 0,
-        receipt_no: this.filter.receipt_no,
-        applicant: this.filter.applicant,
-        apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
-        apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
-      }
-      this.$http.post(`${config.httpBaseUrl}/medicine/query_out_storage/`, data).then(res=>{
-        console.log(res)
-        if (res.status === 1) {
-          this.tableData = res.content
+      const bol = this.filter.receipt_no || this.filter.apply_datetime ||  this.filter.applicant
+      if (!bol) {
+        this.getOutorders()
+      } else {
+        const data = {
+          all: 0,
+          receipt_no: this.filter.receipt_no,
+          applicant: this.filter.applicant,
+          apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
+          apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
         }
-      })
+        this.$http.post(`${config.httpBaseUrl}/medicine/query_out_storage/`, data).then(res=>{
+          if (res.status === 1) {
+            this.tableData = res.content
+          }
+        })
+      }
     },
     // 获取所有出库单
-    getOutorders(){
+    getOutorders () {
       const data = {
         all: 1,
         receipt_no:"",

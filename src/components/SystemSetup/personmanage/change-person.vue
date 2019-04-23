@@ -24,6 +24,7 @@
       <label><span style='color: red'>*</span>邮箱:</label>
       <el-input
         size='small'
+        :disabled='this.selectUser && true'
         v-model="userInfo.email"></el-input>
       <label>联系电话:</label>
       <el-input
@@ -133,6 +134,7 @@ export default {
     }
   },
   created () {
+      console.log(this.selectUser)
     // 如果是修改人员
     if (this.selectUser) {
       console.log(this.selectUser.userInfo)
