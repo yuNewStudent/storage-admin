@@ -9,7 +9,7 @@
       <label>仓库名称:</label>
       <el-input v-model="datalist.name"></el-input>
       <label>仓库货位:</label>
-      <el-input v-model="datalist.starge_rack"></el-input>
+      <el-input disabled="disabled" v-model="datalist.starge_rack"></el-input>
     </div>
   </message-box>
 </template>
@@ -34,14 +34,21 @@ export default {
     MessageBox
   },
   created(){
-    // if(this.editor.name){
-    //   this.datalist=this.editor;
-    // }
+    console.log(this.editor)
+    if(this.editor==undefined){
+      return
+    }else{
+      if(this.editor.name||''){
+      this.datalist=this.editor;
+      }else{
+        return
+      }
+    }
   },
   methods:{
     library(blo){
           if (blo) {
-            if(this.editor.name){
+            if(this.editor!=undefined){
               for (var k in this.datalist) {
                 if (!this.datalist[k]) {
                   this.$message({
@@ -51,16 +58,28 @@ export default {
                   return
                 }
               }
-              this.$http.post('${config.httpBaseUrl}/storage/upd_repertory/',{
+              this.$http.post(`${config.httpBaseUrl}/storage/upd_repertory/`,{
                 name:this.datalist.name,
                 starge_rack:this.datalist.starge_rack
-
               }).then(res=>{
-              this.$http.post('${config.httpBaseUrl}/storage/get_repertory/').then(res=>{
-                var tableData3=res.tableData3;
-              this.$emit('hideChangeStorage', tableData3)
+                if(res.status==1){
+                      this.$message({
+                        message: res.content,
+                        type: 'success'
+                      })
+                    this.$emit('hideChangeStorage')
+                }else{
+                   this.$message({
+                      message: res.content,
+                      type: 'warning'
+                    })
+                    this.$emit('hideChangeStorage')
+                  return
+                }
+              // this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res=>{
+              //   var tableData3=res.tableData3;
               // this.options=res.data.allgoods;
-              })
+              // })
               })
             }else{
               // 信息不能为空
@@ -73,22 +92,30 @@ export default {
                 return
               }
             }
-            this.$http.post('${config.httpBaseUrl}/storage/add_repertory/',{
+            this.$http.post(`${config.httpBaseUrl}/storage/add_repertory/`,{
               name:this.datalist.name,
               starge_rack:this.datalist.starge_rack
 
             }).then(res=>{
-            this.$http.post('${config.httpBaseUrl}/storage/get_repertory/').then(res=>{
-              var tableData3=res.tableData3;
-             this.$emit('hideChangeStorage', tableData3)
-            // this.options=res.data.allgoods;
+              if(res.status==1){
+                      this.$message({
+                        message: res.content,
+                        type: 'success'
+                      })
+                    this.$emit('hideChangeStorage')
+                }else{
+                   this.$message({
+                      message: res.content,
+                      type: 'warning'
+                    })
+                  return
+                }
             })
-            })
-            }
-             this.$emit('hideChangeStorage')
-          } else {
-            this.$emit("hideChangeStorage")
           }
+          this.$emit('hideChangeStorage')
+        }else{
+          this.$emit('hideChangeStorage')
+        }
       },
     }
 }

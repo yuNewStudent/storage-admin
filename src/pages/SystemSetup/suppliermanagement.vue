@@ -110,7 +110,7 @@
     <del-supplier
       :type='messageBoxType.del'
       v-if='isShowDelSupplier'
-      @hideDelSupplier='delSupplier' :multipleSelection="multipleSelection"></del-supplier>
+      @hideDelSupplier='delSupplier' :multiple="multiple"></del-supplier>
   </div>
 </template>
 
@@ -122,6 +122,7 @@ export default {
   data () {
   	return {
       multipleSelection:{},
+      multiple:{},
       ediore:{},
       currentPage:4,
       messageBoxType: {
@@ -157,8 +158,8 @@ export default {
     this.Warehouse();
   },
   methods: {
-     Warehouse(){
-    this.$http
+    Warehouse(){
+      this.$http
         .post(`${config.httpBaseUrl}/man/get_supplier/`,{
           supplier:"",
          address:"",
@@ -169,7 +170,7 @@ export default {
           } else {
             return;
           }
-        });
+        })
     },
     searchbutton(supplier){
        this.$htttp.post(`${config.httpBaseUrl}/man/get_supplier/`, {
@@ -183,27 +184,27 @@ export default {
     handleSelectionChange(val){
     this.multipleSelection = val;
     },
-    delSupplier () {
+    delSupplier (bol) {
       this.isShowDelSupplier = false
+      this.Warehouse()
     },
-    addSupplier (tableData3) {
-      this.ediore=this.ediore;
-      this.tableData3=this.tableData3;
-      this.isShowAddSupplier = false
+    addSupplier (bol){
+      this.isShowAddSupplier = false;
+      this.Warehouse();
     },
-    handleDelSupplier (tableData3) {
-      this.multipleSelection = val;
-      this.isShowDelSupplier = true;
-    },
+    // handleDelSupplier (tableData3) {
+    //   // this.multipleSelection = val;
+    //   this.isShowDelSupplier = true;
+    // },
     handleDelSuppli(index,row){
       this.isShowDelSupplier = true;
-      this.multipleSelection = row;
+      this.multiple= row;
     },
     handleEditorSupplier (index,row) {
       this.ediore=row;
       this.isShowEditorSupplier = true
     },
-    editorSupplier () {
+    editorSupplier (bol) {
       this.isShowEditorSupplier = false
     },
     handleSizeChange(val) {

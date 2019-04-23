@@ -192,8 +192,9 @@ export default {
     addSupplier (supplier) {
       // 本地新增
       // 服务器新增
+      // 重新获取供应商
       this.isShowAddSupplier = false
-      this.suppliers.unshift(supplier.purchaser)
+      this.getSuppliers()
     },
     addRow () {
       this.orders.push(
@@ -242,6 +243,13 @@ export default {
           message: '已取消提交'
         })         
       })
+    },
+    getSuppliers () {
+      this.$http.post(`${config.httpBaseUrl}/man/get_all_supplier/`).then(res => {
+        if (res.status === 1) {
+          this.suppliers = res.content
+        }
+      })
     }
   },
   created () {
@@ -249,7 +257,6 @@ export default {
     if (this.$route.params.receipt_no) {
       const receipt_no = this.$route.params.receipt_no
       this.isEditor = true
-      console.log(receipt_no)
       this.$http.post(`${config.httpBaseUrl}/medicine/get_abnormalInReceipt/`,{
         receipt_no
       }).then(res=>{
@@ -258,18 +265,12 @@ export default {
     }
     // 获取所有的商品类别
     this.$http.post(`${config.httpBaseUrl}/medicine/get_all_category/`).then(res => {
-      console.log(res)
       if (res.status === 1) {
         this.categories = res.content
       }
     })
     // 获取所有供应商
-    this.$http.post(`${config.httpBaseUrl}/man/get_all_supplier/`).then(res => {
-      console.log(res)
-      if (res.status === 1) {
-        this.suppliers = res.content
-      }
-    })
+    this.getSuppliers()
   }
 };
 </script>

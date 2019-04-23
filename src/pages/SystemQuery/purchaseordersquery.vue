@@ -125,6 +125,7 @@ export default {
     this.getOrders();
   },
   methods: {
+    // 获取所有入库单
      getOrders(){
       this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, {
         all: 1
@@ -156,9 +157,6 @@ export default {
         })
       }
     },
-    onSubmit() {
-      console.log("submit!");
-    },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
@@ -167,6 +165,8 @@ export default {
     },
     buttonsave: function() {},
     buttonaudit: function() {}
+  },
+  created () {
   }
 }
 </script>

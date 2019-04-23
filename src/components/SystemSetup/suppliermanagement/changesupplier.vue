@@ -1,10 +1,34 @@
 <template>
   <message-box @closeMessageBox="Addsuppliers" :type="type" :btns="btns">
-    <div class="content">
+    <div class="content" v-if="ediore==undefined||''">
       <label>
         <span>*</span>供货单位:
       </label>
-      <el-input size="small" v-model="supplierInfo.purchaser"></el-input>
+      <el-input  size="small" v-model="supplierInfo.supplier"></el-input>
+       <!-- <el-input  size="small" v-model="supplierInfo.supplier"></el-input> -->
+      <label for>
+        <span>*</span>供货地选择:
+      </label>
+      <el-input size="small" v-model="supplierInfo.address"></el-input>
+      <label for>
+        <span>*</span>联系人:
+      </label>
+      <el-input size="small" v-model="supplierInfo.contact"></el-input>
+      <label for>
+        <span>*</span>联系电话:
+      </label>
+      <el-input size="small" v-model="supplierInfo.phone"></el-input>
+      <!-- <label for="">传真:</label>
+      <el-input
+        v-model="supplierInfo.fox"
+      size='small'></el-input>-->
+    </div>
+    <div class="content" v-else>
+      <label>
+        <span>*</span>供货单位:
+      </label>
+      <el-input  disabled="disabled" size="small" v-model="supplierInfo.supplier"></el-input>
+       <!-- <el-input  size="small" v-model="supplierInfo.supplier"></el-input> -->
       <label for>
         <span>*</span>供货地选择:
       </label>
@@ -36,7 +60,7 @@ export default {
         cancel: "取消"
       },
       supplierInfo: {
-        purchaser: "",
+        supplier: "",
         contact: "",
         address: "",
         phone: ""
@@ -47,18 +71,22 @@ export default {
     MessageBox
   },
   created() {
-    // console.log(this.ediore)
+    console.log(this.ediore)
     // this.supplierInfo=this.ediore;
-    if (this.ediore) {
-      this.supplierInfo = this.ediore;
-    } else {
-      return;
+    if(this.ediore==undefined){
+      return
+    }else{
+      if(this.ediore.supplier||''){
+      this.supplierInfo=this.ediore;
+      }else{
+        return
+      }
     }
   },
   methods: {
     Addsuppliers(bol) {
       if (bol) {
-        if (this.ediore.purchaser) {
+        if (this.ediore!=undefined) {
           // 信息不能为空
           for (var k in this.supplierInfo) {
             if (!this.supplierInfo[k]) {
@@ -70,21 +98,23 @@ export default {
             }
           }
           this.$http
-            .post(`${config.httpBaseUrl}/man/upd_client/`, {
-              supplierInfo: this.supplierInfo
-            })
+            .post(`${config.httpBaseUrl}/man/upd_supplier/`,this.supplierInfo)
             .then(res => {
-              this.$http
-                .post(`${config.httpBaseUrl}/man/get_supplier/`, {
-                  supplier: "",
-                  address: ""
-                })
-                .then(res => {
-                  console.log(res);
-                  this.$emit("hideChangeSupplier", this.supplierInfo);
-                });
+               if(res.status==1){
+                      this.$message({
+                        message: res.content,
+                        type: 'success'
+                      })
+                    this.$emit('hideChangeSupplier')
+                }else{
+                   this.$message({
+                      message: res.content,
+                      type: 'warning'
+                    })
+                    this.$emit('hideChangeSupplier')
+                  return
+                }
             });
-          this.$emit("hideChangeSupplier", this.supplierInfo);
         } else {
           // 信息不能为空
           for (var k in this.supplierInfo) {
@@ -97,26 +127,27 @@ export default {
             }
           }
           this.$http
-            .post(`${config.httpBaseUrl}/man/add_supplier/`, {
-              supplierInfo: this.supplierInfo
-            })
+            .post(`${config.httpBaseUrl}/man/add_supplier/`,this.supplierInfo)
             .then(res => {
-              this.$http
-                .post(`${config.httpBaseUrl}/man/get_supplier/`, {
-                  supplier: "",
-                  address: ""
-                })
-                .then(res => {
-                  console.log(res);
-                  this.$emit("hideChangeSupplier", this.supplierInfo);
-                });
+                   if(res.status==1){
+                      this.$message({
+                        message: res.content,
+                        type: 'success'
+                      })
+                    this.$emit('hideChangeSupplier')
+                }else{
+                   this.$message({
+                      message: res.content,
+                      type: 'warning'
+                    })
+                    this.$emit('hideChangeSupplier')
+                  return
+                }
             });
-          this.$emit("hideChangeSupplier", this.supplierInfo);
           // this.supplierInfo={};
         }
-        console.log();
+        this.$emit("hideChangeSupplier");
       } else {
-        this.supplierInfo = {};
         this.$emit("hideChangeSupplier");
       }
     }

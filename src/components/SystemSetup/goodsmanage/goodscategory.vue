@@ -91,14 +91,22 @@ export default {
       }).then(({value}) => {
         if (!value) {return}
         // 向后台发送新增部门
-        this.$http.post(`${config.httpBaseUrl}/man/add_department/`, {
+        this.$http.post(`${config.httpBaseUrl}/medicine/add_category/`, {
           name: value
         }).then(res => {
-          this.Accessgoods();
-        })
-        this.$message({
-          type: 'success',
-          message: '商品修改成功'
+          if(res.status==1){
+            console.log(121);
+            this.$message({
+              type: 'success',
+              message: res.content
+            })
+            this.Accessgoods();
+          }else{
+            this.$message({
+              type: info,
+              message: res.content
+            })
+          }
         })
       }).catch(() => {
         this.$message({
@@ -146,8 +154,8 @@ export default {
       }).then(({value}) => {
         if (!value) {return}
         // 向后台发送新增部门
-        this.$http.post(`${config.httpBaseUrl}/man/add_department/`, {
-          name: value
+        this.$http.post(`${config.httpBaseUrl}/medicine/add_category/`, {
+          category: value
         }).then(res => {
           this.Accessgoods();
         })

@@ -1,6 +1,6 @@
 <template>
   <message-box
-    @closeMessageBox='hideGoodsEditor'
+    @closeMessageBox='add'
     :type='type'
     :btns='btns'>
     <div class="content">
@@ -8,7 +8,7 @@
         <el-tab-pane label="基础设置">
           <div class="content_wrapper">
             <label><span>*</span>商品名称:</label>
-            <el-input size='small' :disabled="true" v-model='goodsInfo.name'></el-input>
+            <el-input size='small' v-model='goodsInfo.name'></el-input>
             <label for=""><span>*</span>商品类型:</label>
             <el-select
               v-model='goodsInfo.category'
@@ -24,11 +24,11 @@
             <!-- <label for=""><span>*</span>规格型号:</label>
             <el-input
               size='small'
-              v-model='goodsInfo.unit'></el-input> -->
+              v-model='goodsInfo.model'></el-input> -->
             <!-- <label for=""><span>*</span>商品编码:</label>
             <el-input
               size='small'
-               v-model='goodsInfo.goodsCode'></el-input> -->
+               v-model='goodsInfo.code'></el-input> -->
             <label for=""><span>*</span>所在货位:</label>
             <el-select
               v-model="goodsInfo.location"
@@ -43,45 +43,34 @@
             </el-select>
             <label for=""><span>*</span>单位:</label>
             <el-input size='small' v-model='goodsInfo.unit'></el-input>
-            <label for=""><span>*</span>备注:</label>
-            <el-input
-              v-model="goodsInfo.comment"
-              size='small'></el-input>
+            
+            <label>备注:</label>
+            <el-input size='small' v-model='goodsInfo.comment'></el-input>
           </div>
         </el-tab-pane>
-        
         <el-tab-pane label="商品设置">
           <div class="content_wrapper">
-            <div class="goodsNumWarn">
-              <label for=""><span>*</span>商品预警数:</label>
-              <label for="">最高库存预警:</label>
-              <el-input
-                v-model="goodsInfo.waring_quantity_min"
-                size='small'></el-input>
-              <label for="">最低库存预警:</label>
-              <el-input
-                v-model="goodsInfo.waring_quantity_max"
-                size='small'></el-input>
-            </div>
-            <label for="">采购单价:</label>
+            <label for=""><span>*</span>商品预警数</label>
+            <label for="">最大值:</label>
+            <el-input
+              v-model="goodsInfo.waring_quantity_min"
+              size='small'></el-input>
+            <label for="">最小值:</label>
+            <el-input
+              v-model="goodsInfo.waring_quantity_max"
+              size='small'></el-input>
+            <hr/>
+            <label for="">当前库存:</label>
+            <el-input
+              v-model="goodsInfo.stock_quantity"
+              size='small'></el-input>
+            <label for="">预估单价:</label>
             <el-input
               v-model="goodsInfo.estimated_price"
               size='small'></el-input>
           </div>
         </el-tab-pane>
-        <!-- <el-tab-pane label="商品数量">
-          <div class="content_wrapper">
-            <label for=""><span>*</span>商品预警数:</label>
-            <el-input
-              v-model="goodsInfo.GoodsNumWarning"
-              size='small'></el-input>
-            <label for="">当前库存:</label>
-            <el-input
-              v-model="goodsInfo.currentGoodsNum"
-              size='small'></el-input>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="日期设置">
+        <!-- <el-tab-pane label="日期设置">
           <div class="content_wrapper">
             <label for="">采购时间:</label>
             <el-date-picker
@@ -131,96 +120,90 @@
 <script>
 import MessageBox from '@/components/MessageBox'
 export default {
-  props: ['type',"Editor"],
+  props: ['type'],
   data () {
     return {
       btns: {
         comfirm: '确定',
         cancel: '取消'
-      },
-      allgoods:[],
-      allgood:[],
-      options:[],
-      goodsInfo: {
-        category:"",
-        name:"",
-        unit:"",
-        location:"",
-        stock_quantity:"",
-        waring_quantity_min:"",
-        waring_quantity_max:"",
-        estimated_price:"",
-        comment:"",
-      },
+      }
     }
   },
   components: {
-    MessageBox
+    MessageBox,
   },
-  created(){
-     this.goodsInfo=this.Editor;
-      this.Commodity();
-     this.storage();
+  mounted(){
+    //  this.Commodity();
+    //  this.storage();
   },
-  methods: {
-    //商品类型
-    Commodity(){
-         this.$http.post(`${config.httpBaseUrl}/medicine/get_category/`,{
-          // goods:goods,
-        }).then(res=>{
-        this.allgoods=res.content;
-      })
-    },
-    //所在货位
-    storage(){
-       let _this=this;
-      this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res=>{
-        console.log(res)
-        this.options=res.content;
-      })
-    },
-    hideGoodsEditor (bol) {
-      // 确认修改
-      if (bol) {
-        console.log(this.goodsInfo)
-          for (var k in this.goodsInfo) {
-          if (!(this.goodsInfo[k]+'')) {
-            this.$message({
-              message: '信息不能为空',
-              type: 'warning'
-            })
-            return
-          }
-        }
-         this.$http.post(`${config.httpBaseUrl}/medicine/upd_medicine/`,this.goodsInfo).then(res=>{
-          if(res.status==1){
-              // this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
-              //    repertory:"",
-              //    goods:""
-              // }).then(res=>{
-              if(res.status==1){
-                this.$message({
-                  message: '修改成功',
-                  type: 'success'
-                })
-                this.$emit('goodsEditor', this.goodsInfo)
-              }else{
-                return
-              }
+  methods:{
+    // //商品类型
+    // Commodity(){
+    //      this.$http.post(`${config.httpBaseUrl}/medicine/get_category/`,{
+    //       // goods:goods,
+    //     }).then(res=>{
+    //     this.allgoods=res.content;
+    //   })
+    // },
+    // //所在货位
+    // storage(){
+    //    let _this=this;
+    //   this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res=>{
+    //     this.options=res.content;
+    //   })
+    // },
+    add(blo){
+       if (blo) {
+    //     // 信息不能为空
+    //     for (var k in this.goodsInfo) {
+    //       if (!this.goodsInfo[k]) {
+    //         this.$message({
+    //           message: '信息不能为空',
+    //           type: 'warning'
+    //         })
+    //         return
+    //       }
+    //     }
+    //     this.$http.post(`${config.httpBaseUrl}/medicine/add_medicine/`,this.goodsInfo).then(res=>{
+    //       if(res.status==1){
+    //           // this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
+    //           //    repertory:"",
+    //           //    goods:""
+    //           // }).then(res=>{
+    //           if(res.status==1){
+    //             this.$message({
+    //               message: res.content,
+    //               type: 'success'
+    //             })
+    //             // this.allgood=res.content;
+    //             this.$emit('hideGoodsCategoryadd', this.goodsInfo)
+    //           }else{
+    //             return
+    //           }
             
-            // })
-          }else{
-            this.$message({
-              message: '信息不能为空',
-              type: 'warning'
-            })
-            return
-          }
-        })
-        this.$emit('goodsEditor')
+    //         // })
+    //       }else{
+    //         this.$message({
+    //           message: '信息不能为空',
+    //           type: 'warning'
+    //         })
+    //         return
+    //       }
+        
+    //     })
+        this.$emit('hideGoodsCategoryadd')
       } else {
-        this.$emit("goodsEditor")
+        this.$emit("hideGoodsCategoryadd",)
       }
+    },
+    created () {
+    // console.log(this.selectUsers)
+    // this.userInfo = this.selectUsers.userInfo
+    // 获取部门列表
+    // this.$http.post(`${config.httpBaseUrl}/man/get_department/`).then(res => {
+    //   console.log(res)
+    //   this.departmentData = res.data
+    // })
     }
   }
 }
@@ -228,7 +211,6 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-  height: 460px;
   .el-tabs {
     border: none;
     box-shadow: none;
@@ -259,4 +241,3 @@ export default {
   }
 }
 </style>
-
