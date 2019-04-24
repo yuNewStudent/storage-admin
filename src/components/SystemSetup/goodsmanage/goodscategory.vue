@@ -92,7 +92,7 @@ export default {
         if (!value) {return}
         // 向后台发送新增部门
         this.$http.post(`${config.httpBaseUrl}/medicine/add_category/`, {
-          name: value
+          category: value
         }).then(res => {
           if(res.status==1){
             console.log(121);
@@ -126,7 +126,7 @@ export default {
           // this.Accessgoods();
           // 向后台发送删除部门
           this.$http.post(`${config.httpBaseUrl}/medicine/del_category/`, {
-            name:scope.row.category
+            category:scope.row.category
           }).then(res => {
             this.tableData.splice(scope.$index, 1)
             if(res.status==1){

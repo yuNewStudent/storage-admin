@@ -76,10 +76,8 @@ export default {
   },
   methods: {
     changePerson (bol) {
-      console.log(bol, this.userInfo)
       if (bol) {
         // 信息不能为空
-        console.log(this.userInfo)
         for (var k in this.userInfo) {
           if (!(this.userInfo[k] + '')) {
             this.$message({
@@ -93,8 +91,13 @@ export default {
         if (this.selectUser) {
           // 修改人员
           // 服务器修改
-          console.log(this.userInfo)
-          this.$http.post(`${config.httpBaseUrl}/man/upd_employee/`, this.userInfo).then(res => {
+          const loginUser = JSON.parse(this.$cookie.get('user'))
+          const data = {
+            // login_name: loginUser.name,
+            // login_email:loginUser.email,
+            ...this.userInfo
+          }
+          this.$http.post(`${config.httpBaseUrl}/man/upd_employee/`, data).then(res => {
             if (res.status === 1) {
               this.$message({
                 message: '人员信息修改成功',
@@ -106,8 +109,13 @@ export default {
         } else {
           // 新增人员
           // 服务器新增
-          this.$http.post(`${config.httpBaseUrl}/man/add_employee/`, this.userInfo).then(res => {
-            console.log(res)
+          const loginUser = JSON.parse(this.$cookie.get('user'))
+          const data = {
+            // login_name: loginUser.name,
+            // login_email:loginUser.email,
+            ...this.userInfo
+          }
+          this.$http.post(`${config.httpBaseUrl}/man/add_employee/`, data).then(res => {
             if (res.content === "员工添加成功") {
               this.$message({
                 message: '人员新增成功',
@@ -115,7 +123,6 @@ export default {
               })
             }
           })
-          console.log(this.userInfo)
           this.$emit('hideChangePerson', this.userInfo)
         }
       } else {
@@ -137,7 +144,6 @@ export default {
       console.log(this.selectUser)
     // 如果是修改人员
     if (this.selectUser) {
-      console.log(this.selectUser.userInfo)
       this.userInfo = this.selectUser.userInfo
     }
     // 获取部门列表

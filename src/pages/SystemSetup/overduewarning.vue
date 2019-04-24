@@ -1,35 +1,70 @@
-
 <template>
-  <div class="opeatelog">
+  <div class="overduewarning">
     <el-header>
+      <div class="selectStore">
+        仓库名称:
+        <el-select v-model="value" placeholder="请选择" @change="storage" >
+          <el-option
+            v-for="item in options"
+            :key="item.name"
+            :label="item.name"
+            :value="item.name">
+          </el-option>
+        </el-select>
+      </div>
      <div class="search">
-        申请人:
+        商品名称:
         <el-input placeholder="请输入操作人" v-model="person"></el-input>
         <el-button type="primary" @click="querylist()">搜索</el-button>
       </div>
-      <div class="select_date">
-        操作日期:
-        <!-- <el-date-picker size='medium'
-          v-model="value1"
-          type="date">
-        </el-date-picker>-->
-        <el-date-picker
-          v-model="date"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          @change="pickDate"
-        ></el-date-picker>
+       <div class="selectStore">
+        状态:
+        <el-select v-model="value" placeholder="请选择" @change="storage" >
+          <el-option
+            v-for="item in options"
+            :key="item.name"
+            :label="item.name"
+            :value="item.name">
+          </el-option>
+        </el-select>
       </div>
     </el-header>
     <el-main>
       <el-table :data="orders" size="small" highlight-current-row style="width: 100%">
         <el-table-column type="index" width="55"></el-table-column>
-        <el-table-column label="操作人" prop="person"></el-table-column>
-        <el-table-column label="操作模块" prop="module"></el-table-column>
-        <el-table-column label="操作内容" prop="context"></el-table-column>
-        <el-table-column label="操作时间" prop="datetime"></el-table-column>
+        <el-table-column label="商品类别" prop="receipt_no"></el-table-column>
+        <el-table-column label="商品名称" prop="supplier"></el-table-column>
+        <el-table-column label="所在库位" prop="applicant"></el-table-column>
+        <el-table-column label="库存数量" prop="receipt_no"></el-table-column>
+        <el-table-column label="库存预警" prop="status">
+        </el-table-column>
+        <el-table-column label="状态" prop="datetime" width="200">
+          <template slot-scope="scope">
+        <!-- <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">已经过期</el-button> -->
+        <el-button
+          size="mini"
+          type="danger"
+          @click="handleDelete(scope.$index, scope.row)">库存不足</el-button>
+      </template>
+        </el-table-column>
+         <el-table-column label="操作" prop="datetime">
+          <template slot-scope="scope">
+        <!-- <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">商品盘存</el-button> -->
+          <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">填写入库单</el-button>
+      </template>
+        </el-table-column>
+        <el-table-column label="温馨提示">
+          <template>
+            <span>该商品库存不足，及时补货</span>
+            <!-- <span>该商品已经过期了，把盘点数量改为零</span> -->
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
@@ -83,13 +118,13 @@ export default {
       value: "",
       person: "",
       orders: [
-        // {
-        //   receipt_no: '哈德',
-        //   supplier: '哈德',
-        //   applicant: '哈德',
-        //   apply_datetime: '哈德',
-        //   status: '哈德',
-        // }
+        {
+          receipt_no: '哈德',
+          supplier: '哈德',
+          applicant: '哈德',
+          apply_datetime: '10',
+          status: '哈德',
+        }
       ],
       starttime: "",
       endtime: "",
@@ -113,7 +148,7 @@ export default {
     MessageBox
   },
   mounted() {
-    this.allaudit();
+    // this.allaudit();
     // this.applicantlist();
   },
   methods: {
@@ -124,6 +159,9 @@ export default {
     },
     goodsearch(){
       this.querylist();
+    },
+    storage(){
+       
     },
     //排序状态
     statebutton() {
@@ -186,7 +224,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.opeatelog {
+.overduewarning {
   padding: 0 30px;
   .el-header {
     margin: 20px 0 0;
@@ -286,5 +324,4 @@ export default {
     }
   }
 </style>
-
 

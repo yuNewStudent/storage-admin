@@ -17,12 +17,13 @@ export default {
   data () {
     return {
       show:false,
-      user:{},
+      user: {},
     }
   },
   created(){
-    var user=JSON.parse(this.$cookie.get('user')||'{}');
-    this.user=user;
+    var user = JSON.parse(this.$cookie.get('user')||'{}')
+    console.log(user)
+    this.user=user
   },
   methods: {
     buttonexit(){
@@ -30,7 +31,7 @@ export default {
 				this.$confirm('确认退出吗?', '提示', {
 					//type: 'warning'
 				}).then(() => {
-					sessionStorage.removeItem('user');
+					this.$cookie.delete('user') 
 					_this.$router.push('/login');
 				}).catch(() => {
 

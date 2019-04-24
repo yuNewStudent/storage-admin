@@ -220,6 +220,18 @@ export default {
       if (bol) {
         // 本地删除
         this.users.splice(this.selectUser.index, 1)
+        // 服务器删除
+        const loginUser = JSON.parse(this.$cookie.get('user'))
+        const data = { login_name: loginUser.name, login_email:loginUser.email, ...this.userInfo}
+        console.log(data)
+        this.$http.post(`${config.httpBaseUrl}/man/del_employee/`, data).then(res => {
+          if (res.status === 1) {
+            this.$message({
+              message: '人员删除成功',
+              type: 'success'
+            })
+          }
+        })
       }
     },
 
@@ -257,7 +269,6 @@ export default {
     // 获取人员列表
     this.$http.post(`${config.httpBaseUrl}/man/get_employee/`).then(res => {
       this.users = res.content
-      console.log(this.users)
     })
   }
 }
