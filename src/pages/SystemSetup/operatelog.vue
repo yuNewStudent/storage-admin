@@ -2,6 +2,11 @@
 <template>
   <div class="opeatelog">
     <el-header>
+     <div class="search">
+        申请人:
+        <el-input placeholder="请输入操作人" v-model="person"></el-input>
+        <el-button type="primary" @click="querylist()">搜索</el-button>
+      </div>
       <div class="select_date">
         操作日期:
         <!-- <el-date-picker size='medium'
@@ -17,17 +22,14 @@
           @change="pickDate"
         ></el-date-picker>
       </div>
-      <div class="buttons">
-        <el-button type="primary" size="medium" @click="handleOutput">导出</el-button>
-      </div>
     </el-header>
     <el-main>
       <el-table :data="orders" size="small" highlight-current-row style="width: 100%">
         <el-table-column type="index" width="55"></el-table-column>
-        <el-table-column label="操作人" prop="receipt_no"></el-table-column>
-        <el-table-column label="操作模块" prop="supplier"></el-table-column>
-        <el-table-column label="操作内容" prop="applicant"></el-table-column>
-        <el-table-column label="操作时间" prop="apply_datetime"></el-table-column>
+        <el-table-column label="操作人" prop="person"></el-table-column>
+        <el-table-column label="操作模块" prop="module"></el-table-column>
+        <el-table-column label="操作内容" prop="context"></el-table-column>
+        <el-table-column label="操作时间" prop="datetime"></el-table-column>
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
@@ -39,19 +41,7 @@
         :total="400"
       ></el-pagination>
     </el-main>
-    <div class="pop">
-      <div class="pop_t">
-        <p>预警提示</p>
-      </div>
-      <div class="pop_c">
-        <P>编号001，条形码12346544679的商品阿莫西林已经入预警状态，即将过期，请及时管理、更换采购该商品，以便库存充足，方便下次出库。</P>
-      </div>
-      <div class="pop_f">
-       <div slot="footer" class="pop_f-footer">
-          <el-button type="primary">我知道了</el-button>
-        </div>
-      </div>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -65,6 +55,7 @@ export default {
       dialogVisible: true,
       date: "",
       datalist: [],
+      show:true,
       reason_return: "",
       isShowAddGoods: false,
       options: [
@@ -91,7 +82,7 @@ export default {
       ],
       receipt_no: "",
       value: "",
-      name: "",
+      person: "",
       orders: [
         // {
         //   receipt_no: '哈德',
@@ -132,24 +123,28 @@ export default {
     applicantbutton() {
       this.querylist();
     },
+    goodsearch(){
+      this.querylist();
+    },
     //排序状态
     statebutton() {
       this.querylist();
     },
+    hidden(){
+         this.show=!this.show;
+    },
     //排序查询
     querylist() {
-      var user = JSON.parse(this.$cookie.get("user") || "{}");
       this.$http
-        .post(`${config.httpBaseUrl}/medicine/get_inStorageReceipt/`, {
-          all: 0,
-          applicant: user.name,
-          status: 1,
-          apply_datetime_start: this.starttime,
-          apply_datetime_end: this.endtime
+        .post(`${config.httpBaseUrl}/log/get_log/`, {
+          person:"",
+          datetime_end:this.endtime,
+          datetime_start:this.starttime,
+          
         })
         .then(res => {
           if (res.status == 1) {
-            this.orders = res.content;
+            this.orders = res.content.OperationLog;;
           } else {
             return;
           }
@@ -158,99 +153,16 @@ export default {
     //查询所有的订单
     allaudit() {
       this.$http
-        .post(`${config.httpBaseUrl}/medicine/get_inStorageReceipt/`, {
-          all: 1
+        .post(`${config.httpBaseUrl}/log/get_log/`,{
+          person:this.person,
+          datetime_end:"",
+          datetime_start:"",
         })
         .then(res => {
           if (res.status == 1) {
-            this.orders = res.content;
+            this.orders = res.content.OperationLog;
           } else {
             return;
-          }
-        });
-    },
-    //详情
-    outordetails(index, row) {
-      this.receipt_no = row.receipt_no;
-      this.$http
-        .post(`${config.httpBaseUrl}/medicine/detail_inStorageReceipt/`, {
-          receipt_no: this.receipt_no
-        })
-        .then(res => {
-          if (res.status == 1) {
-            this.datalist = res.content;
-          } else {
-            return;
-          }
-        });
-    },
-    //提交审核
-    goodsubmit() {
-      var receipt_no = this.receipt_no;
-      var datalist = this.datalist;
-      var user = JSON.parse(this.$cookie.get("user") || "{}");
-      var date = new Date();
-      var time = this.moment(new Date()).format("YYYY-MM-DD");
-      let multipleSelection = this.datalist.map(v => {
-        v.audited_datetime = time;
-        v.receipt_no = receipt_no;
-        v.auditor = user.name;
-        return v;
-      });
-      this.$http
-        .post(
-          `${config.httpBaseUrl}/medicine/audited_inStorageReceipt/`,
-          multipleSelection
-        )
-        .then(res => {
-          if (res.status == 1) {
-            this.datalist = res.content;
-            this.$message({
-              showClose: true,
-              message: res.content,
-              type: "success"
-            });
-          } else {
-            this.$message({
-              showClose: true,
-              message: res.content,
-              type: "warning"
-            });
-          }
-        });
-    },
-    //回退
-    outorfallback() {
-      var receipt_no = this.receipt_no;
-      var datalist = this.datalist;
-      var user = JSON.parse(this.$cookie.get("user") || "{}");
-      var date = new Date();
-      var time = this.moment(new Date()).format("YYYY-MM-DD");
-      let multipleSelection = this.datalist.map(v => {
-        v.audited_datetime = time;
-        v.receipt_no = receipt_no;
-        v.auditor = user.name;
-        return v;
-      });
-      this.$http
-        .post(
-          `${config.httpBaseUrl}/medicine/return_inStorageReceipt/`,
-          multipleSelection
-        )
-        .then(res => {
-          if (res.status == 1) {
-            this.datalist = res.content;
-            this.$message({
-              showClose: true,
-              message: res.content,
-              type: "success"
-            });
-          } else {
-            this.$message({
-              showClose: true,
-              message: res.content,
-              type: "warning"
-            });
           }
         });
     },
@@ -263,8 +175,8 @@ export default {
     //日期查询
     pickDate(date) {
       let time = date;
-      let starttime = this.moment(time[0]).format("YYYY-MM-DD");
-      let endtime = this.moment(time[1]).format("YYYY-MM-DD");
+      let starttime = this.moment(time[0]).format("YYYY-MM-DD h:mm:ss");
+      let endtime = this.moment(time[1]).format("YYYY-MM-DD h:mm:ss");
       this.starttime = starttime;
       this.endtime = endtime;
       this.querylist();
@@ -323,9 +235,21 @@ export default {
 .pop_t{
   width: 100%;
   line-height: 50px;
-  text-align: center;
   color: red;
   background-color: #fde4e4;
+  display: flex;
+}
+.pop_tl{
+  width: 10%;
+}
+.pop_tc{
+  width: 80%;
+  text-align: center;
+}
+.pop_tr{
+  width: 10%;
+  margin-left: 5px;
+  text-align: center；
 }
 .pop_c{
   width: 380px;
@@ -346,6 +270,12 @@ export default {
   margin-right: 20px;
   float: right;
 }
+.search {
+    width: 380px;
+    .el-input {
+      width: 200px;
+    }
+  }
 </style>
 
 
