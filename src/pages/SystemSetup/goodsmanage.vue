@@ -28,7 +28,7 @@
     <el-main>
       <el-table
         ref="multipleTable"
-        :data="allgoods"
+        :data="paginationData"
         tooltip-effect="dark"
         style="width: 100%"
         border
@@ -75,13 +75,12 @@
        <div class="block">
         <span class="demonstration"></span>
         <el-pagination
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :page-count='allgoods.length/5'
+          :page-size='pageSize'
+          layout="total, prev, pager, next, jumper"
+          :total="allgoods.length"
         ></el-pagination>
       </div>
     </el-main>
@@ -126,7 +125,6 @@ import outputTable from '@/assets/js/outputTable'
 export default {
   data () {
   	return {
-      currentPage:4,
       goods:"",
       selectUsers: {
         index: '',
@@ -187,6 +185,10 @@ export default {
       ],
       multipleSelection: [],
       tableData4:[],
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5
     }
   },
   components: {
@@ -215,7 +217,9 @@ export default {
          "repertory":"",
          "goods":"",
       }).then(res=>{
-        this.allgoods=res.content;
+        this.allgoods=res.content
+        // 刚打开页面时加载前5项、且自动生成分页数量
+        this.getPaginationData(this.currentPage)
       })
     },
     //查询仓库名称
@@ -231,7 +235,7 @@ export default {
         })
     },
     storage(){
-       this.findinventory();
+      this.findinventory();
     },
     findinventory(){
     this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
@@ -239,7 +243,9 @@ export default {
         goods:this.goods,
       }).then(res=>{
         if(res.status==1){
-          this.allgoods=res.content;
+          this.allgoods = res.content
+          // 刚打开页面时加载前5项、且自动生成分页数量
+          this.getPaginationData(this.currentPage)
         }else{
           return
         }
@@ -261,12 +267,6 @@ export default {
     handleSelectionChange () {
       console.log(1)
     },
-    handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
     handleDelGoods (index,row) {
       this.delgood={
         row:row,
@@ -285,13 +285,22 @@ export default {
     },
     hideGoodsCategoryadd(allgood,bol){
       console.log(allgood)
-      this.findinventory();
-      // this.allgoods=this.allgood;
-      this.isShowAddGoods = false;
+      this.findinventory()
+      this.isShowAddGoods = false
     },
     //导出表格
     handleOutput () {
       outputTable(this.tableData3)
+    },
+    // 分页
+    getPaginationData (pageIndex) {
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.allgoods.slice(start, end)
+    },
+    // 跳转至对应分页
+    handleCurrentChange(val) {
+      this.getPaginationData(val)
     }
   }
 }

@@ -180,7 +180,13 @@ export default {
             return
           }
         }
-        this.$http.post(`${config.httpBaseUrl}/medicine/add_medicine/`,this.goodsInfo).then(res=>{
+        const loginUser = JSON.parse(this.$cookie.get('user'))
+        const data = {
+          // login_name: loginUser.name,
+          // login_email: loginUser.email,
+          ...this.goodsInfo
+        }
+        this.$http.post(`${config.httpBaseUrl}/medicine/add_medicine/`, data).then(res=>{
           if(res.status==1){
               // this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
               //    repertory:"",

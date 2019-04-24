@@ -182,7 +182,6 @@ export default {
     hideGoodsEditor (bol) {
       // 确认修改
       if (bol) {
-        console.log(this.goodsInfo)
           for (var k in this.goodsInfo) {
           if (!(this.goodsInfo[k]+'')) {
             this.$message({
@@ -192,7 +191,13 @@ export default {
             return
           }
         }
-         this.$http.post(`${config.httpBaseUrl}/medicine/upd_medicine/`,this.goodsInfo).then(res=>{
+        const loginUser = JSON.parse(this.$cookie.get('user'))
+        const data = {
+          login_name: loginUser.name,
+          login_email: loginUser.email,
+          ...this.goodsInfo
+        }
+        this.$http.post(`${config.httpBaseUrl}/medicine/upd_medicine/`, data).then(res=>{
           if(res.status==1){
               // this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
               //    repertory:"",

@@ -17,7 +17,7 @@
     </div>
     <div class="content">
       <el-table
-        :data="users"
+        :data="paginationData"
         size='small'
         width='100%'
         border>
@@ -25,7 +25,7 @@
           align='center' 
           prop="name"
           label="姓名"
-          width='120'>
+          width='150'>
         </el-table-column>
         <el-table-column
           align='center' 
@@ -46,10 +46,12 @@
           width='150'>
         </el-table-column>
         <el-table-column
-          align='center' 
-          prop="is_leader"
+          align='center'
           label="是否为部门负责人"
           width='150'>
+          <template slot-scope="scope">
+            <span>{{scope.row.is_leader ? '是' : '否'}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="操作"
           align='center'>
@@ -72,13 +74,12 @@
        <div class="block">
         <span class="demonstration"></span>
         <el-pagination
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :page-count='users.length/pageSize'
+          :page-size='pageSize'
+          layout="total, prev, pager, next, jumper"
+          :total="users.length"
         ></el-pagination>
       </div>
     </div>
@@ -122,7 +123,7 @@ import SettingPermission from '@/components/SystemSetup/personmanage/setting-per
 export default {
   data () {
   	return {
-      currentPage:4,
+      currentPage:1,
       users: [
         // {
         //   name: '苏轼',
@@ -130,25 +131,7 @@ export default {
         //   phone: '188882999',
         //   email: '896666@sss.com',
         //   is_leader: '1'
-        // }, {
-        //   name: '李贺',
-        //   department: '设计部',
-        //   phone: '188882999',
-        //   email: '896666@sss.com',
-        //   is_leader: '是'
-        // }, {
-        //   name: '李白',
-        //   department: '设计部',
-        //   phone: '188882999',
-        //   email: '896666@sss.com',
-        //   is_leader: '是'
-        // }, {
-        //   name: '杜甫',
-        //   department: '设计部',
-        //   phone: '188882999',
-        //   email: '896666@sss.com',
-        //   is_leader: '是'
-        // },
+        // }
       ],
       userQuery: '',
       selectUser: {
@@ -167,7 +150,11 @@ export default {
         del: '人员管理>删除',
         setDepartment: '人员管理>部门设置',
         setAuthority: '人员管理>权限设置'
-      }
+      },
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5
     }
   },
   components: {
@@ -197,14 +184,6 @@ export default {
       if (userInfo) {
         this.users.push(userInfo)
       }
-    },
-
-    //翻页操作
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
     },
 
     // 展示删除人员页面
@@ -264,11 +243,23 @@ export default {
     handlePermission () {
       this.isShowSettingPermission = true
     },
+    // 分页
+    getPaginationData (pageIndex) {
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.users.slice(start, end)
+    },
+    // 跳转至对应分页
+    handleCurrentChange(val) {
+      this.getPaginationData(val)
+    }
   },
   created () {
     // 获取人员列表
     this.$http.post(`${config.httpBaseUrl}/man/get_employee/`).then(res => {
       this.users = res.content
+      // 刚打开页面时加载前pageSize项、且自动生成分页数量
+      this.getPaginationData(this.currentPage)
     })
   }
 }

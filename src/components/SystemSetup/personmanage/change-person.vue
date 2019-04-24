@@ -145,6 +145,7 @@ export default {
     // 如果是修改人员
     if (this.selectUser) {
       this.userInfo = this.selectUser.userInfo
+      this.userInfo.is_leader = this.userInfo.is_leader + ''
     }
     // 获取部门列表
     this.$http.post(`${config.httpBaseUrl}/man/get_department/`).then(res => {

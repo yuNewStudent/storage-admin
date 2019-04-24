@@ -17,7 +17,7 @@
     <el-main>
       <el-table
         ref="multipleTable"
-        :data="filterClients"
+        :data="paginationData"
         tooltip-effect="dark"
         style="width: 100%"
         border
@@ -65,13 +65,12 @@
       <div class="block">
         <span class="demonstration"></span>
         <el-pagination
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :page-count='clients.length/pageSize'
+          :page-size='pageSize'
+          layout="total, prev, pager, next, jumper"
+          :total="clients.length"
         ></el-pagination>
       </div>
     </el-main>
@@ -99,7 +98,6 @@ import outputTable from '@/assets/js/outputTable'
 export default {
   data () {
   	return {
-      currentPage:4,
       messageBoxType: {
         add: '客户管理>新增',
         del: '客户管理>删除',
@@ -128,19 +126,14 @@ export default {
       },
       isShowDelCustom: false,
       isShowEditorCustom: false,
-      isShowAddCustom: false
+      isShowAddCustom: false,
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5,
     }
   },
   computed: {
-    //筛选客户
-    filterClients () {
-      if (!this.clients) {
-        return
-      }
-      return this.clients.filter(item => {
-        return item.purchaser.indexOf(this.client) > -1
-      })
-    },
   },
   components: {
     ChangeCustom,
@@ -196,28 +189,45 @@ export default {
       }
       this.isShowEditorCustom = false
     },
-    handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
     // 导出表格
     handleOutput () {
       outputTable(this.tableData3)
     },
     // 获取客户
     getClient (purchaser, address) {
-    this.$http.post(`${config.httpBaseUrl}/man/get_client/`, {
-      purchaser,
-      address
-    }).then(res => {
-      console.log(res)
-      this.clients = res.content
-    })
+      this.$http.post(`${config.httpBaseUrl}/man/get_client/`, {
+        purchaser,
+        address
+      }).then(res => {
+        this.clients = res.content
+        // 刚打开页面时加载前pageSize项、且自动生成分页数量
+        this.getPaginationData(this.currentPage)
+      })
     },
     // 选中项改变
-    handleSelectionChange () {}
+    handleSelectionChange () {},
+    
+    //筛选客户
+    filterClients () {
+      if (!this.clients) {
+        return
+      }
+      this.clients.filter(item => {
+        return item.purchaser.indexOf(this.client) > -1
+      })
+      // 刚打开页面时加载前pageSize项、且自动生成分页数量
+      this.getPaginationData(this.currentPage)
+    },
+    // 分页
+    getPaginationData (pageIndex) {
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.clients.slice(start, end)
+    },
+    // 跳转至对应分页
+    handleCurrentChange(val) {
+      this.getPaginationData(val)
+    }
   },
   created () {
     // 获取所有客户
