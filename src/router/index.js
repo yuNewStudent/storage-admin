@@ -29,13 +29,18 @@ export default new Router({
         {
           path: '/systemsetup',
           name: 'systemsetup',
-          redirect: '/systemsetup/personmanage',
+          redirect: '/systemsetup/overduewarning',
           component: SystemSetup('index'),
           children: [
             {
               path: '/systemsetup/operatelog',
               name: 'operatelog',
               component: SystemSetup('operatelog')
+            },
+            {
+              path: '/systemsetup/overduewarning',
+              name: 'overduewarning',
+              component: SystemSetup('overduewarning')
             },
             {
               path: '/systemsetup/personmanage',

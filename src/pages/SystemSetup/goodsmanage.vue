@@ -234,17 +234,17 @@ export default {
        this.findinventory();
     },
     findinventory(){
-     this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
-          repertory:this.value,
-          goods:this.goods,
-        }).then(res=>{
-          if(res.status==1){
-            this.allgoods=res.content;
-          }else{
-            return
-          }
-        })
-   },
+    this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
+        repertory:this.value,
+        goods:this.goods,
+      }).then(res=>{
+        if(res.status==1){
+          this.allgoods=res.content;
+        }else{
+          return
+        }
+      })
+    },
     //根据商品名称搜索
     Commodity(){
        this.findinventory();

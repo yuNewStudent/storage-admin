@@ -29,7 +29,15 @@ export default {
   methods:{
     Delsupplier(bol){
        if (bol) {
-        this.$http.post(`${config.httpBaseUrl}/man/del_supplier/`,[this.multiple]).then(res=>{
+        // const loginUser = JSON.parse(this.$cookie.get('user'))
+        // const data = [
+        //   {
+        //     login_name: loginUser.name,
+        //     login_email: loginUser.email
+        //   },
+        //   this.multiple
+        // ]
+        this.$http.post(`${config.httpBaseUrl}/man/del_supplier/`, this.multiple).then(res=>{
           if(res.status==1){
                       this.$message({
                         message: res.content,

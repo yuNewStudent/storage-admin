@@ -134,15 +134,14 @@ export default {
           username:this.ruleForm2.username,
           passwd:this.ruleForm2.passwd,
         }).then(res=>{
-          console.log(res)
           if(res.statuscode==1){
-             this.$router.push('/systemsetup/personmanage')
-             this.$message({
+            this.$cookie.set('user', JSON.stringify(res.result))
+            this.$router.push('/systemsetup/overduewarning')
+            this.$message({
               showClose: true,
               message:"恭喜你登陆成功",
               type: 'success'
             })
-            this.$cookies.set('user', JSON.stringify(res.result))
           }else{
             this.$message({
               showClose: true,

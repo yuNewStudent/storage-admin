@@ -58,10 +58,14 @@ export default {
                   return
                 }
               }
-              this.$http.post(`${config.httpBaseUrl}/storage/upd_repertory/`,{
+              const loginUser = JSON.parse(this.$cookie.get('user'))
+              const data = {
+                // login_name: loginUser.name,
+                // login_email: loginUser.email,
                 name:this.datalist.name,
                 starge_rack:this.datalist.starge_rack
-              }).then(res=>{
+              }
+              this.$http.post(`${config.httpBaseUrl}/storage/upd_repertory/`, data).then(res=>{
                 if(res.status==1){
                       this.$message({
                         message: res.content,
@@ -92,11 +96,14 @@ export default {
                 return
               }
             }
-            this.$http.post(`${config.httpBaseUrl}/storage/add_repertory/`,{
-              name:this.datalist.name,
-              starge_rack:this.datalist.starge_rack
-
-            }).then(res=>{
+            const loginUser = JSON.parse(this.$cookie.get('user'))
+            const data = {
+              // login_name: loginUser.name,
+              // login_email: loginUser.email,
+              name: this.datalist.name,
+              starge_rack: this.datalist.starge_rack
+            }
+            this.$http.post(`${config.httpBaseUrl}/storage/add_repertory/`, data).then(res=>{
               if(res.status==1){
                       this.$message({
                         message: res.content,

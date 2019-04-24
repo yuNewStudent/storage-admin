@@ -150,7 +150,6 @@ export default {
           apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
         }
         this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, data).then(res=>{
-          console.log(res)
           if (res.status === 1) {
             this.purchaseOrders = res.content
           }

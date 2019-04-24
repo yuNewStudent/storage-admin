@@ -39,16 +39,18 @@
         :total="400"
       ></el-pagination>
     </el-main>
-    <div class="pop">
-      <div class="pop_t">
-        <p>预警提示</p>
-      </div>
-      <div class="pop_c">
-        <P>编号001，条形码12346544679的商品阿莫西林已经入预警状态，即将过期，请及时管理、更换采购该商品，以便库存充足，方便下次出库。</P>
-      </div>
-      <div class="pop_f">
-       <div slot="footer" class="pop_f-footer">
-          <el-button type="primary">我知道了</el-button>
+    <div class="bg_layer">
+      <div class="pop">
+        <div class="pop_t">
+          <p>预警提示</p>
+        </div>
+        <div class="pop_c">
+          <P>编号001，条形码12346544679的商品阿莫西林已经入预警状态，即将过期，请及时管理、更换采购该商品，以便库存充足，方便下次出库。</P>
+        </div>
+        <div class="pop_f">
+        <div slot="footer" class="pop_f-footer">
+            <el-button type="primary">我知道了</el-button>
+          </div>
         </div>
       </div>
     </div>
@@ -307,6 +309,16 @@ export default {
     float: right;
     margin: 20px 0px;
   }
+}
+.bg_layer {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0,0,0,.5);
+  z-index: 3;
+  border-radius: 10px;
 }
 .pop {
   width: 400px;

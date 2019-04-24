@@ -97,8 +97,14 @@ export default {
               return;
             }
           }
+          const loginUser = JSON.parse(this.$cookie.get('user'))
+          // const data = {
+          //   login_name: loginUser.name,
+          //   login_email: loginUser.email,
+          //   ...this.supplierInfo
+          // }
           this.$http
-            .post(`${config.httpBaseUrl}/man/upd_supplier/`,this.supplierInfo)
+            .post(`${config.httpBaseUrl}/man/upd_supplier/`, this.supplierInfo)
             .then(res => {
                if(res.status==1){
                       this.$message({
@@ -126,8 +132,14 @@ export default {
               return;
             }
           }
+          // const loginUser = JSON.parse(this.$cookie.get('user'))
+          // const data = {
+          //   login_name: loginUser.name,
+          //   login_email: loginUser.email,
+          //   ...this.supplierInfo
+          // }
           this.$http
-            .post(`${config.httpBaseUrl}/man/add_supplier/`,this.supplierInfo)
+            .post(`${config.httpBaseUrl}/man/add_supplier/`, this.supplierInfo)
             .then(res => {
                    if(res.status==1){
                       this.$message({

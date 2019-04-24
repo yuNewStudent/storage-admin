@@ -31,10 +31,13 @@ export default {
      buttondel(bol){
          if(bol){
            if(this.Deltor){
-            this.$http.post(`${config.httpBaseUrl}/storage/del_repertory/`,{
-              starge_rack:this.starge_rack
-
-            }).then(res=>{
+            const loginUser = JSON.parse(this.$cookie.get('user'))
+            const data = {
+              login_name: loginUser.name,
+              login_email: loginUser.email,
+              starge_rack: this.starge_rack
+            }
+            this.$http.post(`${config.httpBaseUrl}/storage/del_repertory/`,data).then(res=>{
             if(res.status==1){
                       this.$message({
                         message: res.content,
