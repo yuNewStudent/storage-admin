@@ -29,7 +29,7 @@ router.beforeEach((to, from, next) => {
 // 添加请求头
 Axios.interceptors.request.use(config => {
   const loginUser = JSON.parse(VueCookie.get('user'))
-  const bol = config.url.indexOf('get') == -1 && config.url.indexOf('query') == -1 && config.url.indexOf('detail') == -1 && config.url.indexOf('login') == -1 && config.url.indexOf('forget') == -1
+  const bol = config.url.indexOf('get') == -1 && config.url.indexOf('query') == -1 && config.url.indexOf('detail') == -1 && config.url.indexOf('login') == -1 && config.url.indexOf('forget') == -1 && config.url.indexOf('history') == -1
   if (bol) {
     if (config.data instanceof Array) {
       config.data.unshift({

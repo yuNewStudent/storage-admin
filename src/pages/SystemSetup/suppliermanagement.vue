@@ -31,7 +31,7 @@
     <el-main>
       <el-table
         ref="multipleTable"
-        :data="tableData3"
+        :data="paginationData"
         tooltip-effect="dark"
         style="width: 100%"
         border
@@ -43,6 +43,7 @@
         </el-table-column>
         <el-table-column
           type="index"
+          label="序号"
           width="55">
         </el-table-column>
         <el-table-column
@@ -89,13 +90,12 @@
       <div class="block">
         <span class="demonstration"></span>
         <el-pagination
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :page-count='tableData3.length/pageSize'
+          :page-size='pageSize'
+          layout="total, prev, pager, next, jumper"
+          :total="tableData3.length"
         ></el-pagination>
       </div>
     </el-main>
@@ -124,7 +124,6 @@ export default {
       multipleSelection:{},
       multiple:{},
       ediore:{},
-      currentPage:4,
       messageBoxType: {
         add: '供应商管理>新增',
         del: '供应商管理>删除',
@@ -140,14 +139,13 @@ export default {
         //   address: '四川省成都市锦江区XXX',
         //   contact: '方先生',
         //   phone: '1820801777',
-        // },
-        // {
-        //   purchaser: '四川某某有限公司',
-        //   address: '四川省成都市锦江区XXX',
-        //   contact: '方先生',
-        //   phone: '1820801777',
         // }
       ],
+      
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5,
     }
   },
   components: {
@@ -162,11 +160,13 @@ export default {
       this.$http
         .post(`${config.httpBaseUrl}/man/get_supplier/`,{
           supplier:"",
-         address:"",
+          address:"",
         })
         .then(res => {
           if (res.status == 1) {
-            this.tableData3 = res.content;
+            this.tableData3 = res.content
+            // 刚打开页面时加载前pageSize项、且自动生成分页数量
+            this.getPaginationData(this.currentPage)
           } else {
             return;
           }
@@ -216,6 +216,17 @@ export default {
     // 导出表格
     handleOutput () {
       outputTable(tableData3)
+    },
+    
+    // 分页
+    getPaginationData (pageIndex) {
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.tableData3.slice(start, end)
+    },
+    // 跳转至对应分页
+    handleCurrentChange(val) {
+      this.getPaginationData(val)
     }
   }
 }

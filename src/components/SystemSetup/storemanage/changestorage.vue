@@ -9,7 +9,7 @@
       <label>仓库名称:</label>
       <el-input v-model="datalist.name"></el-input>
       <label>仓库货位:</label>
-      <el-input disabled="disabled" v-model="datalist.starge_rack"></el-input>
+      <el-input :disabled="editor" v-model="datalist.starge_rack"></el-input>
     </div>
   </message-box>
 </template>

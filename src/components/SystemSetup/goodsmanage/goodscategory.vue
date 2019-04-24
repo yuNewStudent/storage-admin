@@ -91,11 +91,15 @@ export default {
       }).then(({value}) => {
         if (!value) {return}
         // 向后台发送新增部门
-        this.$http.post(`${config.httpBaseUrl}/medicine/add_category/`, {
-          category: value
-        }).then(res => {
+        
+        const loginUser = JSON.parse(this.$cookie.get('user'))
+        const data = {
+          login_name: loginUser.name,
+          login_email: loginUser.email,
+          name: value
+        }
+        this.$http.post(`${config.httpBaseUrl}/medicine/add_category/`, data).then(res => {
           if(res.status==1){
-            console.log(121);
             this.$message({
               type: 'success',
               message: res.content
@@ -125,9 +129,13 @@ export default {
           // 删除本地部门
           // this.Accessgoods();
           // 向后台发送删除部门
-          this.$http.post(`${config.httpBaseUrl}/medicine/del_category/`, {
-            category:scope.row.category
-          }).then(res => {
+          const loginUser = JSON.parse(this.$cookie.get('user'))
+          const data = {
+            login_name: loginUser.name,
+            login_email: loginUser.email,
+            name:scope.row.category
+          }
+          this.$http.post(`${config.httpBaseUrl}/medicine/del_category/`, data).then(res => {
             this.tableData.splice(scope.$index, 1)
             if(res.status==1){
               this.Accessgoods();

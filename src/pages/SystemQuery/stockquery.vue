@@ -131,8 +131,8 @@ export default {
       },
       // 仓库
       allStorage: [
-        "仓库1",
-        "仓库2"
+        // "仓库1",
+        // "仓库2"
       ]
     }
   },
@@ -151,7 +151,6 @@ export default {
     // 筛选条件为空
     handleFilter () {
       const bol = this.filter.repertory || (this.filter.status + '').length || this.filter.goods_name
-      console.log(this.filter, bol)
       if (!bol) {
         this.inventorylist()
       } else {
@@ -159,11 +158,10 @@ export default {
           all: 0,
           repertory: this.filter.repertory,
           goods_name: this.filter.goods_name,
-          status: this.filter.status
+          status: this.filter.status ? this.filter.status : -1
         }
         console.log(data)
         this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, data).then(res=>{
-          console.log(res)
           if (res.status === 1) {
             this.tableData = res.content
           }

@@ -41,9 +41,13 @@ export default {
   methods: {
     goodsdelete(bol){
       if (bol) {
-        this.$http.post(`${config.httpBaseUrl}/medicine/del_medicine/`,{
-          name:this.delgood.row.name,
-        }).then(res=>{
+        const loginUser = JSON.parse(this.$cookie.get('user'))
+        const data = {
+          login_name: loginUser.name,
+          login_email: loginUser.email,
+          name: this.delgood.row.name
+        }
+        this.$http.post(`${config.httpBaseUrl}/medicine/del_medicine/`, data).then(res=>{
           if(res.status==1){
             this.$message({
               message:res.content,

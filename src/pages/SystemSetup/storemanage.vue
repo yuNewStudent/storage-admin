@@ -4,7 +4,7 @@
       <el-button type="primary" size='medium' @click="isShowAddStorage=!isShowAddStorage">新增</el-button>
     </p>
     <el-table
-      :data="tableData3"
+      :data="paginationData"
       border
       size='small'
       :span-method="arraySpanMethod">
@@ -39,13 +39,12 @@
      <div class="block">
         <span class="demonstration"></span>
         <el-pagination
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-sizes="[10, 20, 30, 40]"
-          :page-size="200"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="20"
+          :page-count='tableData3.length/pageSize'
+          :page-size='pageSize'
+          layout="total, prev, pager, next, jumper"
+          :total="tableData3.length"
         ></el-pagination>
       </div>
     <del-storage
@@ -70,13 +69,13 @@ import ChangeStorage from '@/components/SystemSetup/storemanage/changestorage.vu
 export default {
   data () {
   	return {
-      currentPage:4,
-      Deltor:{
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5,
 
-      },
-      editor:{
-
-      },
+      Deltor:{},
+      editor:{},
       tableData3: [
         // {
         //   id: '001',
@@ -118,9 +117,11 @@ export default {
         .post(`${config.httpBaseUrl}/storage/get_repertory/`)
         .then(res => {
           if (res.status == 1) {
-            this.tableData3 = res.content;
+            this.tableData3 = res.content
+            // 刚打开页面时加载前pageSize项、且自动生成分页数量
+            this.getPaginationData(this.currentPage)
           } else {
-            return;
+            return
           }
         });
     },
@@ -154,12 +155,16 @@ export default {
         }
       } 
     },
-     handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
+    // 分页
+    getPaginationData (pageIndex) {
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.tableData3.slice(start, end)
+    },
+    // 跳转至对应分页
+    handleCurrentChange(val) {
+      this.getPaginationData(val)
+    }
   }
 }
 </script>

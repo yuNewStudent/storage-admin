@@ -3,22 +3,34 @@
     <el-header>
       <div class="selectStore">
         仓库名称:
-        <el-select size='medium' v-model="filter.repertory" placeholder="请选择">
+        <el-select
+          size='medium'
+          v-model="filter.repertory"
+          placeholder="请选择"
+          clearable
+          @change='handleFilter'>
           <el-option
             v-for="item in allStorage"
-            :key="item"
-            :label="item"
-            :value="item">
+            :key="item.id"
+            :label="item.name"
+            :value="item.name">
           </el-option>
         </el-select>
       </div>
       <div class="search">
         商品名称:
-        <el-input v-model="filter.goods_name" placeholder="请输入商品名称"></el-input>
+        <el-input
+          v-model="filter.goods_name"
+          placeholder="请输入商品名称"
+          @change='handleFilter'></el-input>
       </div>
       <div class="search">
         商品状态:
-        <el-select v-model="filter.status" placeholder="请选择">
+        <el-select
+          v-model="filter.status"
+          clearable
+          placeholder="请选择"
+          @change='handleFilter'>
           <el-option
             v-for="item in ordersStatus"
             :key="item.id"
@@ -27,7 +39,7 @@
           </el-option>
         </el-select>
       </div>
-      <el-button type="primary" @click="handleFilter">搜索</el-button>
+      <!-- <el-button type="primary" @click="handleFilter">搜索</el-button> -->
       <el-button type="primary" size="medium" @click="buttonaudit" class="output">导出</el-button>
     </el-header>
     <el-main>
@@ -140,8 +152,8 @@ export default {
       },
       // 仓库
       allStorage: [
-        "仓库1",
-        "仓库2"
+        // "仓库1",
+        // "仓库2"
       ]
     };
   },
@@ -149,8 +161,7 @@ export default {
   created(){
     this.warehouse()
     // 获取所有仓库
-    this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res => {
-      console.log(res)
+    this.$http.post(`${config.httpBaseUrl}/storage/get_all_repertory/`).then(res => {
       if (res.status === 1) {
         this.allStorage = res.content
       }
@@ -164,8 +175,7 @@ export default {
         repertory: "",
         goods_name: '',
         status: -1
-      };
-      console.log(data)
+      }
       this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`,data).then(res => {
              if(res.status==1){
                this.tableData=res.content;
@@ -176,18 +186,24 @@ export default {
     },
     // 筛选
     handleFilter () {
-      const data = {
-        all: 0,
-        repertory: this.filter.repertory,
-        goods_name: this.filter.goods_name,
-        status: this.filter.status ? this.filter.status : -1
-      }
-      this.$http.post(`${config.httpBaseUrl}/medicine/query_inventory/`, data).then(res=>{
-        console.log(res)
-        if (res.status === 1) {
-          this.tableData = res.content
+      const bol = this.filter.repertory || this.filter.goods_name ||  (this.filter.status + '').length
+      console.log(bol, this.filter)
+      if (!bol) {
+        this.warehouse()
+      } else {
+        const data = {
+          all: 0,
+          repertory: this.filter.repertory,
+          goods_name: this.filter.goods_name,
+          status: this.filter.status ? this.filter.status : -1
         }
-      })
+        this.$http.post(`${config.httpBaseUrl}/medicine/query_inventory/`, data)
+        .then(res=>{
+          if (res.statuscode === 1) {
+            this.tableData = res.result
+          }
+        })
+      }
     },
     buttonModifythe: function() {
       if (this.show == false) {
