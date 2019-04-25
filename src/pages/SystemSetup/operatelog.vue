@@ -24,7 +24,7 @@
       </div>
     </el-header>
     <el-main>
-      <el-table :data="orders" size="small" highlight-current-row style="width: 100%">
+      <el-table :data="paginationData" size="small" highlight-current-row style="width: 100%">
         <el-table-column type="index" width="55"></el-table-column>
         <el-table-column label="操作人" prop="person"></el-table-column>
         <el-table-column label="操作模块" prop="module"></el-table-column>
@@ -32,13 +32,12 @@
         <el-table-column label="操作时间" prop="datetime"></el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+          :current-page="currentPage"
+          :page-count='orders.length/5'
+          :page-size='pageSize'
+          layout="total, prev, pager, next, jumper"
+          :total="orders.length"
       ></el-pagination>
     </el-main>
   </div>
@@ -49,7 +48,6 @@ import MessageBox from "@/components/MessageBox";
 export default {
   data() {
     return {
-      currentPage: 4,
       centerDialogVisible: false,
       dialogVisible: true,
       date: "",
@@ -57,6 +55,10 @@ export default {
       show:true,
       reason_return: "",
       isShowAddGoods: false,
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5,
       options: [
         // {
         //   value: "选项1",
@@ -143,7 +145,8 @@ export default {
         })
         .then(res => {
           if (res.status == 1) {
-            this.orders = res.content.OperationLog;;
+            this.orders = res.content.OperationLog;
+            this.getPaginationData(this.currentPage)
           } else {
             return;
           }
@@ -160,16 +163,25 @@ export default {
         .then(res => {
           if (res.status == 1) {
             this.orders = res.content.OperationLog;
+            this.getPaginationData(this.currentPage);
           } else {
             return;
           }
         });
     },
+     // 分页
+    getPaginationData (pageIndex) {
+      console.log(pageIndex);
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.orders.slice(start, end)
+    },
+     // 跳转至对应分页
+    handleCurrentChange(val) {
+      this.getPaginationData(val)
+    },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
     },
     //日期查询
     pickDate(date) {
