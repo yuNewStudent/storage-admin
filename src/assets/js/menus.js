@@ -22,8 +22,8 @@ const menus = [
       { label: '填写订货单', name: 'writeorder'},
       { label: '订货单审核', name: 'outorderaudit'},
       { label: '历史订货单', name: 'historyorder'},
-      { label: '采购入库', name: 'purchase'},
-      { label: '归还入库', name: 'reverseretirement'}
+      // { label: '采购入库', name: 'purchase'},
+      // { label: '归还入库', name: 'reverseretirement'}
     ]
   },
   {
@@ -34,7 +34,7 @@ const menus = [
       { label: '填写出库单', name: 'writewarehousereceipt'},
       { label: '出库单审核', name: 'exitorderaudit'},
       { label: '历史申请单', name: 'exithistory'},
-      { label: '商品出库', name: 'goodsout'}
+      // { label: '商品出库', name: 'goodsout'}
     ]
   },
   {
@@ -44,7 +44,7 @@ const menus = [
     group: [
       { label: '货物盘点', name: 'goodscounting'},
       { label: '货物移库', name: 'goodsmove'},
-      { label: '仓库环境', name: 'repertoryenvironment'}
+      // { label: '仓库环境', name: 'repertoryenvironment'}
     ]
   },
   {
@@ -53,7 +53,7 @@ const menus = [
     icon: '@/assets/icon/系统查询ic.png',
     group: [
       { label: '入库单查询', name: 'purchaseordersquery'},
-      { label: '归还入库查询', name: 'returnquery'},
+      // { label: '归还入库查询', name: 'returnquery'},
       { label: '出库单查询', name: 'outorderquery'},
       { label: '库存查询', name: 'stockquery'},
       { label: '移库查询', name: 'goodsmovequery'},

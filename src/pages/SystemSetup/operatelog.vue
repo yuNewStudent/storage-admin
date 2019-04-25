@@ -3,7 +3,7 @@
   <div class="opeatelog">
     <el-header>
      <div class="search">
-        申请人:
+        操作人:
         <el-input placeholder="请输入操作人" v-model="person"></el-input>
         <el-button type="primary" @click="querylist()">搜索</el-button>
       </div>

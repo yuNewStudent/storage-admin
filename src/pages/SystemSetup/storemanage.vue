@@ -27,9 +27,9 @@
         align='center'
         label="操作">
         <template slot-scope="scope">
-          <span @click="handleEditorStorage(scope.$index, scope.row)">
+          <!-- <span @click="handleEditorStorage(scope.$index, scope.row)">
             <img src="@/assets/icon/系统管理-商品管理/修改IC.png">
-          </span>
+          </span> -->
           <span @click="handleDelStorage(scope.$index, scope.row)">
             <img src="@/assets/icon/系统管理-人员管理/删除IC.png">
           </span>

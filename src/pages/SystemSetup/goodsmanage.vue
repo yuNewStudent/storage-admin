@@ -268,9 +268,9 @@ export default {
       this.isShowDelGoods = true;
       // this.allgoods=this.allgood;
     },
-    hideDelGoods(delgood,bol){
-       this.allgoods.splice(delgood.index,1);
+    hideDelGoods(bol){
        this.isShowDelGoods = false;
+        this.findinventory();
        
     },
     handleGoodsCategory () {

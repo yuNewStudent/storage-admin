@@ -14,7 +14,7 @@
       </div>
      <div class="search">
         商品名称:
-        <el-input placeholder="请输入操作人" v-model="goods_name"></el-input>
+        <el-input placeholder="请输入商品名称" v-model="goods_name"></el-input>
         <el-button type="primary" @click="querylist()">搜索</el-button>
       </div>
        <div class="selectStore">

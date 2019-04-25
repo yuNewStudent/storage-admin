@@ -86,7 +86,7 @@
             <el-button size='mini' @click='handleOrderInfo(scope.row)'>详情</el-button>
             <el-button
               size='mini'
-              :disabled='scope.row.status!==2'
+              :disabled='scope.row.status!=="未通过"'
               @click='handleOrderEditor(scope.row)'>修改</el-button>
           </template>
         </el-table-column>
@@ -235,7 +235,7 @@ export default {
           apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
           apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
         }
-        this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, data).then(res => {
+        this.$http.post(`${config.httpBaseUrl}/medicine/history_outStorageReceipt/`, data).then(res => {
           console.log(res)
           this.orders = res.content
           // 刚打开页面时加载前pageSize项、且自动生成分页数量

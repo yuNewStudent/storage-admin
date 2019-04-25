@@ -47,9 +47,9 @@
               <el-select v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
                 <el-option
                   v-for="item in goodses"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.label">
+                  :key="item.name"
+                  :label="item.name"
+                  :value="item.name">
                 </el-option>
               </el-select>
             </template>
@@ -139,18 +139,18 @@ export default {
       ],
       // 商品名称
       goodses: [
-        {
-          value: "选项1",
-          label: "四川省经济贸易公司"
-        },
-        {
-          value: "选项2",
-          label: "四川棋照科技有限公司"
-        },
-        {
-          value: "选项3",
-          label: "攀枝花攀钢公司"
-        }
+        // {
+        //   value: "选项1",
+        //   label: "四川省经济贸易公司"
+        // },
+        // {
+        //   value: "选项2",
+        //   label: "四川棋照科技有限公司"
+        // },
+        // {
+        //   value: "选项3",
+        //   label: "攀枝花攀钢公司"
+        // }
       ],
       writeDate: '',
       orders: [
@@ -206,7 +206,8 @@ export default {
           estimated_price: '',
           estimated_money: '',
           applicant: '',
-          purpose: ''
+          purpose: '',
+          apply_comment: ''
         }
       )
     },
@@ -221,7 +222,6 @@ export default {
         this.orders.map(item => {
           item.apply_datetime = apply_datetime
         })
-        console.log(this.orders)
         this.$http.post(`${config.httpBaseUrl}/medicine/add_inStorageReceipt/`,
           this.orders
         ).then(res=>{
@@ -231,6 +231,17 @@ export default {
               message: '请检查数据格式!'
             })
           } else {
+            this.orders = [{
+              supplier: '',
+              category: '',
+              apply_numberapply_number: '',
+              unit: '',
+              estimated_price: '',
+              estimated_money: '',
+              applicant: '',
+              purpose: '',
+              apply_comment: ''
+            }]
             this.$message({
               type: 'success',
               message: '提交成功!'
@@ -267,6 +278,12 @@ export default {
     this.$http.post(`${config.httpBaseUrl}/medicine/get_all_category/`).then(res => {
       if (res.status === 1) {
         this.categories = res.content
+      }
+    })
+    // 获取所有的商品名称
+    this.$http.post(`${config.httpBaseUrl}/medicine/get_all_goods/`).then(res => {
+      if (res.status === 1) {
+        this.goodses = res.content
       }
     })
     // 获取所有供应商

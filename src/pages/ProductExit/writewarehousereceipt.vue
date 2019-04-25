@@ -303,20 +303,20 @@ export default {
     addRow () {
       this.orders.push(
         {
-          "client": '',
-          "client_address": '',
-          "apply_datetime": '',
-          "goods_name": '',
-          "location": '',
-          "category": '',
-          "out_number": '', // 出库数量
-          "unit": '',
-          "price": '', // 价格
-          "money": '', // 总价
-          "client_contact": '',
-          "client_phone": '',
-          "purpose": '',
-          "apply_comment": ''
+          client: '',
+          client_address: '',
+          apply_datetime: '',
+          goods_name: '',
+          location: '',
+          category: '',
+          out_number: '', // 出库数量
+          unit: '',
+          price: '', // 价格
+          money: '', // 总价
+          client_contact: '',
+          client_phone: '',
+          purpose: '',
+          apply_comment: ''
         }
       )
     },
@@ -342,10 +342,30 @@ export default {
         // 信息不能为空
         // 向后台发送订单请求
         this.$http.post(`${config.httpBaseUrl}/medicine/add_outStorageReceipt/`, this.orders).then(res => {
-        })
-        this.$message({
-          type: 'success',
-          message: '提交成功!'
+          if (res.status == 1) {
+            this.$message({
+              type: 'success',
+              message: '提交成功!'
+            })
+            this.orders = [
+              {
+                client: '',
+                client_address: '',
+                apply_datetime: '',
+                goods_name: '',
+                location: '',
+                category: '',
+                out_number: '', // 出库数量
+                unit: '',
+                price: '', // 价格
+                money: '', // 总价
+                client_contact: '',
+                client_phone: '',
+                purpose: '',
+                apply_comment: ''
+              }
+            ]
+          }
         })
       }).catch(() => {
         this.$message({
