@@ -212,11 +212,11 @@ export default {
     // },
     //查询所有的商品
     medicine(){
-      let _this=this;
       this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
-         "repertory":"",
-         "goods":"",
+        repertory: "",
+        goods: "",
       }).then(res=>{
+        console.log(res)
         this.allgoods=res.content
         // 刚打开页面时加载前5项、且自动生成分页数量
         this.getPaginationData(this.currentPage)
@@ -227,8 +227,7 @@ export default {
       this.$http.post(`${config.httpBaseUrl}/storage/get_all_repertory/`).then(res=>{
           if(res.status==1){
             console.log(res)
-            this.options=res.content;
-            console.log(this.options)
+            this.options=res.content
           }else{
             return
           }
@@ -240,10 +239,11 @@ export default {
     findinventory(){
     this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
         repertory:this.value,
-        goods:this.goods,
+        goods:this.goods
       }).then(res=>{
         if(res.status==1){
           this.allgoods = res.content
+          
           // 刚打开页面时加载前5项、且自动生成分页数量
           this.getPaginationData(this.currentPage)
         }else{
@@ -300,6 +300,7 @@ export default {
     },
     // 跳转至对应分页
     handleCurrentChange(val) {
+      this.currentPage = val
       this.getPaginationData(val)
     }
   }

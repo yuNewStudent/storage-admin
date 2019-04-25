@@ -33,7 +33,7 @@
     </el-header>
     <el-main>
       <el-table
-        :data="orders"
+        :data="paginationData"
         border
         size='small'
         style="width: 100%">
@@ -70,6 +70,18 @@
           </template>
         </el-table-column>
       </el-table>
+      
+      <div class="block">
+        <span class="demonstration"></span>
+        <el-pagination
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-count='orders.length/pageSize'
+          :page-size='pageSize'
+          layout="total, prev, pager, next, jumper"
+          :total="orders.length"
+        ></el-pagination>
+      </div>
       <h5>商品详情：</h5>
       <el-table size='mini' :data="tableData" @selection-change="handleSelectionChange" border style="width: 100%" :cell-style='warningStyle'>
         <el-table-column type='selection' >
@@ -125,18 +137,6 @@
          </template>
         </el-table-column>
       </el-table>
-      <div class="block">
-        <span class="demonstration"></span>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
-        ></el-pagination>
-      </div>
     </el-main>
   </div>
 </template>
@@ -146,7 +146,6 @@ export default {
     return {
       show: false,
       input10: "",
-      currentPage:4,
       status:'',
       goods_name:'',
       orders: [
@@ -163,61 +162,6 @@ export default {
   //       "comment": "商品备注",
   //       "status": "正常"
   //   },
-	// {
-  //       "id": "000002",
-  //       "category":"商品类别",
-  //       "name": "商品名称",
-  //       "unit": "单位",
-  //       "location": "所在位置",
-  //       "stock_quantity": 20, 
-  //       "waring_quantity_min": 10,
-  //       "waring_quantity_max": 100,
-  //       "estimated_price": 2.3, 
-  //       "comment": "商品备注",
-  //       "status": "已过期",
-  //   },
-  //   	{
-  //       "id": "000002",
-  //       "category":"商品类别",
-  //       "name": "商品名称",
-  //       "unit": "单位",
-  //       "location": "所在位置",
-  //       "stock_quantity": 20, 
-  //       "waring_quantity_min": 10,
-  //       "waring_quantity_max": 100,
-  //       "estimated_price": 2.3, 
-  //       "comment": "商品备注",
-  //       "status": "预警装填",
-  //   },
-    
-        // {
-        //   goodsCategory: '医用物资',
-        //   goodsName: '阿莫西林',
-        //   goodsCode: '123',
-        //   goodsModel: '1/23/4',
-        //   goodsUnit: '箱',
-        //   goodsStorage: 'a区101',
-        //   currentNum: 12,
-        //   goodsMinNum: 20,
-        //   goodsMaxNum: 100,
-        //   price: 23,
-        //   remark: '',
-        //   // status: '',
-        //   // orderCode: '',
-        //   // writeDate: '',
-        //   // operatorUser: '',
-        //   // purpose: '',
-        // }
-        // {
-        //   date: "哈哈哈",
-        //   name: "王小虎",
-        //   address: "1518 弄"
-        // },
-        // {
-        //   date: "话啊哈哈哈",
-        //   name: "王小虎",
-        //   address: "1517 弄"
-        // }
       ],
       tableData:[
     //     {
@@ -278,7 +222,11 @@ export default {
         // }
       ],
       value: "",
-      value1: ""
+      value1: "",
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5
     };
   },
   components: {},
@@ -333,7 +281,9 @@ export default {
           status:this.status,
         }).then(res=>{
           if(res.status==1){
-            this.orders=res.content;
+            this.orders=res.content
+            // 刚打开页面时加载前pageSize项、且自动生成分页数量
+            this.getPaginationData(1)
           }else{
             return
           }
@@ -349,7 +299,9 @@ export default {
         }).then(res=>{
           console.log(res.status)
           if(res.status==1){
-            this.orders=res.content;
+            this.orders=res.content
+            // 刚打开页面时加载前pageSize项、且自动生成分页数量
+           this.getPaginationData(1)
           }else{
             return
           }
@@ -382,22 +334,17 @@ export default {
     handleSelectionChange(val){
       this.multipleSelection = val;
     },
-    buttonModifythe: function() {
-      if (this.show == false) {
-        this.show = true;
-      } else {
-        this.show = false;
-      }
+    // 分页
+    getPaginationData (pageIndex) {
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.orders.slice(start, end)
     },
-    onSubmit() {
-      console.log("submit!");
-    },
+    // 跳转至对应分页
     handleCurrentChange(val) {
-    console.log(`当前页: ${val}`);
-  },
-    handleSizeChange(val) {
-    console.log(`每页 ${val} 条`);
-  },
+      this.currentPage = val
+      this.getPaginationData(val)
+    },
     buttonsave: function() {},
     buttonaudit: function() {},
     warningStyle (row, column, rowIndex, columnIndex) {
@@ -433,9 +380,8 @@ export default {
 .el-main {
   margin: 0 20px;
   padding: 0;
-  
     h5 {
-      margin: 30px 0 10px;
+      margin: 70px 0 10px;
     }
 }
 </style>

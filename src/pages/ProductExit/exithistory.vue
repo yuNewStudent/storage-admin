@@ -53,7 +53,7 @@
         <el-button type='primary' size='small' @click='handleOutput'>导出</el-button>
       </el-header>
       <el-table
-        :data="orders"
+        :data="paginationData"
         border
         size='small'
         style="width: 100%">
@@ -92,12 +92,11 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[5, 10, 15, 20]"
-        :page-size="5"
-        layout="total, sizes, prev, pager, next, jumper"
+        :page-count='orders.length/pageSize'
+        :page-size='pageSize'
+        layout="total, prev, pager, next, jumper"
         :total="orders.length"
       ></el-pagination>
 
@@ -198,7 +197,11 @@ export default {
         //   apply_datetime: '2018-4-5',
         //   reason_return: '回退理由'
         // }
-      ]
+      ],
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5
     }
   },
   methods: {
@@ -208,6 +211,8 @@ export default {
         all: 1
       }).then(res => {
         this.orders = res.content
+        // 刚打开页面时加载前pageSize项、且自动生成分页数量
+        this.getPaginationData(this.currentPage)
       })
     },
     // 获取订单详情
@@ -234,18 +239,27 @@ export default {
         this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, data).then(res => {
           console.log(res)
           this.orders = res.content
+          // 刚打开页面时加载前pageSize项、且自动生成分页数量
+          this.getPaginationData(1)
         })
       }
     },
     handleOutput () {
       // outputTable (this.ordersTables)
     },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+
+    // 分页
+    getPaginationData (pageIndex) {
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.orders.slice(start, end)
     },
+    // 跳转至对应分页
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.currentPage = val
+      this.getPaginationData(val)
     },
+
     handleOrderEditor (row) {
       console.log(row.receipt_no)
       this.$router.push({ 

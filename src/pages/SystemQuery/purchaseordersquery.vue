@@ -36,7 +36,7 @@
     </el-header>
     <div class="purchaseordersquery_list">
       <el-table
-        :data="purchaseOrders"
+        :data="paginationData"
         border
         size='small'
         style="width: 100%">
@@ -72,13 +72,12 @@
        <div class="block">
         <span class="demonstration"></span>
         <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-count='purchaseOrders.length/pageSize'
+        :page-size='pageSize'
+        layout="total, prev, pager, next, jumper"
+        :total="purchaseOrders.length"
         ></el-pagination>
       </div>
     </div>
@@ -88,7 +87,10 @@
 export default {
   data() {
     return {
-      currentPage:4,
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5,
       filter: {
         receipt_no: '',
         applicant: '',
@@ -129,10 +131,12 @@ export default {
      getOrders(){
       this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, {
         all: 1
-      }).then(res=>{
-        console.log(res)      
+      }).then(res=>{     
         if (res.status === 1) {
           this.purchaseOrders = res.content
+          
+          // 刚打开页面时加载前pageSize项、且自动生成分页数量
+          this.getPaginationData(1)
         }
       })
     },
@@ -152,17 +156,23 @@ export default {
         this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, data).then(res=>{
           if (res.status === 1) {
             this.purchaseOrders = res.content
+            // 刚打开页面时加载前pageSize项、且自动生成分页数量
+            this.getPaginationData(1)
           }
         })
       }
     },
+    // 分页
+    getPaginationData (pageIndex) {
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.purchaseOrders.slice(start, end)
+    },
+    // 跳转至对应分页
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.currentPage = val
+      this.getPaginationData(val)
     },
-      handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    buttonsave: function() {},
     buttonaudit: function() {}
   },
   created () {

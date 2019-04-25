@@ -3,10 +3,16 @@
     <el-header>
       <div class="selectStore">
         申请人:
-        <el-select size='medium' v-model="name" @change="applicantbutton" placeholder="请输入经办人">
+        <el-select
+          filterable
+          clearable
+          size='medium'
+          v-model="filter.applicant"
+          @change="handleFilter"
+          placeholder="请输入经办人">
           <el-option
-            v-for="item in options"
-            :key="item.name"
+            v-for="(item, index) in applicants"
+            :key="index"
             :label="item.name"
             :value="item.name"
           ></el-option>
@@ -14,7 +20,13 @@
       </div>
       <div class="selectStore">
         订单状态:
-        <el-select size='medium' v-model="value" @change="statebutton" placeholder="全部">
+        <el-select
+          filterable
+          clearable
+          size='medium'
+          v-model="filter.status"
+          @change="handleFilter"
+          placeholder="全部">
           <el-option
             v-for="item in ordersStatus"
             :key="item.label"
@@ -30,12 +42,12 @@
           type="date">
         </el-date-picker> -->
         <el-date-picker
-          v-model="date"
+          v-model="filter.apply_datetime"
           type="daterange"
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          @change='pickDate'>
+          @change='handleFilter'>
         </el-date-picker>
       </div>
       <div class="buttons">
@@ -44,7 +56,7 @@
     </el-header>
     <el-main>
       <el-table
-        :data="orders"
+        :data="paginationData"
         border
         size='small'
         highlight-current-row
@@ -69,7 +81,7 @@
         </el-table-column>
         <el-table-column label="操作" >
           <template slot-scope="scope">
-               <el-button @click="outordetails(scope.$index, scope.row)">详情</el-button>
+               <el-button size='mini' type='primary' @click="outordetails(scope.$index, scope.row)">详情</el-button>
           </template>
         </el-table-column>
         <!-- <el-table-column label="单位" prop='goodsCategory'>
@@ -87,13 +99,12 @@
          -->
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :page-count='orders.length/pageSize'
+        :page-size='pageSize'
+        layout="total, prev, pager, next, jumper"
+        :total="orders.length"
       ></el-pagination>
       
       <h5>订单详情：</h5>
@@ -140,32 +151,27 @@
 export default {
   data () {
     return {
-      currentPage:4,
       date: '',
       datalist:[],
       reason_return:"",
-      options: [
+      applicants: [
         // {
         //   value: "选项1",
         //   label: "四川省经济贸易公司"
-        // },
-        // {
-        //   value: "选项2",
-        //   label: "四川棋照科技有限公司"
-        // },
-        // {
-        //   value: "选项3",
-        //   label: "攀枝花攀钢公司"
-        // },
-        // {
-        //   value: "选项4",
-        //   label: "阿里巴巴有限公司"
-        // },
-        // {
-        //   value: "选项5",
-        //   label: "北京经贸技校公司"
         // }
       ],
+
+      filter: {
+        applicant: '',
+        status: '',
+        apply_datetime: ''
+      },
+
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5,
+
       receipt_no:"",
       value:"",
       name:"",
@@ -183,11 +189,11 @@ export default {
       ordersStatus: [
         {
           label: '已审核',
-          status:1,
+          status:0,
         },
         {
           label: '已入库',
-          status:3,
+          status:1,
         },
         {
           label: '未通过',
@@ -197,54 +203,55 @@ export default {
     }
   },
   mounted(){
-    this.allaudit();
-    this.applicantlist();
+    this.allaudit()
+    this.applicantlist()
   },
   methods:{
     //入库单审核人
-      applicantlist(){
-          this.$http.post(`${config.httpBaseUrl}/man/get_all_employee/`).then(res=>{
-              console.log(res)
-            if(res.status==1){
-              this.options=res.content;
-            }else{
-              return
-            }
-        }) 
-      },
-      //申请人排序
-      applicantbutton(){
-        this.querylist();
-      },
-    //排序状态
-    statebutton(){
-      this.querylist();
+    applicantlist(){
+      this.$http.post(`${config.httpBaseUrl}/man/get_all_employee/`).then(res=>{
+          console.log(res)
+        if(res.status==1){
+          this.applicants = res.content
+        }else{
+          return
+        }
+      }) 
     },
     //排序查询
-      querylist(){
-         var user=JSON.parse(this.$cookie.get('user')||'{}');
-         this.$http.post(`${config.httpBaseUrl}/medicine/get_inStorageReceipt/`,{
-            all: 0,
-            applicant:user.name,
-            status:1,
-            apply_datetime_start:this.starttime,
-            apply_datetime_end:this.endtime
-
-          }).then(res=>{
-            if(res.status==1){
-              this.orders=res.content;
-            }else{
-              return
-            }
+    handleFilter () {
+      const bol = this.filter.applicant || (this.filter.status + '').length || this.filter.apply_datetime
+      if (!bol) {
+        this.allaudit()
+      } else {
+        const data = {
+          all: 0,
+          applicant: this.filter.applicant,
+          status: this.filter.status === '' ? -1 : this.filter.status,
+          apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
+          apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
+        }
+        this.$http.post(`${config.httpBaseUrl}/medicine/get_inStorageReceipt/`, data).then(res=>{
+          if(res.status==1){
+            console.log(res)
+            this.orders = res.content
+            // 刚打开页面时加载前pageSize项、且自动生成分页数量
+            this.getPaginationData(1)
+          }else{
+            return
+          }
         })
-      },
+      }
+    },
     //查询所有的订单
       allaudit(){
         this.$http.post(`${config.httpBaseUrl}/medicine/get_inStorageReceipt/`,{
             all: 1,
           }).then(res=>{
             if(res.status==1){
-              this.orders=res.content;
+              this.orders=res.content
+              // 刚打开页面时加载前pageSize项、且自动生成分页数量
+              this.getPaginationData(this.currentPage)
             }else{
               return
             }
@@ -323,25 +330,19 @@ export default {
            }
         })
       },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
-      //日期查询
-      pickDate (date) {
-        let time=date;
-        let starttime=this.moment(time[0]).format("YYYY-MM-DD");
-        let endtime=this.moment(time[1]).format("YYYY-MM-DD");
-        this.starttime=starttime;
-        this.endtime=endtime;
-       this.querylist();
-  
-      },
       handleOutput(){
         
-      }
+      },
+    // 分页
+    getPaginationData (pageIndex) {
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.orders.slice(start, end)
+    },
+    // 跳转至对应分页
+    handleCurrentChange(val) {
+      this.getPaginationData(val)
+    }
   }
 }
 </script>

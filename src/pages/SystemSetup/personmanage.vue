@@ -2,10 +2,8 @@
   <div class="PersonManage">
   	<div class="header">
       <div class="search">
-        <input type="text" placeholder="请输入姓名" v-model='userQuery'>
-        <span
-          class="serch_btn"
-          @click='handleFilterUsers'>
+        <input type="text" @change='handleFilterUsers' placeholder="请输入姓名" v-model='userQuery'>
+        <span class="serch_btn">
           <img src="@/assets/icon/搜索ic.png" alt="">
         </span>
       </div>
@@ -169,8 +167,18 @@ export default {
   methods: {
     // 筛选
     handleFilterUsers () {
-      this.users = this.users.filter(item => {
-        return item.name.indexOf(this.userQuery) > -1
+      console.log(this.userQuery)
+      if (!this.userQuery) {
+        return this.getUsers()
+      }
+      // 获取人员列表
+      this.$http.post(`${config.httpBaseUrl}/man/query_employee/`, {
+        name: this.userQuery
+      }).then(res => {
+        console.log(res)
+        this.users = res.content
+        // 刚打开页面时加载前pageSize项、且自动生成分页数量
+        this.getPaginationData(1)
       })
     },
     // 新增人员
@@ -251,16 +259,20 @@ export default {
     },
     // 跳转至对应分页
     handleCurrentChange(val) {
+      this.currentPage = val
       this.getPaginationData(val)
+    },
+    getUsers () {
+      this.$http.post(`${config.httpBaseUrl}/man/get_employee/`).then(res => {
+        this.users = res.content
+        // 刚打开页面时加载前pageSize项、且自动生成分页数量
+        this.getPaginationData(this.currentPage)
+      })
     }
   },
   created () {
     // 获取人员列表
-    this.$http.post(`${config.httpBaseUrl}/man/get_employee/`).then(res => {
-      this.users = res.content
-      // 刚打开页面时加载前pageSize项、且自动生成分页数量
-      this.getPaginationData(this.currentPage)
-    })
+    this.getUsers()
   }
 }
 </script>
