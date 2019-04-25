@@ -123,7 +123,7 @@ import SettingPermission from '@/components/SystemSetup/personmanage/setting-per
 export default {
   data () {
   	return {
-      currentPage:1,
+      // currentPage:1,
       users: [
         // {
         //   name: '苏轼',
