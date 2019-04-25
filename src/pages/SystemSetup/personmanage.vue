@@ -121,7 +121,6 @@ import SettingPermission from '@/components/SystemSetup/personmanage/setting-per
 export default {
   data () {
   	return {
-      // currentPage:1,
       users: [
         // {
         //   name: '苏轼',
@@ -167,7 +166,6 @@ export default {
   methods: {
     // 筛选
     handleFilterUsers () {
-      console.log(this.userQuery)
       if (!this.userQuery) {
         return this.getUsers()
       }
@@ -175,10 +173,9 @@ export default {
       this.$http.post(`${config.httpBaseUrl}/man/query_employee/`, {
         name: this.userQuery
       }).then(res => {
-        console.log(res)
         this.users = res.content
         // 刚打开页面时加载前pageSize项、且自动生成分页数量
-        this.getPaginationData(1)
+        this.getPaginationData(this.currentPage)
       })
     },
     // 新增人员
@@ -191,6 +188,8 @@ export default {
       console.log(userInfo)
       if (userInfo) {
         this.users.push(userInfo)
+        // 刚打开页面时加载前pageSize项、且自动生成分页数量
+        this.getPaginationData(1)
       }
     },
 
@@ -205,19 +204,24 @@ export default {
       this.isShowDelUser= false
       // 确定删除
       if (bol) {
-        // 本地删除
-        this.users.splice(this.selectUser.index, 1)
         // 服务器删除
-        const loginUser = JSON.parse(this.$cookie.get('user'))
-        const data = { login_name: loginUser.name, login_email:loginUser.email, ...this.userInfo}
-        console.log(data)
+        const data = {
+          name: this.selectUser.userInfo.name,
+          email: this.selectUser.userInfo.email
+        }
         this.$http.post(`${config.httpBaseUrl}/man/del_employee/`, data).then(res => {
-          if (res.status === 1) {
+          
+        // console.log(res)  
+          // if (res.status === 1) {
+            // 本地删除
+            this.users.splice(this.selectUser.index, 1)
+            // 刚打开页面时加载前pageSize项、且自动生成分页数量
+            this.getPaginationData(1)
             this.$message({
               message: '人员删除成功',
               type: 'success'
             })
-          }
+          // }
         })
       }
     },

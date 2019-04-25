@@ -71,8 +71,6 @@
         </el-table-column>
         <el-table-column label="订单号" prop='receipt_no'>
         </el-table-column>
-        <el-table-column label="供应商" prop='supplier'>
-        </el-table-column>
         <el-table-column label="申请人" prop='applicant'>
         </el-table-column>
         <el-table-column label="申请时间" prop='apply_datetime'>
@@ -120,6 +118,8 @@
         <el-table-column label="商品类型" prop='category'>
         </el-table-column>
         <el-table-column label='商品名称' prop='goods_name'>
+        </el-table-column>
+        <el-table-column label="供应商" prop='supplier'>
         </el-table-column>
         <el-table-column label="单位" prop='unit'>
         </el-table-column>

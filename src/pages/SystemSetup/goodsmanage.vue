@@ -203,13 +203,6 @@ export default {
    this.warehouse();
   },
   methods: {
-    //  Accessgoods(){
-    //   console.log(1221);
-    //    this.$http.post(`${config.httpBaseUrl}/medicine/get_category/`, {
-    //     }).then(res => {
-    //         this.tableData4=res.content;
-    //     })
-    // },
     //查询所有的商品
     medicine(){
       this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
@@ -217,7 +210,7 @@ export default {
         goods: "",
       }).then(res=>{
         console.log(res)
-        this.allgoods=res.content
+        this.allgoods = res.content
         // 刚打开页面时加载前5项、且自动生成分页数量
         this.getPaginationData(this.currentPage)
       })
@@ -238,8 +231,8 @@ export default {
     },
     findinventory(){
     this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
-        repertory:this.value,
-        goods:this.goods
+        repertory: this.value,
+        goods: this.goods
       }).then(res=>{
         if(res.status==1){
           this.allgoods = res.content
@@ -284,9 +277,7 @@ export default {
       this.isShowGoodsCategory = true
     },
     hideGoodsCategoryadd(allgood,bol){
-      console.log(allgood)
       this.findinventory()
-      this.isShowAddGoods = false
     },
     //导出表格
     handleOutput () {

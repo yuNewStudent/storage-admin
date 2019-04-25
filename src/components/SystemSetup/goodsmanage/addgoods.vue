@@ -169,11 +169,12 @@ export default {
       })
     },
     add(blo){
-       if (blo) {
-         console.log(this.goodsInfo)
+      if (blo) {
         // 信息不能为空
         for (var k in this.goodsInfo) {
           if (!this.goodsInfo[k]) {
+            
+            console.log(this.goodsInfo[k])
             this.$message({
               message: '信息不能为空',
               type: 'warning'
@@ -181,42 +182,22 @@ export default {
             return
           }
         }
-        const loginUser = JSON.parse(this.$cookie.get('user'))
         const data = {
           // login_name: loginUser.name,
           // login_email: loginUser.email,
           ...this.goodsInfo
         }
         this.$http.post(`${config.httpBaseUrl}/medicine/add_medicine/`, data).then(res=>{
-          if(res.status==1){
-              // this.$http.post(`${config.httpBaseUrl}/medicine/query_medicine/`,{
-              //    repertory:"",
-              //    goods:""
-              // }).then(res=>{
-              if(res.status==1){
-                this.$message({
-                  message: res.content,
-                  type: 'success'
-                })
-                // this.allgood=res.content;
-                this.$emit('hideGoodsCategoryadd', this.goodsInfo)
-              }else{
+          console.log(res)
+          if (res.status==1) {
+            this.$emit('hideGoodsCategoryadd')
+          }else{
                 return
               }
-            
             // })
-          }else{
-            this.$message({
-              message: '信息不能为空',
-              type: 'warning'
-            })
-            return
-          }
-        
-        })
-        this.$emit('hideGoodsCategoryadd', this.allgood)
+          })
       } else {
-        this.$emit("hideGoodsCategoryadd",)
+        this.$emit("hideGoodsCategoryadd")
       }
     },
     created () {

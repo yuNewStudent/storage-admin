@@ -23,17 +23,17 @@ export default {
     delPerson (bol) {
       this.$emit("hideDelPerson", bol)
       // 服务器删除
-      this.$http.post(`${config.httpBaseUrl}/man/del_employee/`, {
-        name: this.selectUser.userInfo.name,
-        email: this.selectUser.userInfo.email
-      }).then(res => {
-        if (res.content === "员工删除成功") {
-          this.$message({
-            message: '员工删除成功',
-            type: 'success'
-          })
-        }
-      })
+      // this.$http.post(`${config.httpBaseUrl}/man/del_employee/`, {
+      //   name: this.selectUser.userInfo.name,
+      //   email: this.selectUser.userInfo.email
+      // }).then(res => {
+      //   if (res.content === "员工删除成功") {
+      //     this.$message({
+      //       message: '员工删除成功',
+      //       type: 'success'
+      //     })
+      //   }
+      // })
     }
   },
   components: {

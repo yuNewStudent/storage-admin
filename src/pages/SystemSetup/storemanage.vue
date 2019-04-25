@@ -66,6 +66,7 @@
 <script>
 import DelStorage from '@/components/SystemSetup/storemanage/delstorage.vue'
 import ChangeStorage from '@/components/SystemSetup/storemanage/changestorage.vue'
+import { setTimeout } from 'timers';
 export default {
   data () {
   	return {
@@ -81,17 +82,7 @@ export default {
         //   id: '001',
         //   name: 'A区',
         //   starge_rack: 'A区1-1'
-        // },
-        // {
-        //   id: '002',
-        //   name: 'A区',
-        //   starge_rack: 'A区1-1'
-        // },
-        // {
-        //   id: '003',
-        //   name: 'A区',
-        //   starge_rack: 'A区1-1'
-        // },
+        // }
       ],
       messageBoxType: {
         add: '仓库管理>新增',
@@ -113,36 +104,39 @@ export default {
   methods: {
     //仓库管理
     Warehouse(){
-    this.$http
+      this.$http
         .post(`${config.httpBaseUrl}/storage/get_repertory/`)
         .then(res => {
           if (res.status == 1) {
             this.tableData3 = res.content
             // 刚打开页面时加载前pageSize项、且自动生成分页数量
-            this.getPaginationData(this.currentPage)
+            this.getPaginationData(1)
           } else {
             return
           }
-        });
+      })
     },
     delStorage () {
-      this.isShowDelStorage = false;
-      this.Warehouse();
+      this.isShowDelStorage = false
+      this.Warehouse()
     },
     handleDelStorage (index,row) {
-      this.Deltor=row;
+      this.Deltor=row
       this.isShowDelStorage = true
     },
     AddStorage () {
-      this.isShowAddStorage = false;
-      this.Warehouse();
+      this.isShowAddStorage = false
+      setTimeout(() => {
+        this.Warehouse()
+      }, 500)
     },
     handleEditorStorage (index,row) {
-      this.editor=row;
+      this.editor=row
       this.isShowEditorStorage = true
     },
     editorStorage () {
       this.isShowEditorStorage = false
+      this.Warehouse()
     },
     // 列合并
     arraySpanMethod ({ row, column, rowIndex, columnIndex }) {

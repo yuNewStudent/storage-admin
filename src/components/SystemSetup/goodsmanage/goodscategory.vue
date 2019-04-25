@@ -47,18 +47,10 @@ export default {
   data () {
     return {
       tableData: [
-      //   {
-      //     id: '001',
-      //     name: '个人防护'
-      //   },
-      //   {
-      //     id: '002',
-      //     name: '医用器材'
-      //   },
-      //   {
-      //     id: '003',
-      //     name: '医疗急救设备'
-      //   }
+        {
+          id: '001',
+          name: '个人防护'
+        }
       ],
       btns: {
         comfirm: '确定'
