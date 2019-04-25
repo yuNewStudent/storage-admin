@@ -51,7 +51,7 @@
         <el-button type='primary' size='small' @click='handleOutput'>导出</el-button>
       </el-header>
       <el-table
-        :data="orders"
+        :data="paginationData"
         border
         size='small'
         style="width: 100%">
@@ -89,13 +89,12 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :page-count='orders.length/pageSize'
+        :page-size='pageSize'
+        layout="total, prev, pager, next, jumper"
+        :total="orders.length"
       ></el-pagination>
 
       <h5>订单详情：</h5>
@@ -142,7 +141,6 @@ export default {
        status: '',
        apply_datetime: ''
       },
-      currentPage:4,
       status: [
         {
           label: '已审核',
@@ -186,7 +184,11 @@ export default {
         //   "apply_datetime": "2019-4-16",
         //   "status": "待审核"
         // }
-      ]
+      ],
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5
     }
   },
   computed: {
@@ -197,13 +199,18 @@ export default {
       outputTable (this.orders)
     },
 
-    // 翻页
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    // 分页
+    getPaginationData (pageIndex) {
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.orders.slice(start, end)
     },
+    // 跳转至对应分页
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.currentPage = val
+      this.getPaginationData(val)
     },
+
     // 获取订单详情
     handleOrderInfo (row) {
       console.log(row.receipt_no)
@@ -220,6 +227,8 @@ export default {
       }).then(res => {
         if (res.status === 1) {
           this.orders = res.content
+          // 刚打开页面时加载前pageSize项、且自动生成分页数量
+          this.getPaginationData(this.currentPage)
         }
       })
     },
@@ -247,8 +256,9 @@ export default {
           apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
         }
         this.$http.post(`${config.httpBaseUrl}/medicine/history_inStorageReceipt/`, data).then(res => {
-          console.log(res)
           this.orders = res.content
+          // 刚打开页面时加载前pageSize项、且自动生成分页数量
+          this.getPaginationData(1)
         })
       }
     }

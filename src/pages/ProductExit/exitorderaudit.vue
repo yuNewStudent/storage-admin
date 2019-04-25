@@ -53,7 +53,7 @@
     </el-header>
     <el-main>
       <el-table
-        :data="orders"
+        :data="paginationData"
         type="expand"
         border
         size='small'
@@ -85,13 +85,12 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :page-count='orders.length/pageSize'
+        :page-size='pageSize'
+        layout="total, prev, pager, next, jumper"
+        :total="orders.length"
       ></el-pagination>
 
       <h5>订单详情：</h5>
@@ -148,7 +147,6 @@
 export default {
   data() {
     return {
-      currentPage:4,
       filter: {
         applicant: '',
         ordersStatu: '',
@@ -177,7 +175,12 @@ export default {
         // { purchaser: "申请人2" }
       ],
       multipleSelection:[],
-      currentreceipt_no: ''
+      currentreceipt_no: '',
+      
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5
     }
   },
   mounted(){
@@ -208,6 +211,9 @@ export default {
           apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
         }).then(res => {
           this.orders = res.content
+          
+          // 刚打开页面时加载前pageSize项、且自动生成分页数量
+          this.getPaginationData(1)
         })
       }
      },
@@ -238,8 +244,9 @@ export default {
         all: 1,
       }).then(res=>{
         if (res.status === 1) {
-          console.log(res)
           this.orders= res.content
+          // 刚打开页面时加载前pageSize项、且自动生成分页数量
+          this.getPaginationData(this.currentPage)
         }
       })
     },
@@ -254,7 +261,6 @@ export default {
           this.orderInfo.map(item => {
             item.reason_return = ''
           })
-          console.log(this.orderInfo)
         }
       })
     },
@@ -284,12 +290,17 @@ export default {
     handleOutput(){
       console.log(121);
     },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    // 分页
+    getPaginationData (pageIndex) {
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.orders.slice(start, end)
     },
+    // 跳转至对应分页
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-    },
+      this.currentPage = val
+      this.getPaginationData(val)
+    }
   }
 };
 </script>

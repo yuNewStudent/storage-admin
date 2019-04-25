@@ -45,7 +45,7 @@
       </div>
     </el-header>
     <div class="stockquery_list">
-      <el-table size="mini" :data="tableData" border style="width: 100%">
+      <el-table size="mini" :data="paginationData" border style="width: 100%">
         <el-table-column type="selection"></el-table-column>
         <el-table-column label='序号' type="index"></el-table-column>
         <el-table-column prop="barcode" label="条形码"></el-table-column>
@@ -77,13 +77,12 @@
     <div class="block">
       <span class="demonstration"></span>
       <el-pagination
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :page-count='orders.length/pageSize'
+        :page-size='pageSize'
+        layout="total, prev, pager, next, jumper"
+        :total="orders.length"
       ></el-pagination>
     </div>
   </div>
@@ -92,7 +91,6 @@
 export default {
   data() {
     return {
-      currentPage: 4,
       ordersStatus: [
         {
           label: "正常",
@@ -107,7 +105,7 @@ export default {
           id: 2
         }
       ],
-      tableData: [
+      orders: [
         // {
         //   category: "医药",
         //   commodity: "阿莫西林",
@@ -133,7 +131,11 @@ export default {
       allStorage: [
         // "仓库1",
         // "仓库2"
-      ]
+      ],
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5
     }
   },
   components: {},
@@ -163,7 +165,9 @@ export default {
         console.log(data)
         this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, data).then(res=>{
           if (res.status === 1) {
-            this.tableData = res.content
+            this.orders = res.content
+            // 刚打开页面时加载前pageSize项、且自动生成分页数量
+            this.getPaginationData(1)
           }
         })
       }
@@ -171,16 +175,16 @@ export default {
     // 获取库存商品
     inventorylist() {
       const data = {
-        all: 1,
-        goods_name: "",
-        status: -1,
-        repertory:""
-      };
+        all: 1
+      }
       this.$http
         .post(`${config.httpBaseUrl}/medicine/query_stock/`, data)
         .then(res => {
           if (res.status == 1) {
-            this.tableData = res.content;
+            this.orders = res.content
+            
+          // 刚打开页面时加载前pageSize项、且自动生成分页数量
+          this.getPaginationData(this.currentPage)
           } else {
             return;
           }
@@ -188,12 +192,17 @@ export default {
     },
     // 导出
     handleOutput: function() {},
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    // 分页
+    getPaginationData (pageIndex) {
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.orders.slice(start, end)
     },
+    // 跳转至对应分页
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-    }
+      this.currentPage = val
+      this.getPaginationData(val)
+    },
   }
 };
 </script>

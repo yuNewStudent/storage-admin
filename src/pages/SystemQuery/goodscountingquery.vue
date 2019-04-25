@@ -43,7 +43,7 @@
       <el-button type="primary" size="medium" @click="buttonaudit" class="output">导出</el-button>
     </el-header>
     <el-main>
-      <el-table size='mini' :data="tableData" border style="width: 100%" :cell-style='warningStyle'>
+      <el-table size='mini' :data="paginationData" border style="width: 100%" :cell-style='warningStyle'>
         <el-table-column type='selection'>
         </el-table-column>
         <el-table-column prop='barcode' label="条形码">
@@ -84,13 +84,12 @@
       <div class="block">
         <span class="demonstration"></span>
         <el-pagination
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :page-count='orders.length/pageSize'
+          :page-size='pageSize'
+          layout="total, prev, pager, next, jumper"
+          :total="orders.length"
         ></el-pagination>
       </div>
     </el-main>
@@ -100,8 +99,7 @@
 export default {
   data() {
     return {
-      currentPage:4,
-      tableData: [
+      orders: [
         // // {
         // //   goodsCategory: '医用物资',
         // //   goodsName: '阿莫西林',
@@ -154,7 +152,11 @@ export default {
       allStorage: [
         // "仓库1",
         // "仓库2"
-      ]
+      ],
+      // 分页
+      currentPage: 1,
+      paginationData: [],
+      pageSize: 5
     };
   },
   components: {},
@@ -178,7 +180,10 @@ export default {
       }
       this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`,data).then(res => {
              if(res.status==1){
-               this.tableData=res.content;
+               this.orders=res.content
+                
+              // 刚打开页面时加载前pageSize项、且自动生成分页数量
+              this.getPaginationData(this.currentPage)
              }else{
                return
              }
@@ -187,7 +192,6 @@ export default {
     // 筛选
     handleFilter () {
       const bol = this.filter.repertory || this.filter.goods_name ||  (this.filter.status + '').length
-      console.log(bol, this.filter)
       if (!bol) {
         this.warehouse()
       } else {
@@ -200,28 +204,24 @@ export default {
         this.$http.post(`${config.httpBaseUrl}/medicine/query_inventory/`, data)
         .then(res=>{
           if (res.statuscode === 1) {
-            this.tableData = res.result
+            this.orders = res.result
+            // 刚打开页面时加载前pageSize项、且自动生成分页数量
+            this.getPaginationData(1)
           }
         })
       }
     },
-    buttonModifythe: function() {
-      if (this.show == false) {
-        this.show = true;
-      } else {
-        this.show = false;
-      }
-      console.log(this.show);
+    // 分页
+    getPaginationData (pageIndex) {
+      const start = (pageIndex - 1) * this.pageSize
+      const end = pageIndex * this.pageSize
+      this.paginationData = this.orders.slice(start, end)
     },
-    onSubmit() {
-      console.log("submit!");
-    },
+    // 跳转至对应分页
     handleCurrentChange(val) {
-    console.log(`当前页: ${val}`);
-  },
-    handleSizeChange(val) {
-    console.log(`每页 ${val} 条`);
-  },
+      this.currentPage = val
+      this.getPaginationData(val)
+    },
     buttonsave: function() {},
     buttonaudit: function() {},
     warningStyle (row, column, rowIndex, columnIndex) {
