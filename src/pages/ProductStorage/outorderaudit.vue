@@ -31,10 +31,10 @@
             v-for="item in ordersStatus"
             :key="item.label"
             :label="item.label"
-            :value="item.label"
+            :value="item.status"
           ></el-option>
         </el-select>
-      </div>
+      </div> 
       <div class="select_date">
         日期选择:
         <!-- <el-date-picker size='medium'
@@ -140,8 +140,8 @@
         </el-table-column>
       </el-table>
       <div class="warehousing">
-        <el-button type='primary' size='medium' @click="goodsubmit">提交</el-button>
-        <el-button  type='primary' @click="outorfallback()">回退</el-button>
+        <el-button v-if="show=='待审核'" type='primary' size='medium' @click="goodsubmit">提交</el-button>
+        <el-button v-if="show=='待审核'" type='primary' @click="outorfallback()">回退</el-button>
       </div>
     </el-main>
   </div>
@@ -152,6 +152,7 @@ export default {
   data () {
     return {
       date: '',
+      show:"",
       datalist:[],
       reason_return:"",
       applicants: [
@@ -192,7 +193,7 @@ export default {
           status:0,
         },
         {
-          label: '已入库',
+          label: '待审核',
           status:1,
         },
         {
@@ -259,6 +260,8 @@ export default {
       },
       //详情
       outordetails(index, row){
+      this.show=row.status;
+      console.log(this.show);
       this.receipt_no=row.receipt_no;
        this.$http.post(`${config.httpBaseUrl}/medicine/detail_inStorageReceipt/`,{
             receipt_no: this.receipt_no,

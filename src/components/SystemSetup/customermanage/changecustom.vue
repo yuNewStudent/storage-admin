@@ -63,26 +63,25 @@ export default {
           }
         }
         if (this.selectClient) {
-          console.log(this.client)
-          this.$emit("hideChangeCustom", this.client)
           // 修改服务器数据
           this.$http.post(`${config.httpBaseUrl}/man/upd_client/`, this.client).then(res => {
-            if (res.status === 1) {
+            if (res.status == 1) {
+              this.$emit("hideChangeCustom", this.client)
               this.$message({
                 showClose: true,
-                message: '客户新增成功',
+                message:res.content,
                 type: 'success'
               })
             }
           })
         } else {
-          this.$emit("hideChangeCustom", this.client)
           // 服务器上新增客户
           this.$http.post(`${config.httpBaseUrl}/man/add_client/`, this.client).then(res => {
-            if (res.status === 1) {
+            if (res.status == 1) {
+               this.$emit("hideChangeCustom")
               this.$message({
                 showClose: true,
-                message: '客户信息更新成功',
+                message: res.content,
                 type: 'success'
               })
             }

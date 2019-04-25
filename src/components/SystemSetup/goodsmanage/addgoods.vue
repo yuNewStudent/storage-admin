@@ -172,7 +172,7 @@ export default {
        if (blo) {
         // 信息不能为空
         for (var k in this.goodsInfo) {
-          if (!(this.goodsInfo[k]+ '')){
+          if (!(this.goodsInfo[k]+ "")){
             this.$message({
               message: '信息不能为空',
               type: 'warning'
@@ -200,13 +200,17 @@ export default {
                 // this.allgood=res.content;
                 this.$emit('hideGoodsCategoryadd', this.goodsInfo)
               }else{
+                 this.$message({
+                  message: res.content,
+                  type: 'warning'
+                })
                 return
               }
             
             // })
           }else{
             this.$message({
-              message: '信息不能为空',
+              message: res.content,
               type: 'warning'
             })
             return

@@ -158,7 +158,6 @@ export default {
             });
           // this.supplierInfo={};
         }
-        this.$emit("hideChangeSupplier");
       } else {
         this.$emit("hideChangeSupplier");
       }

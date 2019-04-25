@@ -4,11 +4,12 @@
       <div class="selectAddress">
         收货单位:
         <el-input
-          v-model="client"
+          v-model="purchaser"
           placeholder="请输入收货单位"
           @change='filterClients'>
         </el-input>
       </div>
+      <el-button size='medium' type="primary" @click="filterClients">搜索</el-button>
       <div class="buttons">
         <el-button size='medium' type="primary" @click='isShowAddCustom=!isShowAddCustom'>新增</el-button>
         <el-button size='medium' class="output" @click='handleOutput'>导出</el-button>
@@ -104,6 +105,8 @@ export default {
         editor: '客户管理>修改'
       },
       client: '',
+      address:"",
+      purchaser:"",
       clients: [
         // {
         //   address: '四川',
@@ -162,6 +165,7 @@ export default {
               type: 'success'
             })
           }
+          this.getClient();
         })
         // 本地删除
         this.clients.splice(this.selectClient.index, 1)
@@ -174,12 +178,13 @@ export default {
       this.isShowEditorCustom = true
     },
     // 增加客户
-    addCustom (client) {
-      if (client) {
-        // 增加客户-本地
-        this.clients.unshift(client)
-      }
-      this.isShowAddCustom = false
+    addCustom () {
+      // if (client) {
+      //   // 增加客户-本地
+      //   this.clients.unshift(client)
+      // }
+      this.isShowAddCustom = false;
+       this.getClient();
     },
     // 修改客户
     editorCustom (client) {
@@ -196,8 +201,8 @@ export default {
     // 获取客户
     getClient (purchaser, address) {
       this.$http.post(`${config.httpBaseUrl}/man/get_client/`, {
-        purchaser,
-        address
+        purchaser:this.purchaser,
+        address:this.address,
       }).then(res => {
         this.clients = res.content
         // 刚打开页面时加载前pageSize项、且自动生成分页数量
@@ -209,14 +214,15 @@ export default {
     
     //筛选客户
     filterClients () {
-      if (!this.clients) {
-        return
-      }
-      this.clients.filter(item => {
-        return item.purchaser.indexOf(this.client) > -1
+      this.$http.post(`${config.httpBaseUrl}/man/get_client/`, {
+          purchaser:this.purchaser,
+          address:this.address
+
+      }).then(res => {
+        this.clients = res.content
+        // 刚打开页面时加载前pageSize项、且自动生成分页数量
+        this.getPaginationData(this.currentPage)
       })
-      // 刚打开页面时加载前pageSize项、且自动生成分页数量
-      this.getPaginationData(this.currentPage)
     },
     // 分页
     getPaginationData (pageIndex) {

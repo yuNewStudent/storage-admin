@@ -4,7 +4,7 @@
       <div class="search">
         供货单位:
         <el-input size='medium' v-model="supplier" placeholder="请输入供货单位"></el-input>
-        <el-button size='medium' type="primary" @click="searchbutton(supplier)">搜索</el-button>
+        <el-button size='medium' type="primary" @click="searchbutton">搜索</el-button>
       </div>
       <!-- <div class="selectAddress">
         供货单位:
@@ -148,6 +148,7 @@ export default {
       pageSize: 5,
     }
   },
+  supplier:"",
   components: {
     ChangeSupplier,
     DelSupplier
@@ -172,13 +173,21 @@ export default {
           }
         })
     },
-    searchbutton(supplier){
-       this.$htttp.post(`${config.httpBaseUrl}/man/get_supplier/`, {
-                  supplier: supplier,
+    searchbutton(){
+       this.$http.post(`${config.httpBaseUrl}/man/get_supplier/`, {
+                  supplier: this.supplier,
+                  address:"",
                 })
                 .then(res => {
-                  this.tableData3=res.status
-                });
+                   if (res.status == 1) {
+                    this.tableData3 = res.content
+                    // 刚打开页面时加载前pageSize项、且自动生成分页数量
+                    this.getPaginationData(this.currentPage)
+                  } else {
+                    return;
+                  }
+                })
+                // });
         },
     //选中
     handleSelectionChange(val){

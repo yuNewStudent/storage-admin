@@ -25,7 +25,6 @@
           clearable
           filterable
           @change="filterOrders"
-          placeholder="全部"
           v-model="filter.ordersStatu" >
           <el-option
             v-for="item in ordersStatus"
@@ -39,12 +38,11 @@
       <div class="select_date">
         日期选择:
          <el-date-picker
-          v-model="filter.date"
+          v-model="filter.apply_datetime"
           type="daterange"
           start-placeholder="开始日期"
           @change="filterOrders"
-          end-placeholder="结束日期"
-          default-value="2010-10-01">
+          end-placeholder="结束日期">
         </el-date-picker>
       </div>
       <div class="buttons">
@@ -135,8 +133,8 @@
         </el-table-column>
       </el-table>
       <el-row v-if='currentreceipt_no'>
-        <el-button type="primary" @click="handleSave">审核</el-button>
-        <el-button @click="handleReturn">回退</el-button>
+        <el-button v-if="show=='待审核'" type="primary" @click="handleSave">审核</el-button>
+        <el-button v-if="show=='待审核'" @click="handleReturn">回退</el-button>
       </el-row>
       
     </el-main>
@@ -147,6 +145,7 @@
 export default {
   data() {
     return {
+      show:'',
       filter: {
         applicant: '',
         ordersStatu: '',
@@ -205,7 +204,7 @@ export default {
       } else {
         this.$http.post(`${config.httpBaseUrl}/medicine/get_outStorageReceipt/`,{
           all:0,
-          status: this.filter.ordersStatu,
+          status: this.filter.ordersStatu===""?-1:this.filter.ordersStatu,
           applicant: this.filter.applicant,
           apply_datetime_start: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[0]).format("YYYY-MM-DD") : '',
           apply_datetime_end: this.filter.apply_datetime.length ? this.moment(this.filter.apply_datetime[1]).format("YYYY-MM-DD") : ''
@@ -252,6 +251,7 @@ export default {
     },
     //详情
     exitordetails(index, row){
+      this.show=row.status;
       this.$http.post(`${config.httpBaseUrl}/medicine/detail_outStorageReceipt/`,{
         receipt_no: row.receipt_no,
       }).then(res => {
