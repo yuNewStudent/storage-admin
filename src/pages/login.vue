@@ -145,7 +145,7 @@ export default {
           }else{
             this.$message({
               showClose: true,
-              message: res.content,
+              message: res.result,
               type: 'error'
             })
             return

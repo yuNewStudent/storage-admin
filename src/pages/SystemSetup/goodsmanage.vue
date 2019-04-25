@@ -275,18 +275,17 @@ export default {
       this.isShowDelGoods = true;
       // this.allgoods=this.allgood;
     },
-    hideDelGoods(delgood,bol){
-       this.allgoods.splice(delgood.index,1);
+    hideDelGoods(bol){
        this.isShowDelGoods = false;
+        this.findinventory();
        
     },
     handleGoodsCategory () {
       this.isShowGoodsCategory = true
     },
     hideGoodsCategoryadd(allgood,bol){
-      console.log(allgood)
-      this.findinventory()
-      this.isShowAddGoods = false
+      this.isShowAddGoods = false;
+        this.findinventory();
     },
     //导出表格
     handleOutput () {

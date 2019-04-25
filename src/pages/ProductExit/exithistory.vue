@@ -144,7 +144,6 @@ export default {
        ordersStatus: '',
        apply_datetime: ''
       },
-      currentPage:4,
       clients: [
         // {
         //   purchaser: "四川省经济贸易公司"

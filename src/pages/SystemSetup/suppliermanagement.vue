@@ -189,8 +189,8 @@ export default {
       this.Warehouse()
     },
     addSupplier (bol){
-      this.isShowAddSupplier = false;
       this.Warehouse();
+      this.isShowAddSupplier = false;
     },
     // handleDelSupplier (tableData3) {
     //   // this.multipleSelection = val;
@@ -217,6 +217,7 @@ export default {
     
     // 分页
     getPaginationData (pageIndex) {
+      console.log(121);
       const start = (pageIndex - 1) * this.pageSize
       const end = pageIndex * this.pageSize
       this.paginationData = this.tableData3.slice(start, end)

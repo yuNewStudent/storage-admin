@@ -208,7 +208,7 @@ export default {
                   message: '修改成功',
                   type: 'success'
                 })
-                this.$emit('goodsEditor', this.goodsInfo)
+                this.$emit('goodsEditor')
               }else{
                 return
               }
@@ -222,7 +222,7 @@ export default {
             return
           }
         })
-        this.$emit('goodsEditor')
+        // this.$emit('goodsEditor')
       } else {
         this.$emit("goodsEditor")
       }

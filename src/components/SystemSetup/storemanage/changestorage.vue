@@ -119,7 +119,7 @@ export default {
                 }
             })
           }
-          this.$emit('hideChangeStorage')
+          // this.$emit('hideChangeStorage')
         }else{
           this.$emit('hideChangeStorage')
         }
