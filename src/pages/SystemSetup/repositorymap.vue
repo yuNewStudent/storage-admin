@@ -374,7 +374,7 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss" scoped>
 .repositorymap {
   padding: 40px 40px;
 }
@@ -387,7 +387,7 @@ export default {
     margin: 0 auto;
     width: 250px;
 }
-.is-active {
+.el-tabs__nav .is-active {
   background-color: #4499f2;
   color: #ffffff !important;
 }
@@ -400,5 +400,8 @@ export default {
   border-radius: 4px 4px 0 0;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+}
+.el-icon-arrow-left{
+      
 }
 </style>

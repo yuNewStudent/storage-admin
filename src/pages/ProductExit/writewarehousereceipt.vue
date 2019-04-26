@@ -25,7 +25,19 @@
           <template slot-scope="scope">
             <el-select
               size='mini'
+              v-if='!isEditor'
               v-model="orders[scope.$index].client" placeholder="请选择">
+              <el-option
+                v-for="item in clients"
+                :key="item.value"
+                :label="item.purchaser"
+                :value="item.purchaser">
+              </el-option>
+            </el-select>
+            <el-select
+              size='mini'
+              v-else
+              v-model="orders[scope.$index].client" disabled  placeholder="请选择">
               <el-option
                 v-for="item in clients"
                 :key="item.value"
@@ -40,6 +52,20 @@
           <template slot-scope="scope">
             <el-select
               size='mini'
+               v-if='!isEditor'
+              v-model="orders[scope.$index].category"
+              placeholder="请选择">
+              <el-option
+                v-for="item in categories"
+                :key="item.value"
+                :label="item.category"
+                :value="item.category">
+              </el-option>
+            </el-select>
+            <el-select
+              size='mini'
+              v-else
+              disabled
               v-model="orders[scope.$index].category"
               placeholder="请选择">
               <el-option
@@ -56,6 +82,21 @@
             <el-select
               v-model="orders[scope.$index].goods_name"
               size='mini'
+              v-if='!isEditor'
+              placeholder="请选择"
+              @change='selectGoodsName(orders[scope.$index].goods_name)'>
+              <el-option
+                v-for="item in goodses"
+                :key="item.name"
+                :label="item.name"
+                :value="item.name">
+              </el-option>
+            </el-select>
+            <el-select
+              v-model="orders[scope.$index].goods_name"
+              size='mini'
+              v-else
+              disabled
               placeholder="请选择"
               @change='selectGoodsName(orders[scope.$index].goods_name)'>
               <el-option
@@ -78,6 +119,19 @@
           <template slot-scope="scope">
             <el-select 
                 size='mini'
+                v-if='!isEditor'
+                v-model="orders[scope.$index].location" placeholder="请选择">
+              <el-option
+                v-for="item in allStorage"
+                :key="item.name"
+                :label="item.name"
+                :value="item.name">
+              </el-option>
+            </el-select>
+            <el-select 
+                size='mini'
+                v-else
+                disabled
                 v-model="orders[scope.$index].location" placeholder="请选择">
               <el-option
                 v-for="item in allStorage"
@@ -152,8 +206,24 @@
           </template>
         </el-table-column>
         <el-table-column label="回退理由" v-if='isEditor'>
+           <template slot-scope="scope">
+            <el-input
+             :disabled="true"
+              size='mini'
+              v-model="orders[scope.$index].reason_return"></el-input>
+          </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作"
+        v-if="isEditor">
+          <template slot-scope="scope">
+            <el-button
+            :disabled="true"
+              @click='handleDelOrder(scope.row, scope.$index)'
+              size='mini'>删除</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作"
+        v-if="!isEditor">
           <template slot-scope="scope">
             <el-button
               @click='handleDelOrder(scope.row, scope.$index)'

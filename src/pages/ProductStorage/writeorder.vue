@@ -32,7 +32,17 @@
           </el-table-column>
           <el-table-column label="商品类别" width='170'>
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].category" filterable placeholder="请选择">
+              <el-select  v-if="!isEditor" v-model="orders[scope.$index].category" filterable placeholder="请选择">
+                <el-option
+                  v-for="item in categories"
+                  :key="item.value"
+                  :label="item.category"
+                  :value="item.category">
+                </el-option>
+              </el-select>
+              <el-select 
+                v-else
+                disabled v-model="orders[scope.$index].category" filterable placeholder="请选择">
                 <el-option
                   v-for="item in categories"
                   :key="item.value"
@@ -44,7 +54,16 @@
           </el-table-column>
           <el-table-column label="商品名称" width='170'>
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
+              <el-select v-if="!isEditor" v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
+                <el-option
+                  v-for="item in goodses"
+                  :key="item.name"
+                  :label="item.name"
+                  :value="item.name">
+                </el-option>
+              </el-select>
+              <el-select v-else
+                disabled v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
                 <el-option
                   v-for="item in goodses"
                   :key="item.name"
@@ -94,8 +113,9 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope"> 
-              <el-button type='primary' @click='handleDel(scope.$index)'>删除</el-button>
-            </template>
+              <el-button type='primary' v-if="!isEditor" @click='handleDel(scope.$index)'>删除</el-button>
+              <el-button type='primary' v-else  disabled  @click='handleDel(scope.$index)'>删除</el-button>
+             </template>
           </el-table-column>
         </el-table>
         <el-row class='add_row' v-if="!isEditor">
