@@ -33,7 +33,7 @@ export default {
     MessageBox
   },
   created(){
-    console.log(this.delgood)
+    console.log(this.delgood.row.name)
     // if (this.delgood) {
     //   this.delgoods
     // }
@@ -54,7 +54,7 @@ export default {
               type: 'success'
             })
             var delgoodxd=this.delgood;
-            this.$emit("hideDelGoods",delgoodxd);
+            this.$emit("hideDelGoods");
           }else{
             this.$message({
               message:res.content,

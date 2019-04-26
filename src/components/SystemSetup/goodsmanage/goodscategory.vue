@@ -7,7 +7,7 @@
       <el-table
         :data="tableData"
         border
-        style="width: 100%"
+        style="width: 100%" height="350"
         size='mini'>
         <el-table-column
           prop="id"
@@ -88,7 +88,7 @@ export default {
         const data = {
           login_name: loginUser.name,
           login_email: loginUser.email,
-          name: value
+          category: value
         }
         this.$http.post(`${config.httpBaseUrl}/medicine/add_category/`, data).then(res => {
           if(res.status==1){
@@ -125,7 +125,7 @@ export default {
           const data = {
             login_name: loginUser.name,
             login_email: loginUser.email,
-            name:scope.row.category
+            category:scope.row.category
           }
           this.$http.post(`${config.httpBaseUrl}/medicine/del_category/`, data).then(res => {
             this.tableData.splice(scope.$index, 1)
