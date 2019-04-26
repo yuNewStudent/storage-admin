@@ -84,6 +84,7 @@
               size='mini'
               v-if='!isEditor'
               placeholder="请选择"
+              @focus="getGoods(scope.row.category)"
               @change='selectGoodsName(orders[scope.$index].goods_name)'>
               <el-option
                 v-for="item in goodses"
@@ -98,7 +99,6 @@
               v-else
               disabled
               placeholder="请选择"
-              @focus="getGoods(scope.row.category)"
               @change='selectGoodsName(orders[scope.$index].goods_name)'>
               <el-option
                 v-for="item in goodses"
@@ -461,6 +461,7 @@ export default {
     },
     // 获取所有的商品名称
     getGoods (category) {
+        console.log(category)
       this.$http.post(`${config.httpBaseUrl}/medicine/get_all_goods/`, {
         category: category
       }).then(res => {
