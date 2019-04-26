@@ -116,7 +116,7 @@
         </el-table-column>
         <el-table-column label="商品总额" prop='money'>
         </el-table-column>
-        <el-table-column label="收货地址" prop='client_address'>
+        <el-table-column width='150' label="收货地址" prop='client_address'>
         </el-table-column>
         <el-table-column label="收货人" prop='client_contact'>
         </el-table-column>

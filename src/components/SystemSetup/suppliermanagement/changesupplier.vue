@@ -1,13 +1,12 @@
 <template>
   <message-box @closeMessageBox="Addsuppliers" :type="type" :btns="btns">
-    <div class="content" v-if="ediore==undefined||''">
+    <div class="content">
       <label>
         <span>*</span>供货单位:
       </label>
       <el-input  size="small" v-model="supplierInfo.supplier"></el-input>
-       <!-- <el-input  size="small" v-model="supplierInfo.supplier"></el-input> -->
       <label for>
-        <span>*</span>供货地选择:
+        <span>*</span>供货地址:
       </label>
       <el-input size="small" v-model="supplierInfo.address"></el-input>
       <label for>
@@ -18,33 +17,6 @@
         <span>*</span>联系电话:
       </label>
       <el-input size="small" v-model="supplierInfo.phone"></el-input>
-      <!-- <label for="">传真:</label>
-      <el-input
-        v-model="supplierInfo.fox"
-      size='small'></el-input>-->
-    </div>
-    <div class="content" v-else>
-      <label>
-        <span>*</span>供货单位:
-      </label>
-      <el-input  disabled="disabled" size="small" v-model="supplierInfo.supplier"></el-input>
-       <!-- <el-input  size="small" v-model="supplierInfo.supplier"></el-input> -->
-      <label for>
-        <span>*</span>供货地选择:
-      </label>
-      <el-input size="small" v-model="supplierInfo.address"></el-input>
-      <label for>
-        <span>*</span>联系人:
-      </label>
-      <el-input size="small" v-model="supplierInfo.contact"></el-input>
-      <label for>
-        <span>*</span>联系电话:
-      </label>
-      <el-input size="small" v-model="supplierInfo.phone"></el-input>
-      <!-- <label for="">传真:</label>
-      <el-input
-        v-model="supplierInfo.fox"
-      size='small'></el-input>-->
     </div>
   </message-box>
 </template>

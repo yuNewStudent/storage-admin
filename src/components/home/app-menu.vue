@@ -35,11 +35,24 @@ export default {
   data () {
     return {
       images: [
-        {src: require('@/assets/icon/系统管理ic.png')},
-        { src: require('@/assets/icon/产品入库ic.png') },
-        { src: require('@/assets/icon/产品出库ic.png') },
-        { src: require('@/assets/icon/商品盘存ic.png') },
-        { src: require('@/assets/icon/系统查询ic.png') }
+        {
+          src: require('@/assets/icon/系统管理ic.png'),
+          // gropImg: [
+
+          // ]
+        },
+        { 
+          src: require('@/assets/icon/产品入库ic.png')
+        },
+        {
+          src: require('@/assets/icon/产品出库ic.png')
+        },
+        {
+          src: require('@/assets/icon/商品盘存ic.png') 
+        },
+        {
+          src: require('@/assets/icon/系统查询ic.png') 
+        }
       ],
       img:[
         { src: require('@/assets/icon/产品出库/产品出库IC-灰.png')},

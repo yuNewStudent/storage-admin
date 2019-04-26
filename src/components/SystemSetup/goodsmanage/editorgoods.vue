@@ -175,15 +175,14 @@ export default {
     storage(){
        let _this=this;
       this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res=>{
-        console.log(res)
         this.options=res.content;
       })
     },
     hideGoodsEditor (bol) {
       // 确认修改
       if (bol) {
-          for (var k in this.goodsInfo) {
-          if (!(this.goodsInfo[k]+'')) {
+        for (var k in this.goodsInfo) {
+          if (k !== 'comment') {
             this.$message({
               message: '信息不能为空',
               type: 'warning'
@@ -193,8 +192,8 @@ export default {
         }
         const loginUser = JSON.parse(this.$cookie.get('user'))
         const data = {
-          login_name: loginUser.name,
-          login_email: loginUser.email,
+          // login_name: loginUser.name,
+          // login_email: loginUser.email,
           ...this.goodsInfo
         }
         this.$http.post(`${config.httpBaseUrl}/medicine/upd_medicine/`, data).then(res=>{

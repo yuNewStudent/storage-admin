@@ -54,7 +54,7 @@
           </el-table-column>
           <el-table-column label="商品名称" width='170'>
             <template slot-scope="scope">
-              <el-select v-if="!isEditor" v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
+              <el-select  v-if="!isEditor" @focus='getGoods(scope.row.category)' v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
                 <el-option
                   v-for="item in goodses"
                   :key="item.name"
@@ -62,8 +62,8 @@
                   :value="item.name">
                 </el-option>
               </el-select>
-              <el-select v-else
-                disabled v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
+              <el-select  v-else
+                disabled @focus='getGoods(scope.row.category)' v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
                 <el-option
                   v-for="item in goodses"
                   :key="item.name"
@@ -292,6 +292,16 @@ export default {
           this.suppliers = res.content
         }
       })
+    },
+    getGoods (category) {
+      // 获取所有的商品名称
+      this.$http.post(`${config.httpBaseUrl}/medicine/get_all_goods/`, {
+        category: category
+      }).then(res => {
+        if (res.status === 1) {
+          this.goodses = res.content
+        }
+      })
     }
   },
   created () {
@@ -309,12 +319,6 @@ export default {
     this.$http.post(`${config.httpBaseUrl}/medicine/get_all_category/`).then(res => {
       if (res.status === 1) {
         this.categories = res.content
-      }
-    })
-    // 获取所有的商品名称
-    this.$http.post(`${config.httpBaseUrl}/medicine/get_all_goods/`).then(res => {
-      if (res.status === 1) {
-        this.goodses = res.content
       }
     })
     // 获取所有供应商

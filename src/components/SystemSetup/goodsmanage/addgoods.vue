@@ -1,7 +1,6 @@
 <template>
   <message-box
     @closeMessageBox='add'
-
     :type='type'
     :btns='btns'>
     <div class="content">
@@ -54,13 +53,12 @@
             <label for=""><span>*</span>商品预警数</label>
             <label for="">最大值:</label>
             <el-input
-              v-model="goodsInfo.waring_quantity_min"
+              v-model="goodsInfo.waring_quantity_max"
               size='small'></el-input>
             <label for="">最小值:</label>
             <el-input
-              v-model="goodsInfo.waring_quantity_max"
+              v-model="goodsInfo.waring_quantity_min"
               size='small'></el-input>
-              
             <hr/>
             <label for="">当前库存:</label>
             <el-input
@@ -173,11 +171,13 @@ export default {
         // 信息不能为空
         for (var k in this.goodsInfo) {
           if (!(this.goodsInfo[k]+ "")){
-            this.$message({
-              message: '信息不能为空',
-              type: 'warning'
-            })
-            return
+            if (k !== 'comment') {
+              this.$message({
+                message: '信息不能为空',
+                type: 'warning'
+              })
+              return
+            }
           }
         }
         const data = {

@@ -43,7 +43,7 @@ const menus = [
     icon: '@/assets/icon/商品盘存ic.png',
     group: [
       { label: '货物盘点', name: 'goodscounting'},
-      { label: '货物移库', name: 'goodsmove'},
+      // { label: '货物移库', name: 'goodsmove'},
       // { label: '仓库环境', name: 'repertoryenvironment'}
     ]
   },

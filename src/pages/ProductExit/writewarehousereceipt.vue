@@ -98,6 +98,7 @@
               v-else
               disabled
               placeholder="请选择"
+              @focus="getGoods(scope.row.category)"
               @change='selectGoodsName(orders[scope.$index].goods_name)'>
               <el-option
                 v-for="item in goodses"
@@ -146,6 +147,7 @@
           <template slot-scope="scope">
             <el-input 
               size='mini'
+              @change='verifyNum(scope.$index)'
               v-model="orders[scope.$index].out_number"></el-input>
           </template>
         </el-table-column>
@@ -456,6 +458,23 @@ export default {
           message: '已取消提交'
         })         
       })
+    },
+    // 获取所有的商品名称
+    getGoods (category) {
+      this.$http.post(`${config.httpBaseUrl}/medicine/get_all_goods/`, {
+        category: category
+      }).then(res => {
+        if (res.status === 1) {
+          this.goodses = res.content
+        }
+      })
+    },
+    // 验证出库数量是否合理
+    verifyNum (index) {
+      if (this.orders[index].out_number > this.allGoods[0].stock_quantity) {
+        this.$message.error('出库数量大于库存数量，请重新填写')
+        this.orders[index].out_number = ''
+      }
     }
   },
   created () {
@@ -480,11 +499,6 @@ export default {
       if (res.status === 1) {
         this.categories = res.content
       }
-    })
-    // 获取所有商品
-    this.$http.post(`${config.httpBaseUrl}/medicine/get_all_goods/`).then(res => {
-      console.log(res)
-      this.goodses = res.content
     })
     // 获取所有仓库
     this.$http.post(`${config.httpBaseUrl}/storage/get_all_repertory/`).then(res => {

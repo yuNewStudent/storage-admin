@@ -163,7 +163,7 @@ export default {
           status: this.filter.status ? this.filter.status : -1
         }
         console.log(data)
-        this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, data).then(res=>{
+        this.$http.post(`${config.httpBaseUrl}/medicine/query_stock/`, data).then(res=>{
           if (res.status === 1) {
             this.orders = res.content
             // 刚打开页面时加载前pageSize项、且自动生成分页数量
