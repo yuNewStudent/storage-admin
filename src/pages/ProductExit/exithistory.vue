@@ -22,11 +22,11 @@
       <div class="select_goods_name">
         申请状态:
         <el-select
-          size='medium'
           clearable
           filterable
           v-model="filter.ordersStatus"
           placeholder="请选择"
+          size='medium'
           @change='filterOrder'>
           <el-option
             v-for="item in ordersStatus"
@@ -41,17 +41,16 @@
         <el-date-picker
           v-model="filter.apply_datetime"
           type="daterange"
+          size='medium'
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           @change='filterOrder'>
         </el-date-picker>
       </div>
+      <el-button size='medium' type='primary' @click='handleOutput'>导出</el-button>
     </el-header>
     <el-main>
-      <el-header>
-        <el-button type='primary' size='small' @click='handleOutput'>导出</el-button>
-      </el-header>
       <el-table
         :data="paginationData"
         border
@@ -286,14 +285,24 @@ export default {
   margin: 20px 0 0;
   .el-header {
     overflow: hidden;
+    > div {
+      display: inline-block;
+    }
     .select_company {
-      float: left;
+      .el-select {
+        width: 190px;
+      }
     }
     .select_date {
-      float: left;
-      margin-left: 60px;
+      margin-left: 20px;
     }
     .select_goods_name {
+      margin-left: 20px;
+      .el-select {
+        width: 160px;
+      }
+    }
+    .el-button {
       float: right;
     }
   }
