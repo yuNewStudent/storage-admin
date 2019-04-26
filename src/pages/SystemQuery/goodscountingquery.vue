@@ -178,7 +178,7 @@ export default {
         goods_name: '',
         status: -1
       }
-      this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`,data).then(res => {
+      this.$http.post(`${config.httpBaseUrl}/medicine/query_inventory/`,data).then(res => {
              if(res.status==1){
                this.orders=res.content
                 
@@ -199,7 +199,7 @@ export default {
           all: 0,
           repertory: this.filter.repertory,
           goods_name: this.filter.goods_name,
-          status: this.filter.status ? this.filter.status : -1
+          status: this.filter.status !== '' ? this.filter.status : -1
         }
         this.$http.post(`${config.httpBaseUrl}/medicine/query_inventory/`, data)
         .then(res=>{

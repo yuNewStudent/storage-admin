@@ -44,7 +44,7 @@
           </el-table-column>
           <el-table-column label="商品名称" width='170'>
             <template slot-scope="scope">
-              <el-select v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
+              <el-select @focus='getGoods(scope.row.category)' v-model="orders[scope.$index].goods_name" filterable placeholder="请选择">
                 <el-option
                   v-for="item in goodses"
                   :key="item.name"
@@ -75,11 +75,11 @@
               <el-input v-model="orders[scope.$index].estimated_money"></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="申请人">
+          <!-- <el-table-column label="申请人">
             <template slot-scope="scope">
               <el-input v-model="orders[scope.$index].applicant"></el-input>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column label="用途">
             <template slot-scope="scope">
               <el-input v-model="orders[scope.$index].purpose"></el-input>
@@ -98,7 +98,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-row class='add_row'>
+        <el-row class='add_row' v-if="!isEditor">
           <el-button type='primary' @click='addRow'>新增行</el-button>
         </el-row>
       </div>
@@ -212,6 +212,7 @@ export default {
       )
     },
     comfirm () {
+      let multipleSelection=[];
       this.$confirm('请确认你填入的信息是否正确后, 再进行提交?', '提示', {
         confirmButtonText: '提交',
         cancelButtonText: '取消',
@@ -222,8 +223,16 @@ export default {
         this.orders.map(item => {
           item.apply_datetime = apply_datetime
         })
+        if(this.$route.params.receipt_no){
+           multipleSelection = this.orders.map(v => {
+              v.receipt_no = this.$route.params.receipt_no;
+              return v;
+            })
+        }else{
+           multipleSelection=this.orders;
+        }
         this.$http.post(`${config.httpBaseUrl}/medicine/add_inStorageReceipt/`,
-          this.orders
+          multipleSelection
         ).then(res=>{
           if (res.status === 0) {
             this.$message({
@@ -261,6 +270,16 @@ export default {
           this.suppliers = res.content
         }
       })
+    },
+    getGoods (category) {
+      // 获取所有的商品名称
+      this.$http.post(`${config.httpBaseUrl}/medicine/get_all_goods/`, {
+        category: category
+      }).then(res => {
+        if (res.status === 1) {
+          this.goodses = res.content
+        }
+      })
     }
   },
   created () {
@@ -278,12 +297,6 @@ export default {
     this.$http.post(`${config.httpBaseUrl}/medicine/get_all_category/`).then(res => {
       if (res.status === 1) {
         this.categories = res.content
-      }
-    })
-    // 获取所有的商品名称
-    this.$http.post(`${config.httpBaseUrl}/medicine/get_all_goods/`).then(res => {
-      if (res.status === 1) {
-        this.goodses = res.content
       }
     })
     // 获取所有供应商
