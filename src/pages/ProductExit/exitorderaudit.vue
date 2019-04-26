@@ -224,8 +224,11 @@ export default {
         auditor: JSON.parse(this.$cookie.get('user')).name,
         audited_datetime: this.moment(new Date()).format('YYYY-MM-DD')
       }]
-      this.$http.post(`${config.httpBaseUrl}/medicine/audited_inStorageReceipt/`, data).then(res=>{
+      this.$http.post(`${config.httpBaseUrl}/medicine/audited_outStorageReceipt/`, data).then(res=>{
         if (res.status === 1) {
+          this.orderInfo=[];
+          this.show=false;
+          this.getExitorders();
           this.$message({
             showClose: true,
             message: '审核完成',
@@ -279,6 +282,9 @@ export default {
       this.$http.post(`${config.httpBaseUrl}/medicine/return_outStorageReceipt/`, data)
         .then(res => {
           if (res.status === 1) {
+            this.orderInfo=[];
+            this.show=false;
+            this.getExitorders();
             this.$message({
               showClose: true,
               message: '订单回退成功',

@@ -86,7 +86,7 @@
             <el-button size='mini' @click='handleOrderInfo(scope.row)'>详情</el-button>
             <el-button
               size='mini'
-              :disabled='scope.row.status!=="未通过"'
+              :disabled='scope.row.status!=="审核未通过"'
               @click='handleOrderEditor(scope.row)'>修改</el-button>
           </template>
         </el-table-column>

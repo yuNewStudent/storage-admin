@@ -288,7 +288,10 @@ export default {
           })
         this.$http.post(`${config.httpBaseUrl}/medicine/audited_inStorageReceipt/`,multipleSelection).then(res=>{
            if(res.status==1){
-              this.datalist=res.content;
+              // this.datalist=res.content;
+               this.datalist=[];
+               this.show=false;
+               this.allaudit();
               this.$message({
               showClose: true,
               message: res.content,
@@ -318,7 +321,9 @@ export default {
           })
         this.$http.post(`${config.httpBaseUrl}/medicine/return_inStorageReceipt/`,multipleSelection).then(res=>{
            if(res.status==1){
-              this.datalist=res.content;
+              this.datalist=[];
+               this.show=false;
+               this.allaudit();
               this.$message({
               showClose: true,
               message: res.content,

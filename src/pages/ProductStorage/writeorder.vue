@@ -75,11 +75,11 @@
               <el-input v-model="orders[scope.$index].estimated_money"></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="申请人">
+          <!-- <el-table-column label="申请人">
             <template slot-scope="scope">
               <el-input v-model="orders[scope.$index].applicant"></el-input>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column label="用途">
             <template slot-scope="scope">
               <el-input v-model="orders[scope.$index].purpose"></el-input>
@@ -98,7 +98,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-row class='add_row'>
+        <el-row class='add_row' v-if="!isEditor">
           <el-button type='primary' @click='addRow'>新增行</el-button>
         </el-row>
       </div>
@@ -212,6 +212,7 @@ export default {
       )
     },
     comfirm () {
+      let multipleSelection=[];
       this.$confirm('请确认你填入的信息是否正确后, 再进行提交?', '提示', {
         confirmButtonText: '提交',
         cancelButtonText: '取消',
@@ -222,8 +223,16 @@ export default {
         this.orders.map(item => {
           item.apply_datetime = apply_datetime
         })
+        if(this.$route.params.receipt_no){
+           multipleSelection = this.orders.map(v => {
+              v.receipt_no = this.$route.params.receipt_no;
+              return v;
+            })
+        }else{
+           multipleSelection=this.orders;
+        }
         this.$http.post(`${config.httpBaseUrl}/medicine/add_inStorageReceipt/`,
-          this.orders
+          multipleSelection
         ).then(res=>{
           if (res.status === 0) {
             this.$message({

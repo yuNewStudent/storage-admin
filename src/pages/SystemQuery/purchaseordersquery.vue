@@ -50,6 +50,7 @@
           width="55">
         </el-table-column>
         <el-table-column prop="receipt_no" label="采购订单号"></el-table-column>
+         <el-table-column prop="applicant" label="申请人"></el-table-column>
         <el-table-column prop="supplier" label="供应商"></el-table-column>
         <el-table-column prop="category" label="商品类别"></el-table-column>
         <el-table-column prop="name" label="商品名称"></el-table-column>
@@ -66,7 +67,6 @@
         </el-table-column>
         <el-table-column prop="estimated_money" label="商品总价">
         </el-table-column>
-        <el-table-column prop="applicant" label="申请人"></el-table-column>
         <el-table-column prop="purpose" label="申请用途"></el-table-column>
       </el-table>
        <div class="block">

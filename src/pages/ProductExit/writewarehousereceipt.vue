@@ -130,13 +130,13 @@
               v-model="orders[scope.$index].client_phone"></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="申请人">
+        <!-- <el-table-column label="申请人">
           <template slot-scope="scope">
             <el-input
               size='mini'
               v-model="orders[scope.$index].applicant"></el-input>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="出库用途">
           <template slot-scope="scope">
             <el-input
@@ -161,7 +161,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-row class='add_row'>
+      <el-row class='add_row' v-if="!isEditor">
         <el-button size='medium' type='primary' @click='addRow'>新增行</el-button>
       </el-row>
     </div>
@@ -330,6 +330,7 @@ export default {
     },
     // 弹出确认框
     comfirm () {
+      let multipleSelection=[];
       this.$confirm('请确认你填入的信息是否正确后, 再进行提交?', '提示', {
         confirmButtonText: '提交',
         cancelButtonText: '取消',
@@ -339,9 +340,17 @@ export default {
         this.orders.map(item => {
           item.apply_datetime = apply_datetime
         })
+         if(this.$route.params.receipt_no){
+           multipleSelection = this.orders.map(v => {
+              v.receipt_no = this.$route.params.receipt_no;
+              return v;
+            })
+        }else{
+           multipleSelection=this.orders;
+        }
         // 信息不能为空
         // 向后台发送订单请求
-        this.$http.post(`${config.httpBaseUrl}/medicine/add_outStorageReceipt/`, this.orders).then(res => {
+        this.$http.post(`${config.httpBaseUrl}/medicine/add_outStorageReceipt/`,multipleSelection).then(res => {
           if (res.status == 1) {
             this.$message({
               type: 'success',
@@ -383,7 +392,7 @@ export default {
       this.$http.post(`${config.httpBaseUrl}/medicine/get_abnormalOutReceipt/`,{
         receipt_no
       }).then(res=>{
-        this.orders = res.content
+        this.orders = res.content;
       })
     }
     // 获取所有客户
