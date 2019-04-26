@@ -162,7 +162,7 @@ export default {
           unit: '',
           estimated_price: '',
           estimated_money: '',
-          applicant: '',
+          // applicant: '',
           purpose: '',
           apply_comment: '',
         }
@@ -205,7 +205,7 @@ export default {
           unit: '',
           estimated_price: '',
           estimated_money: '',
-          applicant: '',
+          // applicant: '',
           purpose: '',
           apply_comment: ''
         }
@@ -219,9 +219,11 @@ export default {
         type: 'warning'
       }).then(() => {
         // 信息不能有空
-        let apply_datetime = this.moment(new Date()).format('YYYY-MM-DD')
+        let apply_datetime = this.moment(new Date()).format('YYYY-MM-DD');
+        var user = JSON.parse(this.$cookie.get('user')||'{}');
         this.orders.map(item => {
-          item.apply_datetime = apply_datetime
+          item.apply_datetime = apply_datetime;
+          item.applicant=user.name;
         })
         if(this.$route.params.receipt_no){
            multipleSelection = this.orders.map(v => {
@@ -237,7 +239,7 @@ export default {
           if (res.status === 0) {
             this.$message({
               type: 'error',
-              message: '请检查数据格式!'
+              message: res.content
             })
           } else {
             this.orders = [{
@@ -247,13 +249,13 @@ export default {
               unit: '',
               estimated_price: '',
               estimated_money: '',
-              applicant: '',
+              // applicant: '',
               purpose: '',
               apply_comment: ''
             }]
             this.$message({
               type: 'success',
-              message: '提交成功!'
+              message:res.content
             })
           }
         })

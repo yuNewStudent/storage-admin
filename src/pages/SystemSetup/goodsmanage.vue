@@ -276,7 +276,8 @@ export default {
     handleGoodsCategory () {
       this.isShowGoodsCategory = true
     },
-    hideGoodsCategoryadd(allgood,bol){
+    hideGoodsCategoryadd(bol){
+      this.isShowAddGoods=false;
       this.findinventory()
     },
     //导出表格

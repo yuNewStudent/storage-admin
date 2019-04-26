@@ -216,7 +216,7 @@ export default {
           client_contact: '',
           client_phone: '',
           purpose: '',
-          apply_comment: ''
+          apply_comment: '',
         },
       ],
       // 商品类别
@@ -336,10 +336,13 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        let apply_datetime = this.moment(new Date()).format('YYYY-MM-DD')
+        let apply_datetime = this.moment(new Date()).format('YYYY-MM-DD');
+        var user = JSON.parse(this.$cookie.get('user')||'{}');
         this.orders.map(item => {
-          item.apply_datetime = apply_datetime
+          item.apply_datetime = apply_datetime;
+          item.applicant=user.name;
         })
+     
          if(this.$route.params.receipt_no){
            multipleSelection = this.orders.map(v => {
               v.receipt_no = this.$route.params.receipt_no;
@@ -348,13 +351,14 @@ export default {
         }else{
            multipleSelection=this.orders;
         }
+        console.log(multipleSelection);
         // 信息不能为空
         // 向后台发送订单请求
         this.$http.post(`${config.httpBaseUrl}/medicine/add_outStorageReceipt/`,multipleSelection).then(res => {
           if (res.status == 1) {
             this.$message({
               type: 'success',
-              message: '提交成功!'
+              message: res.content
             })
             this.orders = [
               {
