@@ -2,19 +2,20 @@
   <div class="history_order">
     <el-header>
         <div class="select_company">
-          供货单位:
-          <el-select size='medium' 
-              @change='filterOrder'
-              v-model="filter.supplier"
-              clearable
-              filterable
-              placeholder="请选择">
+          申请人:
+          <el-select
+            filterable
+            clearable
+            size='medium'
+            v-model="filter.applicant"
+            @change="filterOrder"
+            placeholder="请输入经办人">
             <el-option
-              v-for="item in suppliers"
-              :key="item.supplier"
-              :label="item.supplier"
-              :value="item.supplier">
-            </el-option>
+              v-for="(item, index) in applicants"
+              :key="index"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
           </el-select>
         </div>
         <div class="select_date">
@@ -52,17 +53,16 @@
         border
         size='small'
         style="width: 100%">
-        <el-table-column label="序号"
+        <el-table-column
           type="selection"
           width="55">
         </el-table-column>
         <el-table-column
+          label="序号"
           type="index"
           width="55">
         </el-table-column>
         <el-table-column label="订单号" prop='receipt_no'>
-        </el-table-column>
-        <el-table-column label="供应商" prop='supplier'>
         </el-table-column>
         <el-table-column label="申请人" prop='applicant'>
         </el-table-column>
@@ -100,13 +100,16 @@
         border
         size='small'
         style="width: 100%">
-        <el-table-column label="序号"
+        <el-table-column
+          label="序号"
           type="index"
           width="55">
         </el-table-column>
         <el-table-column label='商品类型' prop='category'>
         </el-table-column>
         <el-table-column label="商品名称" prop='goods_name'>
+        </el-table-column>
+        <el-table-column label="供应商" prop='supplier'>
         </el-table-column>
         <el-table-column label="单位" prop='unit'>
         </el-table-column>
@@ -134,7 +137,7 @@ export default {
   data () {
     return {
       filter: {
-       supplier: '',
+       applicant: '',
        status: '',
        apply_datetime: ''
       },
@@ -156,12 +159,11 @@ export default {
           id: 3
         }
       ],
-      suppliers: [
-        // "四川省经济贸易公司",
-        // "四川棋照科技有限公司"
+      applicants: [
       ],
       orderInfo: [
         // {
+        //   supplier: '供应商'
         //   category: '商品类别',
         //   goods_name: '商品名称',
         //   unit: '个',
@@ -241,7 +243,7 @@ export default {
     
     // 按照搜索框内容进行筛选
     filterOrder () {
-      const bol = this.filter.supplier || (this.filter.status + '').length ||  this.filter.apply_datetime
+      const bol = this.filter.applicant || (this.filter.status + '').length ||  this.filter.apply_datetime
       if (!bol) {
         this.getOders()
       } else {
@@ -262,13 +264,14 @@ export default {
   },
   created () {
     this.getOders()
-    // 获取所有供应商
-    this.$http.post(`${config.httpBaseUrl}/man/get_all_supplier/`).then(res => {
-      console.log(res)
-      if (res.status === 1) {
-        this.suppliers = res.content
+    // 获取所有申请人
+    this.$http.post(`${config.httpBaseUrl}/man/get_all_employee/`).then(res=>{
+      if(res.status==1){
+        this.applicants = res.content
+      }else{
+        return
       }
-    })
+    }) 
   }
 }
 </script>

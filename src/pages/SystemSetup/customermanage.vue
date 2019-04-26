@@ -8,8 +8,9 @@
           placeholder="请输入收货单位"
           @change='filterClients'>
         </el-input>
+        <el-button size='medium' type="primary" @click="filterClients">搜索</el-button>
       </div>
-      <el-button size='medium' type="primary" @click="filterClients">搜索</el-button>
+      
       <div class="buttons">
         <el-button size='medium' type="primary" @click='isShowAddCustom=!isShowAddCustom'>新增</el-button>
         <el-button size='medium' class="output" @click='handleOutput'>导出</el-button>
@@ -249,7 +250,7 @@ export default {
     display: inline-block;
   }
   .selectAddress {
-    width: 300px;
+    width: 400px;
     .el-input {
       width: 200px;
     }

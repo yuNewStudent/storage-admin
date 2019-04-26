@@ -4,9 +4,9 @@
     :type='type'
     :btns='btns'>
     <div class="content">
-      <label><span>*</span>供货单位:</label>
+      <label><span>*</span>收货单位:</label>
       <el-input size='small' v-model='client.purchaser'></el-input>
-      <label for=""><span>*</span>供货地选择:</label>
+      <label for=""><span>*</span>收货单位地址:</label>
       <el-input
         v-model='client.address'
         size='small'>
@@ -54,12 +54,12 @@ export default {
       if (bol) {
         // 输入框不能为空
         for (let key in this.client) {
-          if (!this.client[key]) {
-            return this.$message({
-              showClose: true,
-              message: '警告! 客户信息不能有空,请完善信息提交',
+          if (k !== 'email') {
+            this.$message({
+              message: '信息不能为空',
               type: 'warning'
             })
+            return
           }
         }
         if (this.selectClient) {
