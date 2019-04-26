@@ -32,7 +32,6 @@
           订单状态:
           <el-select
               @change='filterOrder'
-              size='medium'
               v-model="filter.status"
               placeholder="请选择"
               clearable
@@ -45,11 +44,9 @@
             </el-option>
           </el-select>
         </div>
+        <el-button type='primary' @click='handleOutput'>导出</el-button>
     </el-header>
     <el-main>
-      <el-header>
-        <el-button type='primary' size='small' @click='handleOutput'>导出</el-button>
-      </el-header>
       <el-table
         :data="paginationData"
         border
@@ -281,14 +278,23 @@ export default {
   margin: 20px 0px 0 0;
   .el-header {
     overflow: hidden;
+    > div {
+      display: inline-block;
+    }
     .select_company {
       float: left;
     }
     .select_date {
       float: left;
-      margin-left: 50px;
+      margin-left: 20px;
     }
     .select_goods_name {
+      margin-left: 20px; 
+      .el-select {
+        width: 150px;
+      }
+    }
+    .el-button {
       float: right;
     }
   }

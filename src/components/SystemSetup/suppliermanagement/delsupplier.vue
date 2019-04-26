@@ -53,7 +53,6 @@ export default {
                   return
                 }
         })
-        this.$emit('hideDelSupplier',)
       } else {
         this.$emit("hideDelSupplier")
       }
