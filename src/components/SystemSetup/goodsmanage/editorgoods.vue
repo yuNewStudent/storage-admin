@@ -56,11 +56,16 @@
               <label for=""><span>*</span>商品预警数:</label>
               <label for="">最高库存预警:</label>
               <el-input
-                v-model="goodsInfo.waring_quantity_min"
+                type="number"
+                :controls=false
+                v-model="goodsInfo.waring_quantity_max"
                 size='small'></el-input>
               <label for="">最低库存预警:</label>
               <el-input
-                v-model="goodsInfo.waring_quantity_max"
+               type="number"
+                :controls=false
+                :max="goodsInfo.waring_quantity_max"
+                v-model="goodsInfo.waring_quantity_min"
                 size='small'></el-input>
             </div>
             <label for="">采购单价:</label>
