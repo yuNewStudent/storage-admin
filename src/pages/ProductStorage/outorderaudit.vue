@@ -269,6 +269,7 @@ export default {
             receipt_no: this.receipt_no,
           }).then(res=>{
           if(res.status==1){
+            console.log(res)
             this.datalist=res.content;
           }else{
             return
