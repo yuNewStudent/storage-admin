@@ -518,6 +518,7 @@ export default {
 .writewarehousereceipt_unitl {
   float: left;
 }
+
 .writewarehousereceipt_unitr {
   line-height: 30px;
   float: right;
