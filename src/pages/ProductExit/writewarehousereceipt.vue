@@ -116,7 +116,7 @@
               v-model="orders[scope.$index].unit"></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="所在仓库" width='150'>
+        <el-table-column label="所在货位" width='150'>
           <template slot-scope="scope">
             <el-select 
                 size='mini'
@@ -308,8 +308,8 @@ export default {
       ],
       // 仓库
       allStorage: [
-        {name: "仓库1"},
-        {name: "仓库2"}
+        // {name: "仓库1"},
+        // {name: "仓库2"}
       ],
       // 收货单位
       clients: [
@@ -504,6 +504,7 @@ export default {
     // 获取所有仓库
     this.$http.post(`${config.httpBaseUrl}/storage/get_all_repertory/`).then(res => {
       if (res.status === 1) {
+        console.log(res)
         this.allStorage = res.content
       }
     })
