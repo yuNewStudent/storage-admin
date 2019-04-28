@@ -530,7 +530,7 @@ export default {
 .writewarehousereceipt_unitr span {
   border-bottom: 1px solid #777777;
   color: #000;
-}
+}v
 .writewarehousereceipt_operationl {
   float: left;
   margin-left: 60px;
