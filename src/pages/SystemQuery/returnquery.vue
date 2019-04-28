@@ -46,14 +46,14 @@
         <el-table-column prop="address" label="单位"></el-table-column>
         <el-table-column prop="address" label="所在库位"></el-table-column>
         <el-table-column prop="name" label="条形码"></el-table-column>
-        <el-table-column prop="address" label="申请出库数量"></el-table-column>
+        <el-table-column prop="address" label="出库数量"></el-table-column>
         <el-table-column prop="address" label="归还入库数">
         </el-table-column>
         <el-table-column label="商品单价">
         </el-table-column>
-        <el-table-column prop="name" label="生产日期"></el-table-column>
+        <!-- <el-table-column prop="name" label="生产日期"></el-table-column>
         <el-table-column prop="name" label="保质期"></el-table-column>
-        <el-table-column prop="name" label="到期时间"></el-table-column>
+        <el-table-column prop="name" label="到期时间"></el-table-column> -->
         <el-table-column prop="name" label="到期时间预警"></el-table-column>
         <el-table-column label="归还理由">
         </el-table-column>
