@@ -47,14 +47,16 @@
         </el-table-column>
          <el-table-column label="操作" prop="datetime">
           <template slot-scope="scope">
-        <!-- <el-button
+        <el-button
          v-if='scope.row.status=="1"'
           size="mini"
-          @click="handleEdit(scope.$index, scope.row)">商品盘点</el-button>
+          disabled
+          >商品盘点</el-button>
           <el-button
+          disabled
           v-if='scope.row.status=="2"'
           size="mini"
-          @click="handleEdit(scope.$index, scope.row)">商品盘点</el-button> -->
+          >商品盘点</el-button>
           <el-button
           v-if='scope.row.status=="3"'
           size="mini"
