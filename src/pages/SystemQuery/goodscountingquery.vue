@@ -52,33 +52,33 @@
         </el-table-column>
         <el-table-column prop='name' label="商品名称">
         </el-table-column>
-        <el-table-column prop='goodsCode' label="商品编码">
+        <el-table-column prop='medicine_no' label="商品编码">
         </el-table-column>
         <el-table-column prop='specification' label="规格型号">
         </el-table-column>
         <el-table-column prop='unit' label="单位">
         </el-table-column>
-        <el-table-column prop='goodsStorage' label="所在货位">
+        <el-table-column prop='location' label="所在货位">
         </el-table-column>
-        <el-table-column prop='currentNum' label="当前库存">
+        <el-table-column prop='stock_quantity' label="当前库存">
         </el-table-column>
-         <el-table-column prop="address" label="盘点库存">
+         <el-table-column prop="check_stock" label="盘点库存">
          </el-table-column>
-        <el-table-column prop='supplier' label="采购单价">
+        <el-table-column prop='estimated_price' label="采购单价">
         </el-table-column>
-        <el-table-column prop="address" label="购入时间"></el-table-column>
+        <el-table-column prop="in_storage_time" label="购入时间"></el-table-column>
         <el-table-column prop="date_manufacture" label="生产日期"></el-table-column>
         <el-table-column prop="shelf_life" label="保质期"></el-table-column>
         <el-table-column prop="expired_time" label="到期时间"></el-table-column>
-        <!-- <el-table-column prop="address" label="预警时间"></el-table-column> -->
-        <el-table-column prop="address" label="上次入库时间"></el-table-column>
+        <!-- <el-table-column prop="expired_time_warning" label="预警时间"></el-table-column> -->
+        <el-table-column prop="last_in_storage_time" label="上次入库时间"></el-table-column>
         <!-- <el-table-column prop="address" label="库管员"></el-table-column>
         <el-table-column prop="address" label="联系电话"></el-table-column> -->
-        <el-table-column prop="address" label="状态">
+        <el-table-column prop="status" label="状态">
         </el-table-column>
-        <el-table-column prop="address" label="盘点时间">
+        <el-table-column prop="datetime" label="盘点时间">
         </el-table-column>
-        <el-table-column prop="address" label="盈亏原因">
+        <el-table-column prop="reason" label="盈亏原因">
         </el-table-column>
       </el-table>
       <div class="block">
@@ -99,36 +99,7 @@
 export default {
   data() {
     return {
-      orders: [
-        // // {
-        // //   goodsCategory: '医用物资',
-        // //   goodsName: '阿莫西林',
-        // //   goodsCode: '123',
-        // //   goodsModel: '1/23/4',
-        // //   goodsUnit: '箱',
-        // //   goodsStorage: 'a区101',
-        // //   currentNum: 12,
-        // //   goodsMinNum: 20,
-        // //   goodsMaxNum: 100,
-        // //   price: 23,
-        // //   remark: '',
-        // //   // status: '',
-        // //   // orderCode: '',
-        // //   // writeDate: '',
-        // //   // operatorUser: '',
-        // //   // purpose: '',
-        // // }
-        // {
-        //   date: "哈哈哈",
-        //   name: "王小虎",
-        //   address: "1518 弄"
-        // },
-        // {
-        //   date: "话啊哈哈哈",
-        //   name: "王小虎",
-        //   address: "1517 弄"
-        // }
-      ],
+      orders: [],
       ordersStatus: [
         {
           label: '正常',
@@ -161,7 +132,7 @@ export default {
   },
   components: {},
   created(){
-    this.warehouse()
+    this.getOrders()
     // 获取所有仓库
     this.$http.post(`${config.httpBaseUrl}/storage/get_all_repertory/`).then(res => {
       if (res.status === 1) {
@@ -171,29 +142,25 @@ export default {
   },
   methods: {
     // 获取所有盘点订单
-    warehouse(){
+    getOrders(){
       const data = {
-        all: 1,
-        repertory: "",
-        goods_name: '',
-        status: -1
+        all: 1
       }
       this.$http.post(`${config.httpBaseUrl}/medicine/query_inventory/`,data).then(res => {
-             if(res.status==1){
-               this.orders=res.content
-                
-              // 刚打开页面时加载前pageSize项、且自动生成分页数量
-              this.getPaginationData(this.currentPage)
-             }else{
-               return
-             }
-        })
+        if(res.statuscode==1){
+          this.orders = res.result
+          // 刚打开页面时加载前pageSize项、且自动生成分页数量
+          this.getPaginationData(this.currentPage)
+        }else{
+          return
+        }
+      })
     },
     // 筛选
     handleFilter () {
       const bol = this.filter.repertory || this.filter.goods_name ||  (this.filter.status + '').length
       if (!bol) {
-        this.warehouse()
+        this.getOrders()
       } else {
         const data = {
           all: 0,
@@ -203,6 +170,8 @@ export default {
         }
         this.$http.post(`${config.httpBaseUrl}/medicine/query_inventory/`, data)
         .then(res=>{
+          
+          console.log(res)
           if (res.statuscode === 1) {
             this.orders = res.result
             // 刚打开页面时加载前pageSize项、且自动生成分页数量
