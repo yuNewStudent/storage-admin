@@ -24,6 +24,7 @@
           size="medium"
           clearable
           filterable
+          filterOrders
           @change="filterOrders"
           v-model="filter.ordersStatu" >
           <el-option
@@ -146,6 +147,7 @@ export default {
   data() {
     return {
       show:'',
+      multiSelection:[],
       filter: {
         applicant: '',
         ordersStatu: '',
@@ -294,7 +296,18 @@ export default {
         })
     },
     handleOutput(){
-      console.log(121);
+       var list=this.multipleSelection;
+        this.$http.post(`${config.httpBaseUrl}/medicine/export_out_receipt_excel/`,list).then(res=>{
+           if(res.status==1){
+             console.log(res);
+           }else{
+            //  this.$message({
+            //   showClose: true,
+            //   message:res.content,
+            //   type: 'warning'
+            // });
+           }
+        })
     },
     // 分页
     getPaginationData (pageIndex) {

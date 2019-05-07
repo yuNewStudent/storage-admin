@@ -349,6 +349,7 @@ export default {
       handleOutput(){
         var list=this.multiSelection;
         this.$http.post(`${config.httpBaseUrl}/medicine/export_in_receipt_excel/`,list).then(res=>{
+          console.log(res);
            if(res.status==1){
              console.log(res);
            }else{
