@@ -24,7 +24,6 @@
           size="medium"
           clearable
           filterable
-          filterOrders
           @change="filterOrders"
           v-model="filter.ordersStatu" >
           <el-option
@@ -189,6 +188,9 @@ export default {
     this.getApplicants()
   },
   methods: {
+    // handleSelectionChange(val){
+    //     this.multiSelection = val;
+    // },
     //获取申请人
     getApplicants(){
       this.$http.post(`${config.httpBaseUrl}/man/get_all_employee/`).then(res=>{
@@ -297,17 +299,21 @@ export default {
     },
     handleOutput(){
        var list=this.multipleSelection;
-        this.$http.post(`${config.httpBaseUrl}/medicine/export_out_receipt_excel/`,list).then(res=>{
-           if(res.status==1){
-             console.log(res);
-           }else{
-            //  this.$message({
-            //   showClose: true,
-            //   message:res.content,
-            //   type: 'warning'
-            // });
-           }
-        })
+        this.$http.post(`${config.httpBaseUrl}/medicine/export_out_receipt_excel/`,list,{responseType:'arraybuffer'}).then(res=>{
+           let blob = new Blob([res], {type: "application/vnd.ms-excel"}); 
+        if ('download' in document.createElement('a')) { // 非IE下载
+          const elink = document.createElement('a')
+          elink.download = "出库单查询.xlsx"
+          elink.style.display = 'none'
+          elink.href = URL.createObjectURL(blob)
+          document.body.appendChild(elink)
+          elink.click()
+          URL.revokeObjectURL(elink.href) // 释放URL 对象
+          document.body.removeChild(elink)
+        } else { // IE10+下载
+          navigator.msSaveBlob(blob, fileName)
+        }
+          });
     },
     // 分页
     getPaginationData (pageIndex) {

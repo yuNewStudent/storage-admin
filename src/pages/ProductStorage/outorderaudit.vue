@@ -348,18 +348,26 @@ export default {
       },
       handleOutput(){
         var list=this.multiSelection;
-        this.$http.post(`${config.httpBaseUrl}/medicine/export_in_receipt_excel/`,list).then(res=>{
-          console.log(res);
-           if(res.status==1){
-             console.log(res);
-           }else{
-             this.$message({
-              showClose: true,
-              message:res.content,
-              type: 'warning'
-            });
-           }
-        })
+        this.$http.post(`${config.httpBaseUrl}/medicine/export_in_receipt_excel/`,list,{responseType:'arraybuffer'}).then(res=>{
+       let blob = new Blob([res], {type: "application/vnd.ms-excel"}); 
+        if ('download' in document.createElement('a')) { // 非IE下载
+          const elink = document.createElement('a')
+          elink.download = "入库单查询.xlsx"
+          elink.style.display = 'none'
+          elink.href = URL.createObjectURL(blob)
+          document.body.appendChild(elink)
+          elink.click()
+          URL.revokeObjectURL(elink.href) // 释放URL 对象
+          document.body.removeChild(elink)
+        } else { // IE10+下载
+          navigator.msSaveBlob(blob, fileName)
+        }
+
+      //  var blob = new Blob([res], {type: 'application/vnd.ms-excel'})
+      //   let objURl = URL.createObjectURL(blob)
+      //   window.location.href = objURl
+
+        });
       },
     // 分页
     getPaginationData (pageIndex) {
