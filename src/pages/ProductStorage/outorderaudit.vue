@@ -60,6 +60,7 @@
         border
         size='small'
         highlight-current-row
+        @selection-change="handleSelectionChange"
         style="width: 100%">
         <el-table-column
           type="selection"
@@ -178,6 +179,7 @@ export default {
       receipt_no:"",
       value:"",
       name:"",
+      multiSelection:[],
       orders: [
         // {
         //   receipt_no: '哈德',
@@ -210,6 +212,9 @@ export default {
     this.applicantlist()
   },
   methods:{
+    handleSelectionChange(val){
+        this.multiSelection = val;
+    },
     //入库单审核人
     applicantlist(){
       this.$http.post(`${config.httpBaseUrl}/man/get_all_employee/`).then(res=>{
@@ -342,7 +347,18 @@ export default {
         })
       },
       handleOutput(){
-        
+        var list=this.multiSelection;
+        this.$http.post(`${config.httpBaseUrl}/medicine/export_in_receipt_excel/`,list).then(res=>{
+           if(res.status==1){
+             console.log(res);
+           }else{
+             this.$message({
+              showClose: true,
+              message:res.content,
+              type: 'warning'
+            });
+           }
+        })
       },
     // 分页
     getPaginationData (pageIndex) {
