@@ -25,19 +25,8 @@
           <template slot-scope="scope">
             <el-select
               size='mini'
-              v-if='!isEditor'
+              :disabled='isEditor'
               v-model="orders[scope.$index].client" placeholder="请选择">
-              <el-option
-                v-for="item in clients"
-                :key="item.value"
-                :label="item.purchaser"
-                :value="item.purchaser">
-              </el-option>
-            </el-select>
-            <el-select
-              size='mini'
-              v-else
-              v-model="orders[scope.$index].client" disabled  placeholder="请选择">
               <el-option
                 v-for="item in clients"
                 :key="item.value"
@@ -52,20 +41,7 @@
           <template slot-scope="scope">
             <el-select
               size='mini'
-               v-if='!isEditor'
-              v-model="orders[scope.$index].category"
-              placeholder="请选择">
-              <el-option
-                v-for="item in categories"
-                :key="item.value"
-                :label="item.category"
-                :value="item.category">
-              </el-option>
-            </el-select>
-            <el-select
-              size='mini'
-              v-else
-              disabled
+              :disabled='isEditor'
               v-model="orders[scope.$index].category"
               placeholder="请选择">
               <el-option
@@ -82,23 +58,9 @@
             <el-select
               v-model="orders[scope.$index].goods_name"
               size='mini'
-              v-if='!isEditor'
+              :disabled='isEditor'
               placeholder="请选择"
               @focus="getGoods(scope.row.category)"
-              @change='selectGoodsName(orders[scope.$index].goods_name)'>
-              <el-option
-                v-for="item in goodses"
-                :key="item.name"
-                :label="item.name"
-                :value="item.name">
-              </el-option>
-            </el-select>
-            <el-select
-              v-model="orders[scope.$index].goods_name"
-              size='mini'
-              v-else
-              disabled
-              placeholder="请选择"
               @change='selectGoodsName(orders[scope.$index].goods_name)'>
               <el-option
                 v-for="item in goodses"
@@ -210,22 +172,19 @@
         <el-table-column label="回退理由" v-if='isEditor'>
            <template slot-scope="scope">
             <el-input
-             :disabled="true"
+              :disabled='isEditor'
               size='mini'
               v-model="orders[scope.$index].reason_return"></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="操作"
-        v-if="isEditor">
-          <template slot-scope="scope">
-            <el-button
-            :disabled="true"
-              @click='handleDelOrder(scope.row, scope.$index)'
-              size='mini'>删除</el-button>
+        <el-table-column label="是否退换" v-if='!isEditor'>
+           <template slot-scope="scope">
+            <el-radio v-model="orders[scope.$index].is_return" label="1">是</el-radio>
+            <el-radio v-model="orders[scope.$index].is_return" label="2">否</el-radio>
           </template>
         </el-table-column>
         <el-table-column label="操作"
-        v-if="!isEditor">
+          v-if="!isEditor">
           <template slot-scope="scope">
             <el-button
               @click='handleDelOrder(scope.row, scope.$index)'
@@ -289,6 +248,7 @@ export default {
           client_phone: '',
           purpose: '',
           apply_comment: '',
+          is_return: ''
         },
       ],
       // 商品类别
@@ -388,7 +348,8 @@ export default {
           client_contact: '',
           client_phone: '',
           purpose: '',
-          apply_comment: ''
+          apply_comment: '',
+          is_return: ''
         }
       )
     },
@@ -421,9 +382,9 @@ export default {
               return v;
             })
         }else{
-           multipleSelection=this.orders;
+          multipleSelection = this.orders
         }
-        console.log(multipleSelection);
+        console.log(multipleSelection)
         // 信息不能为空
         // 向后台发送订单请求
         this.$http.post(`${config.httpBaseUrl}/medicine/add_outStorageReceipt/`,multipleSelection).then(res => {
@@ -553,5 +514,8 @@ export default {
 }
   .header {
     margin: 0 0 10px;
+  }
+  .el-radio{
+    margin: 0;
   }
 </style>
