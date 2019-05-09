@@ -4,6 +4,9 @@
       @closeMessageBox='hideSetDepartment'
       :type='type'
       :btns='btns'>
+      <div style="margin-left: 33px;margin-top: 14px;">
+        <el-button @click='addPartment' type="primary">新增</el-button>
+      </div>
       <div
         class="setDepartment_wrapper">
         <el-table

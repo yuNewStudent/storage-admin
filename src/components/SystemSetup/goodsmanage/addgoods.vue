@@ -29,7 +29,7 @@
             <el-input
               size='small'
                v-model='goodsInfo.code'></el-input> -->
-            <label for=""><span>*</span>所在货位:</label>
+            <!-- <label for=""><span>*</span>所在货位:</label>
             <el-select
               v-model="goodsInfo.location"
               placeholder="请选择"
@@ -40,7 +40,7 @@
                 :label="item.starge_rack"
                 :value="item.starge_rack">
               </el-option>
-            </el-select>
+            </el-select> -->
             <label for=""><span>*</span>单位:</label>
             <el-input size='small' v-model='goodsInfo.unit'></el-input>
             
@@ -134,7 +134,7 @@ export default {
         category:"",
         name:"",
         unit:"",
-        location:"",
+        // location:"",
         stock_quantity:"",
         waring_quantity_min:"",
         waring_quantity_max:"",

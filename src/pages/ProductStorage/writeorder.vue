@@ -3,7 +3,7 @@
     <el-header>
       <el-row class="btns">
         <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
-        <el-button type="primary" size="medium" @click="handleOut">导出</el-button>
+        <!-- <el-button type="primary" size="medium" @click="handleOut">导出</el-button> -->
       </el-row>
     </el-header>
     <el-main class="writeorder_list">

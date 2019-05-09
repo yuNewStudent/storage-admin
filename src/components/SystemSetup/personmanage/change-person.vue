@@ -80,11 +80,13 @@ export default {
         // 信息不能为空
         for (var k in this.userInfo) {
           if (!(this.userInfo[k] + '')) {
+            if (k !== 'phone') {
             this.$message({
               message: '信息不能为空',
               type: 'warning'
             })
             return
+             }
           }
         }
         // 修改人员

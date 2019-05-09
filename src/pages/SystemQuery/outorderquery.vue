@@ -33,7 +33,7 @@
       </div>
     </el-header>
     <div class="outorderquery_list">
-      <el-table :data="paginationData" border style="width: 100%">
+      <el-table :data="paginationData"  @selection-change="handleSelectionChange" border style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="client" label="收货单位">
@@ -70,6 +70,7 @@
   </div>
 </template>
 <script>
+import outputTable from '@/assets/js/outputTable'
 export default {
   data() {
     return {
@@ -101,6 +102,7 @@ export default {
       // 分页
       currentPage: 1,
       paginationData: [],
+      goodsmalist:[],
       pageSize: 5
     };
   },
@@ -130,6 +132,9 @@ export default {
           }
         })
       }
+    },
+    handleSelectionChange (val) {
+      this.goodsmalist=val;
     },
     // 获取所有出库单
     getOutorders () {
@@ -168,7 +173,29 @@ export default {
       this.getPaginationData(val)
     },
     buttonsave: function() {},
-    buttonaudit: function() {}
+    buttonaudit(){
+      var title="出库单查询.cvs";
+      var name=[
+        {value:"收获单位"},
+        {value:"订单编号"},
+        {value:"商品类别"},
+        {value:"商品名称"},
+        {value:"商品规格"},
+        {value:"单位"},
+        {value:"所在仓库"},
+        {value:"出库数量"},
+        {value:"商品单价"},
+        {value:"商品总价"},
+        {value:"申请人"},
+        {value:"收获地址"},
+        {value:"收获人"},
+         {value:"联系电话"},
+         {value:"出库用途"},
+         {value:"出库日期"},
+         {value:"备注"},
+      ]
+      outputTable(this.goodsmalist,name,title)
+    }
   }
 };
 </script>

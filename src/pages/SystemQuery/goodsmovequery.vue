@@ -17,13 +17,13 @@
           type="date">
         </el-date-picker>
       </div>
-      <el-button type="primary">搜索</el-button>
+      <!-- <el-button type="primary">搜索</el-button> -->
       <div class="out_put">
         <el-button type="primary" size="medium" @click="buttonaudit">导出</el-button>
       </div>
     </el-header>
     <div class="goodsmovequery_list">
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table :data="tableData" @selection-change="handleSelectionChange" border style="width: 100%">
         <el-table-column type='selection'></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="category" label="商品类别"></el-table-column>
@@ -50,6 +50,7 @@
   </div>
 </template>
 <script>
+import outputTable from '@/assets/js/outputTable'
 export default {
   data() {
     return {
@@ -113,6 +114,7 @@ export default {
         user: "",
         region: ""
       },
+      goodsmalist:[],
       options: [
         {
           value: "选项1",
@@ -161,6 +163,9 @@ export default {
           }
         });
     },
+     handleSelectionChange (val) {
+      this.goodsmalist=val;
+    },
     buttonModifythe: function() {
       if (this.show == false) {
         this.show = true;
@@ -179,7 +184,19 @@ export default {
         console.log(`当前页: ${val}`);
       },
     buttonsave: function() {},
-    buttonaudit: function() {}
+    buttonaudit: function() {
+       var title="移库查询.cvs";
+      var name=[
+        {value:"商品类别"},
+        {value:"商品名称"},
+        {value:"移出数量"},
+        {value:"移出仓库"},
+        {value:"移入库存"},
+        {value:"移库时间"},
+        {value:"备注"},
+      ]
+      outputTable(this.goodsmalist,name,title)
+    }
   }
 };
 </script>
