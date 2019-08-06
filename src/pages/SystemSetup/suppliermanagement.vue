@@ -149,6 +149,7 @@ export default {
     }
   },
   supplier:"",
+  goodsmalist:[],
   components: {
     ChangeSupplier,
     DelSupplier
@@ -221,7 +222,15 @@ export default {
       },
     // 导出表格
     handleOutput () {
-      outputTable(tableData3)
+       var title="供应商管理.cvs";
+      var name=[
+        {value:"供应单位"},
+        {value:"供应位置"},
+        {value:"联系人"},
+        {value:"联系电话"},
+        {value:"状态"},
+      ]
+      outputTable(this.multipleSelection,name,title)
     },
     
     // 分页

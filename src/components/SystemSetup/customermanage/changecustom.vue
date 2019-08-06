@@ -53,13 +53,15 @@ export default {
     changeCustom (bol) {
       if (bol) {
         // 输入框不能为空
-        for (let key in this.client) {
-          if (k !== 'email') {
+        for (var k in this.client) {
+          if (!(this.client[k] + '')) {
+            if (k !== 'email') {
             this.$message({
               message: '信息不能为空',
               type: 'warning'
             })
             return
+             }
           }
         }
         if (this.selectClient) {

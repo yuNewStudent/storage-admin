@@ -45,7 +45,7 @@
       </div>
     </el-header>
     <div class="stockquery_list">
-      <el-table size="mini" :data="paginationData" border style="width: 100%">
+      <el-table size="mini" :data="paginationData" @selection-change="handleSelectionChange" border style="width: 100%">
         <el-table-column type="selection"></el-table-column>
         <el-table-column label='序号' type="index"></el-table-column>
         <el-table-column prop="barcode" label="条形码"></el-table-column>
@@ -88,6 +88,7 @@
   </div>
 </template>
 <script>
+import outputTable from '@/assets/js/outputTable'
 export default {
   data() {
     return {
@@ -105,6 +106,7 @@ export default {
           id: 2
         }
       ],
+       goodsmalist:[],
       orders: [
         // {
         //   category: "医药",
@@ -150,6 +152,9 @@ export default {
   },
   methods: {
     // 筛选
+     handleSelectionChange (val) {
+      this.goodsmalist=val;
+    },
     // 筛选条件为空
     handleFilter () {
       const bol = this.filter.repertory || (this.filter.status + '').length || this.filter.goods_name
@@ -190,8 +195,30 @@ export default {
           }
         });
     },
+    
     // 导出
-    handleOutput: function() {},
+    handleOutput: function() {
+       var title="库存查询.cvs";
+      var name=[
+        {value:"条形码"},
+        {value:"商品类别"},
+        {value:"商品名称"},
+        {value:"商品编码"},
+        {value:"规格幸好"},
+        {value:"单位"},
+        {value:"所在货位"},
+        {value:"商品库存"},
+        {value:"采购单价"},
+        {value:"购入时间"},
+        {value:"生产日期"},
+        {value:"保质期"},
+        {value:"到期时间"},
+        {value:"预警时间"},
+        {value:"上次入库时间"},
+        {value:"状态"},
+      ]
+      outputTable(this.goodsmalist,name,title)
+    },
     // 分页
     getPaginationData (pageIndex) {
       const start = (pageIndex - 1) * this.pageSize

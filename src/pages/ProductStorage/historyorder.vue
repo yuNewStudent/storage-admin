@@ -52,6 +52,7 @@
         :data="paginationData"
         border
         size='small'
+        @selection-change="handleSelectionChange"
         style="width: 100%">
         <el-table-column
           type="selection"
@@ -187,16 +188,40 @@ export default {
       // 分页
       currentPage: 1,
       paginationData: [],
-      pageSize: 5
+      pageSize: 5,
+      multiSelection:[],
     }
   },
   computed: {
   },
   methods: {
-    // 导出表单
-    handleOutput () {
-      outputTable (this.orders)
+    handleSelectionChange(val){
+        this.multiSelection = val;
     },
+    // 导出表单
+    handleOutput(){
+        var list=this.multiSelection;
+        this.$http.post(`${config.httpBaseUrl}/medicine/export_in_receipt_excel/`,list,{responseType:'arraybuffer'}).then(res=>{
+       let blob = new Blob([res], {type: "application/vnd.ms-excel"}); 
+        if ('download' in document.createElement('a')) { // 非IE下载
+          const elink = document.createElement('a')
+          elink.download = "历史订货单查询.xlsx"
+          elink.style.display = 'none'
+          elink.href = URL.createObjectURL(blob)
+          document.body.appendChild(elink)
+          elink.click()
+          URL.revokeObjectURL(elink.href) // 释放URL 对象
+          document.body.removeChild(elink)
+        } else { // IE10+下载
+          navigator.msSaveBlob(blob, fileName)
+        }
+
+      //  var blob = new Blob([res], {type: 'application/vnd.ms-excel'})
+      //   let objURl = URL.createObjectURL(blob)
+      //   window.location.href = objURl
+
+        });
+      },
 
     // 分页
     getPaginationData (pageIndex) {

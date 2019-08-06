@@ -43,7 +43,7 @@
       <el-button type="primary" size="medium" @click="buttonaudit" class="output">导出</el-button>
     </el-header>
     <el-main>
-      <el-table size='mini' :data="paginationData" border style="width: 100%" :cell-style='warningStyle'>
+      <el-table size='mini' :data="paginationData" @selection-change="handleSelectionChange" border style="width: 100%" :cell-style='warningStyle'>
         <el-table-column type='selection'>
         </el-table-column>
         <el-table-column prop='barcode' label="条形码">
@@ -96,6 +96,7 @@
   </div>
 </template>
 <script>
+import outputTable from '@/assets/js/outputTable'
 export default {
   data() {
     return {
@@ -114,6 +115,7 @@ export default {
           id: 2
         }
       ],
+       goodsmalist:[],
       filter: {
         repertory: '',
         goods_name: '',
@@ -156,6 +158,9 @@ export default {
         }
       })
     },
+     handleSelectionChange (val) {
+      this.goodsmalist=val;
+    },
     // 筛选
     handleFilter () {
       const bol = this.filter.repertory || this.filter.goods_name ||  (this.filter.status + '').length
@@ -192,7 +197,32 @@ export default {
       this.getPaginationData(val)
     },
     buttonsave: function() {},
-    buttonaudit: function() {},
+    buttonaudit: function() {
+        var title="盘点查询.cvs";
+      var name=[
+        {value:"条形码"},
+        {value:"商品名称"},
+        {value:"当前库存"},
+        {value:"盘点库存"},
+        // {value:"规格型号"},
+        {value:"购入时间"},
+        {value:"所在货位"},
+        {value:"商品类别"},
+        {value:"商品编码"},
+        {value:"规格型号"},
+        {value:"单位"},
+        {value:"盘点原因"},
+        {value:"采购单价"},
+        {value:"购入日期"},
+        {value:"生产日期"},
+        {value:"保质期"},
+        {value:"到期时间"},
+        {value:"上次入库时间"},
+         {value:"盘点时间"},
+         {value:"状态"},
+      ]
+      outputTable(this.goodsmalist,name,title)
+    },
     warningStyle (row, column, rowIndex, columnIndex) {
       if (row.column.label === '最小值' || row.column.label === '最大值' ||row.column.label === '预警时间') {
         return 'background: pink' 

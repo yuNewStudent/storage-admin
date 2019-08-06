@@ -39,7 +39,9 @@
         :data="paginationData"
         border
         size='small'
-        style="width: 100%">
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+        >
         <el-table-column
           type="selection"
           width="55">
@@ -68,7 +70,7 @@
         <el-table-column prop="expired_time" label="到期时间"></el-table-column>
         <el-table-column prop="expired_time_warning" label="到期时间预警"></el-table-column>
         <el-table-column prop="in_storage_time" label="入库时间"></el-table-column>
-        <el-table-column prop="applicant" label="申请人"></el-table-column>
+        <!-- <el-table-column prop="applicant" label="申请人"></el-table-column> -->
         <el-table-column prop="purpose" label="申请用途"></el-table-column>
       </el-table>
        <div class="block">
@@ -86,11 +88,13 @@
   </div>
 </template>
 <script>
+import outputTable from '@/assets/js/outputTable'
 export default {
   data() {
     return {
       // 分页
       currentPage: 1,
+      goodsmalist:[],
       paginationData: [],
       pageSize: 5,
       filter: {
@@ -129,6 +133,10 @@ export default {
     this.getOrders();
   },
   methods: {
+    handleSelectionChange (val) {
+      console.log(val)
+      this.goodsmalist=val;
+    },
     // 获取所有入库单
      getOrders(){
       this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, {
@@ -158,7 +166,7 @@ export default {
         }
         this.$http.post(`${config.httpBaseUrl}/medicine/query_in_storage/`, data).then(res=>{
           if (res.status === 1) {
-            this.purchaseOrders = res.content
+            this.purchaseOrders = res.content;
             // 刚打开页面时加载前pageSize项、且自动生成分页数量
             this.getPaginationData(1)
           }
@@ -176,7 +184,30 @@ export default {
       this.currentPage = val
       this.getPaginationData(val)
     },
-    buttonaudit: function() {}
+    buttonaudit() {
+      var title="入库单查询.cvs";
+      var name=[
+        {value:"采购订单号"},
+        {value:"供应商"},
+        {value:"商品类别"},
+        {value:"商品名称"},
+        {value:"商品规格"},
+        {value:"单位"},
+        {value:"所在仓库"},
+        {value:"条形码"},
+        {value:"入库数量"},
+        {value:"生产日期"},
+        {value:"保质期"},
+        {value:"到期时间"},
+        {value:"到期预警时间"},
+        {value:"商品总价"},
+        {value:"商品单价"},
+        {value:"申请人"},
+        {value:"申请用途"},
+        {value:"入库时间"},
+      ]
+      outputTable(this.goodsmalist,name,title)
+    }
   },
   created () {
   }

@@ -128,6 +128,7 @@ export default {
         index: '',
         client: {}
       },
+      multipleSelection:[],
       isShowDelCustom: false,
       isShowEditorCustom: false,
       isShowAddCustom: false,
@@ -197,7 +198,16 @@ export default {
     },
     // 导出表格
     handleOutput () {
-      outputTable(this.tableData3)
+     var title="客户管理.cvs";
+      var name=[
+        {value:"收获单位"},
+        {value:"收获地址"},
+        {value:"姓名"},
+        {value:"电话"},
+        {value:"邮箱"},
+        {value:"操作"},
+      ]
+      outputTable(this.multipleSelection,name,title)
     },
     // 获取客户
     getClient (purchaser, address) {
@@ -211,7 +221,9 @@ export default {
       })
     },
     // 选中项改变
-    handleSelectionChange () {},
+    handleSelectionChange (val) {
+      this.multipleSelection=val;
+    },
     
     //筛选客户
     filterClients () {

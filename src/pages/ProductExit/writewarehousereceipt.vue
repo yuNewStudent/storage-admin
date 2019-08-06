@@ -5,7 +5,7 @@
       <div class="writewarehousereceipt_operationr">
         <el-row>
           <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
-          <el-button type="primary" size="medium" @click="handleOut">导出</el-button>
+          <!-- <el-button type="primary" size="medium" @click="handleOut">导出</el-button> -->
         </el-row>
       </div>
     </div>
@@ -248,7 +248,7 @@ export default {
           client_phone: '',
           purpose: '',
           apply_comment: '',
-          is_return: ''
+          is_return:'2'
         },
       ],
       // 商品类别

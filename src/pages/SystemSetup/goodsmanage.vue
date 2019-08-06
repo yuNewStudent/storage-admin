@@ -130,6 +130,7 @@ export default {
         index: '',
         allgoods: []
       },
+      goodsmalist:[],
       Editor:{},
       messageBoxType: {
         add: '商品管理>新增',
@@ -257,8 +258,8 @@ export default {
       // this.allgoods=this.allgood;
       this.isShowEditorGoods = false
     },
-    handleSelectionChange () {
-      console.log(1)
+    handleSelectionChange (val) {
+      this.goodsmalist=val;
     },
     handleDelGoods (index,row) {
       this.delgood={
@@ -282,7 +283,22 @@ export default {
     },
     //导出表格
     handleOutput () {
-      outputTable(this.tableData3)
+      var title="商品管理.cvs";
+      var name=[
+        {value:"序号"},
+        {value:"条形码"},
+        {value:"商品类别"},
+        {value:"商品名称"},
+        {value:"单位"},
+        {value:"所在仓库"},
+        {value:"当前库存"},
+        {value:"商品警数最小值"},
+        {value:"商品警数最大值"},
+        {value:"预估单价"},
+        {value:"备注"},
+        {value:"状态"},
+      ]
+      outputTable(this.goodsmalist,name,title)
     },
     // 分页
     getPaginationData (pageIndex) {

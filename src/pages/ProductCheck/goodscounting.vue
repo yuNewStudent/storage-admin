@@ -42,7 +42,7 @@
           placeholder="请输入商品名称"></el-input>
       </div>
       <el-button type="primary" @click="goodsearch()">搜索</el-button>
-      <el-button type="primary" size="medium" @click="handleOut" class="output">导出</el-button>
+      <!-- <el-button type="primary" size="medium" @click="handleOut" class="output">导出</el-button> -->
     </el-header>
     <el-main>
       <el-table

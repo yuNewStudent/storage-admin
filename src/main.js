@@ -9,6 +9,7 @@ import Moment from 'moment'
 import store from './store'
 import App from './App'
 var VueCookie = require('vue-cookie');
+var Blob = require('blob');
 // Tell Vue to use the plugin
 Vue.use(VueCookie)
 Vue.config.productionTip = false
