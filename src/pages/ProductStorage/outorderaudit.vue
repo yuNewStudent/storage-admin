@@ -218,7 +218,6 @@ export default {
     //入库单审核人
     applicantlist(){
       this.$http.post(`${config.httpBaseUrl}/man/get_all_employee/`).then(res=>{
-          console.log(res)
         if(res.status==1){
           this.applicants = res.content
         }else{
@@ -349,7 +348,10 @@ export default {
       handleOutput(){
         var list=this.multiSelection;
         this.$http.post(`${config.httpBaseUrl}/medicine/export_in_receipt_excel/`,list).then(res=>{
-          console.log(res);
+          
+        var blob = new Blob([res], {type: 'application/vnd.ms-excel'})
+        let objURl = URL.createObjectURL(blob)
+        window.location.href = objURl
            if(res.status==1){
              console.log(res);
            }else{

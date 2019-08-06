@@ -296,17 +296,11 @@ export default {
         })
     },
     handleOutput(){
-       var list=this.multipleSelection;
-        this.$http.post(`${config.httpBaseUrl}/medicine/export_out_receipt_excel/`,list).then(res=>{
-           if(res.status==1){
-             console.log(res);
-           }else{
-            //  this.$message({
-            //   showClose: true,
-            //   message:res.content,
-            //   type: 'warning'
-            // });
-           }
+       var list = this.multipleSelection
+        this.$http.post(`${config.httpBaseUrl}/medicine/export_out_receipt_excel/`, list, {responseType:'application/vnd.ms-excel'}).then(res=>{
+          var blob = new Blob([res], {type: 'application/vnd.ms-excel'})
+          let objURl = URL.createObjectURL(blob)
+          window.location.href = objURl
         })
     },
     // 分页
