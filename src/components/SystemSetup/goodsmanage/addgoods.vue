@@ -63,6 +63,7 @@
             <label for="">当前库存:</label>
             <el-input
               v-model="goodsInfo.stock_quantity"
+              disabled="disabled"
               size='small'></el-input>
             <label for="">预估单价:</label>
             <el-input
@@ -135,7 +136,7 @@ export default {
         name:"",
         unit:"",
         // location:"",
-        stock_quantity:"",
+        stock_quantity:0,
         waring_quantity_min:"",
         waring_quantity_max:"",
         estimated_price:"",

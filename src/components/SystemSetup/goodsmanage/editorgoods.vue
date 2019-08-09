@@ -186,15 +186,6 @@ export default {
     hideGoodsEditor (bol) {
       // 确认修改
       if (bol) {
-        for (var k in this.goodsInfo) {
-          if (k !== 'comment') {
-            this.$message({
-              message: '信息不能为空',
-              type: 'warning'
-            })
-            return
-          }
-        }
         const loginUser = JSON.parse(this.$cookie.get('user'))
         const data = {
           // login_name: loginUser.name,
