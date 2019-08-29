@@ -1,3 +1,3 @@
 var config = {
-  httpBaseUrl: 'http://www.qizhaokeji.cn:8006'
+  httpBaseUrl: 'http://139.155.122.23:8006'
 }

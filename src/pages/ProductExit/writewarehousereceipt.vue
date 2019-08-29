@@ -15,17 +15,21 @@
         :data="orders"
         border
         size='small'
+        ref="interfaceTable"
         style="width: 100%">
         <el-table-column
           type="index"
           label='序号'
-          width="55">
+          width="55"
+          :index="indexMethod"
+          >
         </el-table-column>
         <el-table-column label="收货单位" width='200'>
           <template slot-scope="scope">
             <el-select
               size='mini'
-              :disabled='isEditor'
+              :disabled='scope.$index !== 0 || isEditor'
+              @change="select_change"
               v-model="orders[scope.$index].client" placeholder="请选择">
               <el-option
                 v-for="item in clients"
@@ -86,9 +90,9 @@
                 v-model="orders[scope.$index].location" placeholder="请选择">
               <el-option
                 v-for="item in allStorage"
-                :key="item.name"
-                :label="item.name"
-                :value="item.name">
+                :key="item.starge_rack"
+                :label="item.starge_rack"
+                :value="item.starge_rack">
               </el-option>
             </el-select>
             <el-select 
@@ -248,7 +252,8 @@ export default {
           client_phone: '',
           purpose: '',
           apply_comment: '',
-          is_return:'2'
+          is_return:'2',
+          disabled: false
         },
       ],
       // 商品类别
@@ -303,13 +308,26 @@ export default {
         //   comment: "申请人备注"
         // }
       ],
-      isEditor: false
+      isditor:false,
+      isEditor: false,
+      index:0,
     }
   },
   components: {
     ChangeCustom
   },
   methods: {
+    select_change (val) {
+      console.log(val);
+      console.log(this.orders);
+      this.orders = this.orders.map(v => {
+        v.client = val;
+        return v;
+      })
+    },
+    indexMethod(index) {
+        this.index=index;
+      },
     // 保存提交申请单
     handleSave () {
       this.comfirm()
@@ -329,13 +347,19 @@ export default {
     
     // 删除填写的商品
     handleDelOrder (row, index) {
+      console.log(index)
       this.orders.splice(index, 1)
     },
     //新增行
     addRow () {
+      if(this.index==0){
+        this.isditor=false
+      }else{
+         this.isditor=true;
+      }
       this.orders.push(
         {
-          client: '',
+          client:this.orders[0].client,
           client_address: '',
           apply_datetime: '',
           goods_name: '',
@@ -349,9 +373,10 @@ export default {
           client_phone: '',
           purpose: '',
           apply_comment: '',
-          is_return: ''
+          is_return: '',
+          disabled: true
         }
-      )
+      );
     },
     //根据输入商品名字，返回对应商品信息
     selectGoodsName (name) {
@@ -453,6 +478,7 @@ export default {
     // 获取所有客户
     this.$http.post(`${config.httpBaseUrl}/man/get_all_client/`).then(res => {
       if (res.status === 1) {
+        console.log(this.clients);
         this.clients = res.content
       }
     })
@@ -463,7 +489,7 @@ export default {
       }
     })
     // 获取所有仓库
-    this.$http.post(`${config.httpBaseUrl}/storage/get_all_repertory/`).then(res => {
+    this.$http.post(`${config.httpBaseUrl}/storage/get_repertory/`).then(res => {
       if (res.status === 1) {
         console.log(res)
         this.allStorage = res.content
